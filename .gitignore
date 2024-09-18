@@ -37,4 +37,4 @@ out/
 .vscode/
 
 ### application.properties secret should not be included into github repository ###
-!**/src/resources/application-secret.properties
+application-secret.properties
