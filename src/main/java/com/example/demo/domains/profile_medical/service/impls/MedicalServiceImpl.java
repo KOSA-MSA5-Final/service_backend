@@ -28,32 +28,32 @@ public class MedicalServiceImpl implements MedicalService {
 
     @Override
     public List<Medical> getByProfile(Profile profile) {
-        return List.of();
+        return medicalRepository.findByProfile(profile);
     }
 
     @Override
     public List<Medical> getByVisitDate(Date visitDate) {
-        return List.of();
+        return medicalRepository.findByVisitDate(visitDate);
     }
 
     @Override
     public List<Medical> getMedicalsByProfileId(Long profileId) {
-        return List.of();
+        return medicalRepository.findMedicalsByProfileId(profileId);
     }
 
     @Override
     public List<Medical> getMedicalsByProfileID_DESCByVisitDate(Long profileId) {
-        return List.of();
+        return medicalRepository.findMedicalsByProfileID_DESCByVisitDate(profileId);
     }
 
     @Override
     public List<Medical> getAllMedicalsByVisitDate(Date visitDate) {
-        return List.of();
+        return medicalRepository.findAllMedicalsByVisitDate(visitDate);
     }
 
     @Override
     public List<Medical> getAllMedicals() {
-        return List.of();
+        return medicalRepository.findAll();
     }
 
     @Override
@@ -62,6 +62,16 @@ public class MedicalServiceImpl implements MedicalService {
         medical.setProfile(profile);
         medical.setReceipt_img(receipt_img);
         medical.setVisit_date(UTCtoKorea.convertUTCToKoreanTime(utcDate));
-        return null;
+        return medicalRepository.save(medical);
+    }
+
+    @Override
+    public Boolean delete(Medical medical) {
+        try {
+            medicalRepository.delete(medical);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 }

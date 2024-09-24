@@ -29,4 +29,5 @@ public interface MedicalService {
 
     List<Medical> getAllMedicals();
     Medical save(Date utcDate, String receipt_img, Profile profile);
+    Boolean delete(Medical medical);
 }
