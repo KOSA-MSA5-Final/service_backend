@@ -25,50 +25,50 @@ import org.springframework.security.web.firewall.StrictHttpFirewall;
 @Configuration
 @Log4j2
 public class SecurityConfig  {
-    private final WebConfig webConfig;
-//    private final CustomOAuth2UserService customOAuth2UserService;
-//    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint; // 커스텀 엔트리 포인트 주입
-
-    @Value("${security.jwt.secret-key}")
-    private String jwtSecretKey;
-
+//    private final WebConfig webConfig;
+////    private final CustomOAuth2UserService customOAuth2UserService;
+////    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint; // 커스텀 엔트리 포인트 주입
+//
+//    @Value("${security.jwt.secret-key}")
+//    private String jwtSecretKey;
+//
+////    @Bean
+////    public JwtEncoder jwtEncoder() {
+////        return new NimbusJwtEncoder(new ImmutableSecret<>(jwtSecretKey.getBytes()));
+////    }
 //    @Bean
-//    public JwtEncoder jwtEncoder() {
-//        return new NimbusJwtEncoder(new ImmutableSecret<>(jwtSecretKey.getBytes()));
+//    public HttpFirewall allowUrlEncodedSlashHttpFirewall() {
+//        StrictHttpFirewall firewall = new StrictHttpFirewall();
+//        firewall.setAllowUrlEncodedSlash(true); // Allow encoded slashes
+//        firewall.setAllowUrlEncodedDoubleSlash(true); // Allow double slashes
+//        return firewall;
 //    }
-    @Bean
-    public HttpFirewall allowUrlEncodedSlashHttpFirewall() {
-        StrictHttpFirewall firewall = new StrictHttpFirewall();
-        firewall.setAllowUrlEncodedSlash(true); // Allow encoded slashes
-        firewall.setAllowUrlEncodedDoubleSlash(true); // Allow double slashes
-        return firewall;
-    }
-
-
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        log.info("Configuring Security Filter Chain.................................................................");
-
-        http
-
-                .csrf(csrf -> csrf
-                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-                        .csrfTokenRequestHandler(new CsrfTokenRequestAttributeHandler()) // csrf 토큰 설정
-
-                )
-
-                .cors(cors -> cors.configurationSource(webConfig.getCorsConfiguration()))
-                .addFilterAfter(new CsrfCookieGeneratorFilter(), org.springframework.security.web.csrf.CsrfFilter.class)
-                .authorizeHttpRequests((request) ->
-                        request.dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
-                                .requestMatchers("/", "/api/**","/ws/**", "/auth/**", "/js/**", "/css/**", "/images/**", "http://localhost:80/**", "/**").permitAll()
-                                .anyRequest().authenticated()
-                );
-//                .oauth2Login(oauth2->oauth2
-//                        .successHandler(new CustomOAuth2LoginSuccessHandler())
-//                        .userInfoEndpoint(userInfoEndpointConfig -> userInfoEndpointConfig.userService(customOAuth2UserService)));
-
-
-        return http.build();
-    }
+//
+//
+//    @Bean
+//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+//        log.info("Configuring Security Filter Chain.................................................................");
+//
+//        http
+//
+//                .csrf(csrf -> csrf
+//                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+//                        .csrfTokenRequestHandler(new CsrfTokenRequestAttributeHandler()) // csrf 토큰 설정
+//
+//                )
+//
+//                .cors(cors -> cors.configurationSource(webConfig.getCorsConfiguration()))
+//                .addFilterAfter(new CsrfCookieGeneratorFilter(), org.springframework.security.web.csrf.CsrfFilter.class)
+//                .authorizeHttpRequests((request) ->
+//                        request.dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
+//                                .requestMatchers("/", "/api/**","/ws/**", "/auth/**", "/js/**", "/css/**", "/images/**", "http://localhost:80/**", "/**").permitAll()
+//                                .anyRequest().authenticated()
+//                );
+////                .oauth2Login(oauth2->oauth2
+////                        .successHandler(new CustomOAuth2LoginSuccessHandler())
+////                        .userInfoEndpoint(userInfoEndpointConfig -> userInfoEndpointConfig.userService(customOAuth2UserService)));
+//
+//
+//        return http.build();
+//    }
 }
