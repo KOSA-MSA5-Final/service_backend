@@ -1,26 +1,28 @@
 package com.example.demo.domains.member;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
+@Builder
+@AllArgsConstructor
 public class Member {
 
-    @Id @GeneratedValue
-    private Long id;
+    @Id
+    @GeneratedValue
+    private Long member_id;
 
     @Column(nullable = false)
-    private String name;
+    private String member_name;
     @Column(nullable = false)
-    private String email;
+    private String member_email;
     @Column(nullable = false)
-    private String pwd;
-    @Column(nullable = false)
-    private String picture;
+    private String member_password;
+    @Column
+    private String member_contact_address;
+
+
 }
