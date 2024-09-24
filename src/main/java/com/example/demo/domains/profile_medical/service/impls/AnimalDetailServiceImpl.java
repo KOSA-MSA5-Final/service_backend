@@ -2,8 +2,8 @@ package com.example.demo.domains.profile_medical.service.impls;
 
 import com.example.demo.domains.profile_medical.entity.Animal;
 import com.example.demo.domains.profile_medical.entity.AnimalDetail;
-import com.example.demo.domains.profile_medical.repository.interfaces.AnimalDetailRepository;
 import com.example.demo.domains.profile_medical.service.interfaces.AnimalDetailService;
+import com.example.demo.domains.repository.AnimalDetailRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

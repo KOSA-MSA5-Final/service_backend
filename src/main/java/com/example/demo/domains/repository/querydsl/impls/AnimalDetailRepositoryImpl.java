@@ -1,8 +1,7 @@
-package com.example.demo.domains.profile_medical.repository.impls;
+package com.example.demo.domains.repository.querydsl.impls;
 
 import com.example.demo.domains.profile_medical.entity.AnimalDetail;
-import com.example.demo.domains.profile_medical.repository.interfaces.AnimalDetailRepositoryCustom;
-import com.example.demo.domains.profile_medical.repository.interfaces.AnimalRepositoryCustom;
+import com.example.demo.domains.repository.querydsl.customs.AnimalDetailRepositoryCustom;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 
@@ -22,7 +21,7 @@ import java.util.Map;
  */
 @RequiredArgsConstructor
 public class AnimalDetailRepositoryImpl implements AnimalDetailRepositoryCustom {
-    private final EntityManager em;
+    private EntityManager em;
 
     @Override
     public Map<AnimalDetail, Integer> countProfilesByAnimalDetail() {

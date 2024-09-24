@@ -1,7 +1,7 @@
-package com.example.demo.domains.profile_medical.repository.impls;
+package com.example.demo.domains.repository.querydsl.impls;
 
 import com.example.demo.domains.profile_medical.entity.Hospital;
-import com.example.demo.domains.profile_medical.repository.interfaces.HospitalRepositoryCustom;
+import com.example.demo.domains.repository.querydsl.customs.HospitalRepositoryCustom;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +20,7 @@ import java.util.List;
  */
 @RequiredArgsConstructor
 public class HospitalRepositoryImpl implements HospitalRepositoryCustom {
-    private final EntityManager em;
+    private EntityManager em;
 
     @Override
     public List<Hospital> findOurHospitals() {

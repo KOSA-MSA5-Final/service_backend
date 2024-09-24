@@ -1,8 +1,9 @@
-package com.example.demo.domains.profile_medical.repository.interfaces;
+package com.example.demo.domains.repository;
 
 import com.example.demo.domains.member.Member;
 import com.example.demo.domains.profile_medical.entity.Medical;
 import com.example.demo.domains.profile_medical.entity.Profile;
+import com.example.demo.domains.repository.querydsl.customs.ProfileRepositoryCustom;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

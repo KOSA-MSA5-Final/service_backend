@@ -25,12 +25,12 @@ public class Medical {
     private long id;
 
     @Column(name = "visit_date")
-    private Date visit_date;
+    private Date visitDate;
 
     @Column(name="receipt_img_url")
     private String receipt_img;
 
     @ManyToOne
-    @Column(name = "profile_id")
+    @JoinColumn(name = "profile_id")
     private Profile profile;
 }

@@ -1,20 +1,19 @@
-package com.example.demo.domains.profile_medical.repository.interfaces;
+package com.example.demo.domains.repository;
 
 import com.example.demo.domains.profile_medical.entity.Hospital;
-
-import java.util.List;
+import com.example.demo.domains.repository.querydsl.customs.HospitalRepositoryCustom;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
  * author : 최혜령
  * date : 2024-09-24
- * description : 병원 커스텀 레포지토리
+ * description : 병원 JPA 레포지토리
  * <p>
  * ===========================================================
  * DATE            AUTHOR             NOTE
  * —————————————————————————————
  * 2024-09-24         최혜령          최초 생성
  */
-public interface HospitalRepositoryCustom {
-    List<Hospital> findOurHospitals();
-    List<Hospital> findOurHospitalsByCurrentLocation(String location);
+public interface HospitalRepository extends JpaRepository<Hospital, Long>, HospitalRepositoryCustom {
+
 }

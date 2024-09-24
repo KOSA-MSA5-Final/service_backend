@@ -1,4 +1,4 @@
-package com.example.demo.domains.profile_medical.repository.interfaces;
+package com.example.demo.domains.repository.querydsl.customs;
 
 import com.example.demo.domains.profile_medical.entity.Medical;
 

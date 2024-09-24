@@ -2,10 +2,6 @@ package com.example.demo.domains.profile_medical.service.interfaces;
 
 import com.example.demo.domains.profile_medical.entity.Medical;
 import com.example.demo.domains.profile_medical.entity.Profile;
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
 
 import java.util.Date;
 import java.util.List;
