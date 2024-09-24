@@ -1,4 +1,15 @@
 package com.example.demo.domains.profile_medical.service.interfaces;
+
+import com.example.demo.domains.profile_medical.entity.Medical;
+import com.example.demo.domains.profile_medical.entity.Profile;
+import jakarta.persistence.Column;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+
+import java.util.Date;
+import java.util.List;
+
 /**
  * author : 최혜령
  * date : 2024-09-24
@@ -10,4 +21,12 @@ package com.example.demo.domains.profile_medical.service.interfaces;
  * 2024-09-24         최혜령          최초 생성
  */
 public interface MedicalService {
+    List<Medical> getByProfile(Profile profile);
+    List<Medical> getByVisitDate(Date visitDate);
+    List<Medical> getMedicalsByProfileId(Long profileId);
+    List<Medical> getMedicalsByProfileID_DESCByVisitDate(Long profileId);
+    List<Medical> getAllMedicalsByVisitDate(Date visitDate);
+
+    List<Medical> getAllMedicals();
+    Medical save(Date utcDate, String receipt_img, Profile profile);
 }

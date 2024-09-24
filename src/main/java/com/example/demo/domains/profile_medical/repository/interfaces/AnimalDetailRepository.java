@@ -1,7 +1,10 @@
 package com.example.demo.domains.profile_medical.repository.interfaces;
 
+import com.example.demo.domains.profile_medical.entity.Animal;
 import com.example.demo.domains.profile_medical.entity.AnimalDetail;
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
 
 /**
  * author : 최혜령
@@ -15,4 +18,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * 2024-09-24         최혜령          최초 생성
  */
 public interface AnimalDetailRepository extends JpaRepository<AnimalDetail, Long>, AnimalDetailRepositoryCustom {
+    List<AnimalDetail> findByAnimal(Animal animal);
 }

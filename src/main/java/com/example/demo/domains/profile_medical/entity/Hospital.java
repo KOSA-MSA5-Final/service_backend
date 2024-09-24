@@ -5,7 +5,16 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.Setter;
-
+/**
+ * author : 최혜령
+ * date : 2024-09-24
+ * description : 병원 Entity
+ * <p>
+ * ===========================================================
+ * DATE            AUTHOR             NOTE
+ * —————————————————————————————
+ * 2024-09-24         최혜령          최초 생성
+ */
 @Entity
 @Getter
 @Setter
@@ -23,5 +32,5 @@ public class Hospital {
     String doctor;
 
     @Column(name = "is_ours")
-    String is_ours = "F";
+    String is_ours;
 }

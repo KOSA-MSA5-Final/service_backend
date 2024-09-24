@@ -1,5 +1,9 @@
 package com.example.demo.domains.profile_medical.repository.interfaces;
 
+import com.example.demo.domains.profile_medical.entity.Animal;
+
+import java.util.Map;
+
 /**
  * author : 최혜령
  * date : 2024-09-24
@@ -12,4 +16,5 @@ package com.example.demo.domains.profile_medical.repository.interfaces;
  */
 
 public interface AnimalRepositoryCustom {
+    Map<Animal, Integer> countProfilesByAnimal();
 }

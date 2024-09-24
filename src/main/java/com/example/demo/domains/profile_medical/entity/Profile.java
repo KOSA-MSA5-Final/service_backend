@@ -4,7 +4,16 @@ import com.example.demo.domains.member.Member;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-
+/**
+ * author : 최혜령
+ * date : 2024-09-24
+ * description : 동물 프로필 Entity
+ * <p>
+ * ===========================================================
+ * DATE            AUTHOR             NOTE
+ * —————————————————————————————
+ * 2024-09-24         최혜령          최초 생성
+ */
 @Entity
 @Getter
 @Setter

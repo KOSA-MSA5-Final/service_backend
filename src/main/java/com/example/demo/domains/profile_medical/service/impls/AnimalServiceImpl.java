@@ -1,9 +1,15 @@
 package com.example.demo.domains.profile_medical.service.impls;
 
+import com.example.demo.domains.profile_medical.entity.Animal;
+import com.example.demo.domains.profile_medical.entity.AnimalDetail;
 import com.example.demo.domains.profile_medical.repository.interfaces.AnimalRepository;
 import com.example.demo.domains.profile_medical.service.interfaces.AnimalService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Map;
+
 /**
  * author : 최혜령
  * date : 2024-09-24
@@ -18,4 +24,31 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AnimalServiceImpl implements AnimalService {
     private final AnimalRepository animalRepository;
+
+    @Override
+    public List<Animal> getAllAnimals() {
+        return animalRepository.findAll();
+    }
+
+    @Override
+    public Animal save(String name) {
+        Animal animal = new Animal();
+        animal.setName(name);
+        return animalRepository.save(animal);
+    }
+
+    @Override
+    public Boolean delete(Animal animal) {
+        try{
+            animalRepository.delete(animal);
+            return true;
+        } catch (Exception e){
+            return false;
+        }
+    }
+
+    @Override
+    public Map<Animal, Integer> countProfilesByAnimal() {
+        return animalRepository.countProfilesByAnimal();
+    }
 }
