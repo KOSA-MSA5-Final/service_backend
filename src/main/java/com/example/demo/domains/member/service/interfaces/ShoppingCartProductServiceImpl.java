@@ -32,25 +32,40 @@ public class ShoppingCartProductServiceImpl implements ShoppingCartProductServic
     private ShoppingCartProductRepository shoppingCartProductRepository;
 
     @Override
-    public Long saveProductQuantity(ShoppingCartProduct shoppingCartProduct) {
+    public Long savePrdQuantityToCart(ShoppingCartProduct shoppingCartProduct) {
         ShoppingCartProduct save = shoppingCartProductRepository.save(shoppingCartProduct);
         return save.getQuantity();
     }
 
     @Override
-    public Long findProductQuantity(ShoppingCartProduct shoppingCartProduct) {
+    public Long findPrdQuantityFromCart(ShoppingCartProduct shoppingCartProduct) {
         long id = shoppingCartProduct.getId();
         Optional<ShoppingCartProduct> byId = shoppingCartProductRepository.findById(id);
         return byId.get().getQuantity();
     }
 
     @Override
-    public void updateProductQuantity(Long shoppingCartProductId, long newQuantity) {
-        ShoppingCartProduct cartProduct = shoppingCartProductRepository.findById(shoppingCartProductId)
-                .orElseThrow(() -> new RuntimeException("nsj: ShoppingCartProduct not found"));
+    public List<Product> findProductsFromCart(ShoppingCart shoppingCart) {
+        List<Product> products = new ArrayList<>();
+        List<ShoppingCartProduct> byShoppingCart = shoppingCartProductRepository.findByShoppingCart(shoppingCart);
+        for (ShoppingCartProduct shoppingCartProduct : byShoppingCart) {
+            products.add(shoppingCartProduct.getProduct());
+        }
+        return products;
+    }
 
-        cartProduct.updateQuantity(newQuantity); // quantity 필드를 업데이트
-        // 트랜잭션이 끝나면 자동으로 DB에 반영됨
+    @Override
+    public Boolean updatePrdQuantityFromCart(Long shoppingCartProductId, long newQuantity) {
+        try{
+            ShoppingCartProduct cartProduct = shoppingCartProductRepository.findById(shoppingCartProductId)
+                    .orElseThrow(() -> new RuntimeException("nsj: ShoppingCartProduct not found"));
+
+            cartProduct.updateQuantity(newQuantity); // quantity 필드를 업데이트
+            // 트랜잭션이 끝나면 자동으로 DB에 반영됨
+            return true;
+        }catch(Exception e){
+            return false;
+        }
     }
 
     @Override

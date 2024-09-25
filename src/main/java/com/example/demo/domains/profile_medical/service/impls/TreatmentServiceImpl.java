@@ -2,9 +2,9 @@ package com.example.demo.domains.profile_medical.service.impls;
 
 import com.example.demo.domains.profile_medical.entity.Hospital;
 import com.example.demo.domains.profile_medical.entity.Medical;
-import com.example.demo.domains.profile_medical.entity.Treatment;
-import com.example.demo.domains.profile_medical.repository.interfaces.TreatmentRepository;
+import com.example.demo.domains.repository.TreatmentRepository;
 import com.example.demo.domains.profile_medical.service.interfaces.TreatmentService;
+import com.example.demo.domains.profile_medical.entity.Treatment;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

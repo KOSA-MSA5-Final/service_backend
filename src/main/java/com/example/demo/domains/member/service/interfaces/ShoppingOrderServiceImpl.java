@@ -1,7 +1,15 @@
 package com.example.demo.domains.member.service.interfaces;
 
+import com.example.demo.domains.member.entity.Product;
+import com.example.demo.domains.member.entity.ShoppingOrder;
+import com.example.demo.domains.member.entity.ShoppingOrderProduct;
+import com.example.demo.domains.member.repository.ShoppingOrderRepository;
 import com.example.demo.domains.member.service.impls.ShoppingOrderService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * author : 나선주
@@ -17,4 +25,28 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ShoppingOrderServiceImpl implements ShoppingOrderService {
+    @Autowired
+    private ShoppingOrderRepository shoppingOrderRepository;
+
+    @Override
+    public ShoppingOrder saveOrder(ShoppingOrder shoppingOrder) {
+        ShoppingOrder save = shoppingOrderRepository.save(shoppingOrder);
+        return save;
+    }
+
+    @Override
+    public List<ShoppingOrder> findAllOrders() {
+        List<ShoppingOrder> all = shoppingOrderRepository.findAll();
+        return all;
+    }
+
+    @Override
+    public Boolean deleteOrder(ShoppingOrder shoppingOrder) {
+        try{
+            shoppingOrderRepository.delete(shoppingOrder);
+            return true;
+        }catch(Exception e){
+            return false;
+        }
+    }
 }

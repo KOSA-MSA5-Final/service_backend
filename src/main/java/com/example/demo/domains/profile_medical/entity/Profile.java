@@ -1,6 +1,6 @@
 package com.example.demo.domains.profile_medical.entity;
 
-import com.example.demo.domains.member.Member;
+import com.example.demo.domains.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,7 +19,7 @@ import lombok.Setter;
 @Setter
 public class Profile {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "profile_id")
     private Long id;
 

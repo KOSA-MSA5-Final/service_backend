@@ -25,9 +25,6 @@ public interface ShoppingCartService {
     //쇼핑카트 조회
     ShoppingCart findShoppingCartByMember(Member member);
 
-    //쇼핑카트의 전 물품 가져오기
-    List<Product> findProductsFromCart(ShoppingCart shoppingCart);
-
     //쇼핑카트를 제거
     Boolean deleteShoppingCart(ShoppingCart shoppingCart);
 

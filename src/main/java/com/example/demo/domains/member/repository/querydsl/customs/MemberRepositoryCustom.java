@@ -11,5 +11,7 @@ package com.example.demo.domains.member.repository.querydsl.customs;
  * —————————————————————————————
  * 2024-09-24       나선주          최초 생성
  */
+
+
 public interface MemberRepositoryCustom {
 }

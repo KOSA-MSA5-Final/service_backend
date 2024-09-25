@@ -2,8 +2,8 @@ package com.example.demo.domains.profile_medical.service.impls;
 
 import com.example.demo.domains.profile_medical.entity.Medical;
 import com.example.demo.domains.profile_medical.entity.Profile;
-import com.example.demo.domains.profile_medical.repository.interfaces.MedicalRepository;
 import com.example.demo.domains.profile_medical.service.interfaces.MedicalService;
+import com.example.demo.domains.repository.MedicalRepository;
 import com.example.demo.util.UTCtoKorea;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -61,7 +61,7 @@ public class MedicalServiceImpl implements MedicalService {
         Medical medical = new Medical();
         medical.setProfile(profile);
         medical.setReceipt_img(receipt_img);
-        medical.setVisit_date(UTCtoKorea.convertUTCToKoreanTime(utcDate));
+        medical.setVisitDate(UTCtoKorea.convertUTCToKoreanTime(utcDate));
         return medicalRepository.save(medical);
     }
 

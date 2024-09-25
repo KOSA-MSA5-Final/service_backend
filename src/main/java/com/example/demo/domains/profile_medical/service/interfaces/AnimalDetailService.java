@@ -18,7 +18,8 @@ import java.util.Map;
  */
 public interface AnimalDetailService {
     List<AnimalDetail> findAllDetailsByAnimal(Animal animal);
-    AnimalDetail save(String name, Animal animal);
+    AnimalDetail save(String name, String animalName);
     Boolean delete(AnimalDetail animalDetail);
     Map<AnimalDetail, Integer> countProfilesByAnimalDetail();
+    List<AnimalDetail> getAnimalDetailsByAnimalName(String animalName);
 }

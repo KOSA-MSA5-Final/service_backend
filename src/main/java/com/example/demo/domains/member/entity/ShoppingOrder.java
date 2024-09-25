@@ -23,7 +23,7 @@ import java.util.List;
 @Setter
 public class ShoppingOrder {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="shoppingOrder_id")
     private long id;
 

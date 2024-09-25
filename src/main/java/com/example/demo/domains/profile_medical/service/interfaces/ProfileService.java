@@ -1,10 +1,9 @@
 package com.example.demo.domains.profile_medical.service.interfaces;
 
-import com.example.demo.domains.member.Member;
+import com.example.demo.domains.member.entity.Member;
 import com.example.demo.domains.profile_medical.entity.AnimalDetail;
-import com.example.demo.domains.profile_medical.entity.Medical;
 import com.example.demo.domains.profile_medical.entity.Profile;
-import jakarta.persistence.*;
+import com.example.demo.domains.profile_medical.entity.Medical;
 
 import java.util.List;
 

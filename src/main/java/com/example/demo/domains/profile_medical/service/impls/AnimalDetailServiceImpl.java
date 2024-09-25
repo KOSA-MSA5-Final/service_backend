@@ -2,8 +2,9 @@ package com.example.demo.domains.profile_medical.service.impls;
 
 import com.example.demo.domains.profile_medical.entity.Animal;
 import com.example.demo.domains.profile_medical.entity.AnimalDetail;
-import com.example.demo.domains.profile_medical.repository.interfaces.AnimalDetailRepository;
 import com.example.demo.domains.profile_medical.service.interfaces.AnimalDetailService;
+import com.example.demo.domains.repository.AnimalDetailRepository;
+import com.example.demo.domains.repository.AnimalRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +25,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class AnimalDetailServiceImpl implements AnimalDetailService {
     private final AnimalDetailRepository animalDetailRepository;
+    private final AnimalRepository animalRepository;
 
     @Override
     public List<AnimalDetail> findAllDetailsByAnimal(Animal animal) {
@@ -31,11 +33,15 @@ public class AnimalDetailServiceImpl implements AnimalDetailService {
     }
 
     @Override
-    public AnimalDetail save(String name, Animal animal) {
-        AnimalDetail animalDetail = new AnimalDetail();
-        animalDetail.setName(name);
-        animalDetail.setAnimal(animal);
-        return animalDetailRepository.save(animalDetail);
+    public AnimalDetail save(String name, String animalName) {
+        Animal animal = animalRepository.findAnimalByName(animalName);
+        if(animal != null) {
+            AnimalDetail animalDetail = new AnimalDetail();
+            animalDetail.setName(name);
+            animalDetail.setAnimal(animal);
+            return animalDetailRepository.save(animalDetail);
+        }
+        return null;
     }
 
     @Override
@@ -51,5 +57,10 @@ public class AnimalDetailServiceImpl implements AnimalDetailService {
     @Override
     public Map<AnimalDetail, Integer> countProfilesByAnimalDetail() {
         return animalDetailRepository.countProfilesByAnimalDetail();
+    }
+
+    @Override
+    public List<AnimalDetail> getAnimalDetailsByAnimalName(String animalName) {
+        return animalDetailRepository.findAnimalDetailByAnimalName(animalName);
     }
 }

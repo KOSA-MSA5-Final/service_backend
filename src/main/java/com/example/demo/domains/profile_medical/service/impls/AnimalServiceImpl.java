@@ -1,9 +1,8 @@
 package com.example.demo.domains.profile_medical.service.impls;
 
-import com.example.demo.domains.profile_medical.entity.Animal;
-import com.example.demo.domains.profile_medical.entity.AnimalDetail;
-import com.example.demo.domains.profile_medical.repository.interfaces.AnimalRepository;
 import com.example.demo.domains.profile_medical.service.interfaces.AnimalService;
+import com.example.demo.domains.profile_medical.entity.Animal;
+import com.example.demo.domains.repository.AnimalRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -32,9 +31,12 @@ public class AnimalServiceImpl implements AnimalService {
 
     @Override
     public Animal save(String name) {
-        Animal animal = new Animal();
-        animal.setName(name);
-        return animalRepository.save(animal);
+        if(animalRepository.isExist_AnimalByName(name) == false) {
+            Animal animal = new Animal();
+            animal.setName(name);
+            return animalRepository.save(animal);
+        }
+        return null;
     }
 
     @Override

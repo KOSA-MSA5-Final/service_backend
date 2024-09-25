@@ -1,11 +1,11 @@
 package com.example.demo.domains.profile_medical.service.impls;
 
-import com.example.demo.domains.member.Member;
+import com.example.demo.domains.member.entity.Member;
 import com.example.demo.domains.profile_medical.entity.AnimalDetail;
-import com.example.demo.domains.profile_medical.entity.Medical;
 import com.example.demo.domains.profile_medical.entity.Profile;
-import com.example.demo.domains.profile_medical.repository.interfaces.ProfileRepository;
+import com.example.demo.domains.profile_medical.entity.Medical;
 import com.example.demo.domains.profile_medical.service.interfaces.ProfileService;
+import com.example.demo.domains.repository.ProfileRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
