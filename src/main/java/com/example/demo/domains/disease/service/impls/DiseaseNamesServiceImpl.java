@@ -1,8 +1,7 @@
 package com.example.demo.domains.disease.service.impls;
 
 import com.example.demo.domains.disease.entity.DiseaseNames;
-import com.example.demo.domains.disease.entity.DiseaseSub;
-import com.example.demo.domains.disease.repository.interfaces.DiseaseNamesRepository;
+import com.example.demo.domains.disease.repository.DiseaseNamesRepository;
 import com.example.demo.domains.disease.service.interfaces.DiseaseNamesService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -47,8 +46,13 @@ public class DiseaseNamesServiceImpl implements DiseaseNamesService {
 
     @Override
     @Transactional
-    public void deleteDiseaseById(Long id) {
-        diseaseNamesRepository.deleteById(id);
+    public Boolean deleteDiseaseById(Long id) {
+        try {
+            diseaseNamesRepository.deleteById(id);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     // 커스텀 조회 메서드

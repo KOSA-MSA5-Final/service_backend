@@ -1,6 +1,7 @@
-package com.example.demo.domains.disease.repository.interfaces;
+package com.example.demo.domains.disease.repository;
 
 import com.example.demo.domains.disease.entity.NewDisease;
+import com.example.demo.domains.disease.repository.querydsl.customs.NewDiseaseRepositoryCustom;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -21,10 +22,10 @@ import java.util.List;
 public interface NewDiseaseRepository extends JpaRepository<NewDisease, Long>, NewDiseaseRepositoryCustom {
 
     // 특정 대분류에 속한 모든 새로운 병명을 조회 (대분류 ID 기준)
-    List<NewDisease> findAllByDiseaseNames_Id(Long diseaseNameId);
+    List<NewDisease> findAllByDiseaseNames_Id(Long id);
 
     // 새로운 병명을 이름으로 조회
-    List<NewDisease> findAllByName(String newDiseaseName);
+    List<NewDisease> findAllByName(String name);
 }
 
 

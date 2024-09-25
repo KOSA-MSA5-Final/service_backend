@@ -30,7 +30,7 @@ public interface DiseaseSubService {
     DiseaseSub saveDiseaseSub(DiseaseSub diseaseSub);
 
     // 소분류 병명 삭제
-    void deleteDiseaseSubById(Long id);
+    Boolean deleteDiseaseSubById(Long id);
 
     // 커스텀 조회 메서드
     List<DiseaseSub> findCustomDiseaseSubs(String condition);

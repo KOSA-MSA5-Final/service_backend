@@ -1,4 +1,4 @@
-package com.example.demo.domains.disease.repository.interfaces;
+package com.example.demo.domains.disease.repository.querydsl.customs;
 
 import com.example.demo.domains.disease.entity.NewDisease;
 

@@ -1,11 +1,10 @@
-package com.example.demo.domains.disease.repository.impls;
+package com.example.demo.domains.disease.repository.querydsl.impls;
 
 import com.example.demo.domains.disease.entity.DiseaseSub;
-import com.example.demo.domains.disease.repository.interfaces.DiseaseSubRepositoryCustom;
+import com.example.demo.domains.disease.repository.querydsl.customs.DiseaseSubRepositoryCustom;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
-import org.springframework.stereotype.Repository;
+import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
@@ -20,16 +19,15 @@ import java.util.List;
  * 2024-09-24        김진석          최초 생성
  */
 
-@Repository
-public class DiseaseSubRepositoryCustomImpl implements DiseaseSubRepositoryCustom {
+@RequiredArgsConstructor
+public class DiseaseSubRepositoryImpl implements DiseaseSubRepositoryCustom {
 
-    @PersistenceContext
-    private EntityManager entityManager;
+    private final EntityManager em;
 
     @Override
     public List<DiseaseSub> findCustomDiseaseSubs(String condition) {
         String jpql = "SELECT ds FROM DiseaseSub ds WHERE ds.name LIKE :condition";
-        TypedQuery<DiseaseSub> query = entityManager.createQuery(jpql, DiseaseSub.class);
+        TypedQuery<DiseaseSub> query = em.createQuery(jpql, DiseaseSub.class);
         query.setParameter("condition", "%" + condition + "%");
 
         return query.getResultList();

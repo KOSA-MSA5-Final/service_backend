@@ -27,7 +27,7 @@ public interface DiseaseNamesService {
     DiseaseNames saveDisease(DiseaseNames diseaseNames);
 
     // 대분류 병명 삭제
-    void deleteDiseaseById(Long id);
+    Boolean deleteDiseaseById(Long id);
 
     // 커스텀 조회 메서드
     List<DiseaseNames> findCustomDiseaseNames(String condition);

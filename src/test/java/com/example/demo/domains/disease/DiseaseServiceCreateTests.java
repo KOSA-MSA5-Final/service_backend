@@ -17,6 +17,17 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * author : 김진석
+ * date : 2024-09-24
+ * description : 병명 생성 서비스 테스트
+ * <p>
+ *
+ * DATE            AUTHOR           NOTE
+ * —————————————————————————————
+ * 2024-09-24       김진석         최초 생성
+ */
+
 @SpringBootTest
 @ActiveProfiles("test")
 public class DiseaseServiceCreateTests {

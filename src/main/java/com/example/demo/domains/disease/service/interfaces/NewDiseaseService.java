@@ -30,7 +30,7 @@ public interface NewDiseaseService {
     NewDisease saveNewDisease(NewDisease newDisease);
 
     // 새로운 병명 삭제
-    void deleteNewDiseaseById(Long id);
+    Boolean deleteNewDiseaseById(Long id);
 
     // 커스텀 조회 메서드
     List<NewDisease> findCustomNewDiseases(String condition);
