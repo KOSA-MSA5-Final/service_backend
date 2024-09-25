@@ -1,8 +1,6 @@
 package com.example.demo.domains.profile_medical.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 /**
@@ -19,7 +17,9 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Hospital {
-    @Id @Column(unique = true, nullable = false, name = "business_registration_number")
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(unique = true, nullable = false, name = "business_registration_number")
     Long id;
 
     @Column(name = "hospital_name")

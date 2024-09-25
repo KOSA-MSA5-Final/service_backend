@@ -10,12 +10,12 @@ import java.util.Date;
 /**
  * author : 김진석
  * date : 2024-09-24
- * description : Medical과 DiseaseNames 간의 관계 테이블로 사용되는 엔티티
+ * description : Medical, DiseaseNames 간의 관계 테이블로 사용되는 엔티티
  * <p>
  *
  * DATE            AUTHOR             NOTE
  * —————————————————————————————
- * 2024-09-24        김진석          최초 생성
+ * 2024-09-25        김진석          최초 생성
  */
 @Entity
 @Getter

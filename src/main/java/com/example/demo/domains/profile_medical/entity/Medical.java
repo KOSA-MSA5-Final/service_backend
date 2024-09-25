@@ -20,7 +20,8 @@ import java.util.Date;
 @Getter
 @Setter
 public class Medical {
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="medical_id")
     private long id;
 
