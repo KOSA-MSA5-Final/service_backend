@@ -3,6 +3,7 @@ package com.example.demo.domains.repository.querydsl.impls;
 import com.example.demo.domains.profile_medical.entity.AnimalDetail;
 import com.example.demo.domains.repository.querydsl.customs.AnimalDetailRepositoryCustom;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 import lombok.RequiredArgsConstructor;
 
 import java.util.HashMap;
@@ -21,7 +22,7 @@ import java.util.Map;
  */
 @RequiredArgsConstructor
 public class AnimalDetailRepositoryImpl implements AnimalDetailRepositoryCustom {
-    private EntityManager em;
+    private final EntityManager em;
 
     @Override
     public Map<AnimalDetail, Integer> countProfilesByAnimalDetail() {
@@ -40,5 +41,14 @@ public class AnimalDetailRepositoryImpl implements AnimalDetailRepositoryCustom 
             profileCountsByAnimalDetail.put(animalDetail, count.intValue());
         }
         return profileCountsByAnimalDetail;
+    }
+
+    @Override
+    public List<AnimalDetail> findAnimalDetailByAnimalName(String animalName) {
+        String jpql = "SELECT ad FROM AnimalDetail ad WHERE ad.animal.name = :animalName";
+        TypedQuery<AnimalDetail> query = em.createQuery(jpql, AnimalDetail.class);
+        query.setParameter("animalName", animalName);
+        List<AnimalDetail> animalDetails = query.getResultList();
+        return animalDetails;
     }
 }

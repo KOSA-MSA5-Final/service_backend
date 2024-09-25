@@ -21,7 +21,7 @@ import java.util.List;
  */
 @RequiredArgsConstructor
 public class MedicalRepositoryImpl implements MedicalRepositoryCustom {
-    private EntityManager em;
+    private final EntityManager em;
 
     @Override
     public List<Medical> findMedicalsByProfileId(Long profileId) {
@@ -33,7 +33,7 @@ public class MedicalRepositoryImpl implements MedicalRepositoryCustom {
 
     @Override
     public List<Medical> findMedicalsByProfileID_DESCByVisitDate(Long profileId) {
-        String jpql = "SELECT m FROM Medical m WHERE m.profile.id = :profileId ORDER BY m.visit_date DESC";
+        String jpql = "SELECT m FROM Medical m WHERE m.profile.id = :profileId ORDER BY m.visitDate DESC";
         TypedQuery<Medical> query = em.createQuery(jpql, Medical.class);
         query.setParameter("profileId", profileId);
         return query.getResultList();
@@ -63,7 +63,7 @@ public class MedicalRepositoryImpl implements MedicalRepositoryCustom {
         }
 
         // JPQL 쿼리 작성
-        String jpql = "SELECT m FROM Medical m WHERE FUNCTION('FORMAT', m.visit_date, 'yyyy-MM-dd') LIKE :visitDatePattern";
+        String jpql = "SELECT m FROM Medical m WHERE FUNCTION('FORMAT', m.visitDate, 'yyyy-MM-dd') LIKE :visitDatePattern";
         TypedQuery<Medical> query = em.createQuery(jpql, Medical.class);
         query.setParameter("visitDatePattern", datePattern + "%");
 

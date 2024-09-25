@@ -15,6 +15,6 @@ import lombok.RequiredArgsConstructor;
  */
 @RequiredArgsConstructor
 public class MedicalHospitalRepositoryImpl implements MedicalHospitalRepositoryCustom {
-    private EntityManager em;
+    private final EntityManager em;
 
 }

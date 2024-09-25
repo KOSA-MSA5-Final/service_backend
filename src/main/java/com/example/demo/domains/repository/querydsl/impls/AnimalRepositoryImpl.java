@@ -1,8 +1,10 @@
 package com.example.demo.domains.repository.querydsl.impls;
 
 import com.example.demo.domains.profile_medical.entity.Animal;
+import com.example.demo.domains.profile_medical.entity.AnimalDetail;
 import com.example.demo.domains.repository.querydsl.customs.AnimalRepositoryCustom;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 import lombok.RequiredArgsConstructor;
 
 import java.util.HashMap;
@@ -18,10 +20,11 @@ import java.util.Map;
  * DATE            AUTHOR             NOTE
  * —————————————————————————————
  * 2024-09-24         최혜령          최초 생성
+ * 2024-09-25         최혜령           findAnimalByName 생성
  */
 @RequiredArgsConstructor
 public class AnimalRepositoryImpl implements AnimalRepositoryCustom {
-    private EntityManager em;
+    private final EntityManager em;
 
     @Override
     public Map<Animal, Integer> countProfilesByAnimal() {
@@ -42,4 +45,31 @@ public class AnimalRepositoryImpl implements AnimalRepositoryCustom {
         }
         return profileCountsByAnimal;
     }
+
+//    @Override
+//    public Map<Animal, Integer> countAnimalDetailsByAnimal(){
+//        String jpql = "SELECT a, COUNT(ad) FROM "
+//    }
+
+    @Override
+    public Boolean isExist_AnimalByName(String name) {
+        String jpql = "SELECT a FROM Animal a WHERE a.name LIKE :name";
+
+        TypedQuery<Animal> query = em.createQuery(jpql, Animal.class);
+        query.setParameter("name", "%" + name + "%"); // 정확히 일치하는 파라미터 설정
+        List<Animal> results = query.getResultList();
+        return !results.isEmpty(); // 리스트가 비어있지 않으면 true
+    }
+
+    @Override
+    public Animal findAnimalByName(String name) {
+        String jpql = "SELECT a FROM Animal a WHERE a.name LIKE :name";
+
+        TypedQuery<Animal> query = em.createQuery(jpql, Animal.class);
+        query.setParameter("name", "%" + name + "%"); // 정확히 일치하는 파라미터 설정
+        List<Animal> results = query.getResultList();
+        return results.get(0);
+    }
+
+
 }

@@ -31,9 +31,12 @@ public class AnimalServiceImpl implements AnimalService {
 
     @Override
     public Animal save(String name) {
-        Animal animal = new Animal();
-        animal.setName(name);
-        return animalRepository.save(animal);
+        if(animalRepository.isExist_AnimalByName(name) == false) {
+            Animal animal = new Animal();
+            animal.setName(name);
+            return animalRepository.save(animal);
+        }
+        return null;
     }
 
     @Override

@@ -15,6 +15,6 @@ import lombok.RequiredArgsConstructor;
  */
 @RequiredArgsConstructor
 public class ProfileRepositoryImpl implements ProfileRepositoryCustom {
-    private EntityManager em;
+    private final EntityManager em;
 
 }

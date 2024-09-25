@@ -15,6 +15,6 @@ import lombok.RequiredArgsConstructor;
  */
 @RequiredArgsConstructor
 public class TreatmentRepositoryImpl implements TreatmentRepositoryCustom {
-    private EntityManager em;
+    private final EntityManager em;
 
 }

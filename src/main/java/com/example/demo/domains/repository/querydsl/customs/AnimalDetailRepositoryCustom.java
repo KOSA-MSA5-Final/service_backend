@@ -1,6 +1,8 @@
 package com.example.demo.domains.repository.querydsl.customs;
 
 import com.example.demo.domains.profile_medical.entity.AnimalDetail;
+
+import java.util.List;
 import java.util.Map;
 /**
  * author : 최혜령
@@ -14,4 +16,6 @@ import java.util.Map;
  */
 public interface AnimalDetailRepositoryCustom {
     Map<AnimalDetail, Integer> countProfilesByAnimalDetail();
+
+    List<AnimalDetail> findAnimalDetailByAnimalName(String animalName);
 }

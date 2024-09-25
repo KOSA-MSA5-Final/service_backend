@@ -20,14 +20,14 @@ import java.util.List;
  */
 @RequiredArgsConstructor
 public class HospitalRepositoryImpl implements HospitalRepositoryCustom {
-    private EntityManager em;
+    private final EntityManager em;
 
     @Override
     public List<Hospital> findOurHospitals() {
 
         String jpql = "SELECT h FROM Hospital h WHERE h.is_ours = 'T'";
 
-        TypedQuery<Hospital> query = this.em.createQuery(jpql, Hospital.class);
+        TypedQuery<Hospital> query = em.createQuery(jpql, Hospital.class);
         return query.getResultList();
     }
 
@@ -35,7 +35,7 @@ public class HospitalRepositoryImpl implements HospitalRepositoryCustom {
     public List<Hospital> findOurHospitalsByCurrentLocation(String location) {
         String jpql = "SELECT h FROM Hospital h WHERE h.is_ours = 'T' AND h.address LIKE :location";
 
-        TypedQuery<Hospital> query = this.em.createQuery(jpql, Hospital.class);
+        TypedQuery<Hospital> query = em.createQuery(jpql, Hospital.class);
         query.setParameter("location", "%" + location + "%"); // 위치 기반 파라미터 설정
         return query.getResultList();
     }
