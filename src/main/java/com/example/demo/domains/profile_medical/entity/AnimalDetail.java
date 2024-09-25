@@ -17,8 +17,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class AnimalDetail {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "animalDetail_id")
     private long id;
 

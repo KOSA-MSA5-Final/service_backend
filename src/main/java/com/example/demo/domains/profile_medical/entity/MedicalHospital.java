@@ -18,8 +18,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class MedicalHospital {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @ManyToOne

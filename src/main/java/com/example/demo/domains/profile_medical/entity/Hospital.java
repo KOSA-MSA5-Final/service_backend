@@ -17,9 +17,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Hospital {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(unique = true, nullable = false, name = "business_registration_number")
+    @Id @Column(unique = true, nullable = false, name = "business_registration_number")
     Long id;
 
     @Column(name = "hospital_name")

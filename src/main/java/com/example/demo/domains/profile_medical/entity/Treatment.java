@@ -17,8 +17,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Treatment {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "treatment_id")
     private long id;
 
