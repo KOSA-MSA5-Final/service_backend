@@ -1,6 +1,6 @@
 package com.example.demo.domains.repository;
 
-import com.example.demo.domains.member.Member;
+import com.example.demo.domains.member.entity.Member;
 import com.example.demo.domains.profile_medical.entity.Medical;
 import com.example.demo.domains.profile_medical.entity.Profile;
 import com.example.demo.domains.repository.querydsl.customs.ProfileRepositoryCustom;

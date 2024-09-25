@@ -1,6 +1,6 @@
 package com.example.demo.domains.profile_medical.entity;
 
-import com.example.demo.domains.member.Member;
+import com.example.demo.domains.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
