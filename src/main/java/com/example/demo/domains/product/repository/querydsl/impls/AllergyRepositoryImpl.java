@@ -2,17 +2,14 @@ package com.example.demo.domains.product.repository.querydsl.impls;
 
 import com.example.demo.domains.product.entity.Allergy;
 import com.example.demo.domains.product.repository.AllergyRepository;
-import org.springframework.stereotype.Repository;
+import com.example.demo.domains.product.repository.querydsl.customs.AllergyRepositoryCustom;
+import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
-@Repository
-public class AllergyRepositoryImpl {
+@RequiredArgsConstructor
+public class AllergyRepositoryImpl implements AllergyRepositoryCustom {
     private final AllergyRepository allergyRepository;
-
-    public AllergyRepositoryImpl(AllergyRepository allergyRepository) {
-        this.allergyRepository = allergyRepository;
-    }
 
     public List<Allergy> findAllAllergies() {
         return allergyRepository.findAll();

@@ -2,18 +2,15 @@ package com.example.demo.domains.product.repository.querydsl.impls;
 
 import com.example.demo.domains.product.entity.Ingredient;
 import com.example.demo.domains.product.repository.IngredientRepository;
-import org.springframework.stereotype.Repository;
+import com.example.demo.domains.product.repository.querydsl.customs.IngredientRepositoryCustom;
+import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
-@Repository
-public class IngredientRepositoryImpl {
+@RequiredArgsConstructor
+public class IngredientRepositoryImpl implements IngredientRepositoryCustom {
 
     private final IngredientRepository ingredientRepository;
-
-    public IngredientRepositoryImpl(IngredientRepository ingredientRepository) {
-        this.ingredientRepository = ingredientRepository;
-    }
 
     public List<Ingredient> findAllIngredients() {
         return ingredientRepository.findAll();

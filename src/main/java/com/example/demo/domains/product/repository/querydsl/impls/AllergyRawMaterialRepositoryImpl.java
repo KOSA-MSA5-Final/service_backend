@@ -2,18 +2,15 @@ package com.example.demo.domains.product.repository.querydsl.impls;
 
 import com.example.demo.domains.product.entity.AllergyRawMaterial;
 import com.example.demo.domains.product.repository.AllergyRawMaterialRepository;
-import org.springframework.stereotype.Repository;
+import com.example.demo.domains.product.repository.querydsl.customs.AllergyRawMaterialRepositoryCustom;
+import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
-@Repository
-public class AllergyRawMaterialRepositoryImpl {
+@RequiredArgsConstructor
+public class AllergyRawMaterialRepositoryImpl implements AllergyRawMaterialRepositoryCustom {
 
     private final AllergyRawMaterialRepository allergyRawMaterialRepository;
-
-    public AllergyRawMaterialRepositoryImpl(AllergyRawMaterialRepository allergyRawMaterialRepository) {
-        this.allergyRawMaterialRepository = allergyRawMaterialRepository;
-    }
 
     public List<AllergyRawMaterial> findAllAllergyRawMaterials() {
         return allergyRawMaterialRepository.findAll();

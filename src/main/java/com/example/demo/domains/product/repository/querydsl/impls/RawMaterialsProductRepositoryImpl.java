@@ -2,18 +2,15 @@ package com.example.demo.domains.product.repository.querydsl.impls;
 
 import com.example.demo.domains.product.entity.RawMaterialsProduct;
 import com.example.demo.domains.product.repository.RawMaterialsProductRepository;
-import org.springframework.stereotype.Repository;
+import com.example.demo.domains.product.repository.querydsl.customs.RawMaterialsProductRepositoryCustom;
+import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
-@Repository
-public class RawMaterialsProductRepositoryImpl {
+@RequiredArgsConstructor
+public class RawMaterialsProductRepositoryImpl implements RawMaterialsProductRepositoryCustom {
 
     private final RawMaterialsProductRepository rawMaterialsProductRepository;
-
-    public RawMaterialsProductRepositoryImpl(RawMaterialsProductRepository rawMaterialsProductRepository) {
-        this.rawMaterialsProductRepository = rawMaterialsProductRepository;
-    }
 
     public List<RawMaterialsProduct> findAllRawMaterialsProducts() {
         return rawMaterialsProductRepository.findAll();

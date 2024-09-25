@@ -2,17 +2,14 @@ package com.example.demo.domains.product.repository.querydsl.impls;
 
 import com.example.demo.domains.product.entity.Efficacy;
 import com.example.demo.domains.product.repository.EfficacyRepository;
-import org.springframework.stereotype.Repository;
+import com.example.demo.domains.product.repository.querydsl.customs.EfficacyRepositoryCustom;
+import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
-@Repository
-public class EfficacyRepositoryImpl {
+@RequiredArgsConstructor
+public class EfficacyRepositoryImpl implements EfficacyRepositoryCustom {
     private final EfficacyRepository efficacyRepository;
-
-    public EfficacyRepositoryImpl(EfficacyRepository efficacyRepository) {
-        this.efficacyRepository = efficacyRepository;
-    }
 
     public List<Efficacy> findAllEfficacies() {
         return efficacyRepository.findAll();
