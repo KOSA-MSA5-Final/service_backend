@@ -21,7 +21,7 @@ import lombok.Setter;
 @Setter
 public class MyLocation {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="myLocation_id")
     private long id;
 

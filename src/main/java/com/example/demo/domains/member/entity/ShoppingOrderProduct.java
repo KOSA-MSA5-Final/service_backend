@@ -23,7 +23,7 @@ import java.util.Date;
 @Setter
 public class ShoppingOrderProduct {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @ManyToOne
@@ -39,5 +39,9 @@ public class ShoppingOrderProduct {
     private long quantity;
 
     private String shippingStatus;
+
+    public void updateQuantity(long quantity) {
+        this.quantity = quantity;
+    }
 
 }
