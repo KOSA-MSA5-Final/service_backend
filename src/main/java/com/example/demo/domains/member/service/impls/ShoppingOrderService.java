@@ -1,6 +1,5 @@
 package com.example.demo.domains.member.service.impls;
 
-import com.example.demo.domains.member.entity.Product;
 import com.example.demo.domains.member.entity.ShoppingOrder;
 
 import java.util.List;

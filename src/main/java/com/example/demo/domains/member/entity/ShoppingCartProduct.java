@@ -1,5 +1,6 @@
 package com.example.demo.domains.member.entity;
 
+import com.example.demo.domains.product.entity.Product;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
