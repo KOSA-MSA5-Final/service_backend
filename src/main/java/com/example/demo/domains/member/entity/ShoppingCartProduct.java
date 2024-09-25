@@ -20,7 +20,7 @@ import lombok.Setter;
 @Setter
 public class ShoppingCartProduct {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @ManyToOne

@@ -23,13 +23,12 @@ import java.util.List;
 @Setter
 public class ShoppingCart {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="shoppingCart_id")
     private long id;
 
-    @OneToMany
-    @JoinColumn(name="product_id")
-    private List<Product> products;
+    @OneToMany(mappedBy = "shoppingCart")
+    private List<ShoppingCartProduct> cartProductList;
 
     @OneToOne
     @JoinColumn(name="member_id")
@@ -39,4 +38,7 @@ public class ShoppingCart {
 
     private int itemCount;
 
+   /* @OneToMany
+    @JoinColumn(name="product_id")
+    private List<Product> products;*/
 }

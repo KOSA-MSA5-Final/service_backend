@@ -4,6 +4,8 @@ import com.example.demo.domains.member.entity.Product;
 import com.example.demo.domains.member.entity.ShoppingOrder;
 import com.example.demo.domains.member.entity.ShoppingOrderProduct;
 
+import java.util.List;
+
 /**
  * author : 나선주
  * date : 2024-09-24
@@ -17,16 +19,19 @@ import com.example.demo.domains.member.entity.ShoppingOrderProduct;
  * 2024-09-24       나선주          method생성(CRD)
  */
 public interface ShoppingOrderProductService {
-   /* //구매목록에서 한 물품의 주문수량 등록
-    Long saveQuantity(ShoppingOrder shoppingOrder, Product product, long quantity);
+    //구매목록에서 한 물품의 주문수량 등록
+    Long savePrdQuantityToOrder(ShoppingOrderProduct shoppingOrderProduct);
+
+    //구매에서 전체 물품 조회하기
+    List<Product> findProductsByOrder(ShoppingOrder shoppingOrder);
 
     //구매목록에서 한 물품의 수량 가져오기
-    Long findQuantity(ShoppingOrder shoppingOrder, Product product);
+    Long findPrdQuantityFromOrder(ShoppingOrderProduct shoppingOrderProduct);
 
     //구매목록에서 한 물품의 수량 조절하기
-    Long updateQuantity(ShoppingOrder shoppingOrder, Product product, long quantity);
+    Boolean updatePrdQuantityFromOrder(Long shoppingOrderProductId, Long newQuantity);
 
     //구매목록에서 한 물품 제거하기
-    Boolean deleteProductFromOrder(ShoppingOrder shoppingOrder, Product product);*/
+    Boolean deleteProductFromOrder(ShoppingOrderProduct shoppingOrderProduct);
 
 }
