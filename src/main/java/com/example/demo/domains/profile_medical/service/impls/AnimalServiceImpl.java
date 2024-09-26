@@ -2,7 +2,7 @@ package com.example.demo.domains.profile_medical.service.impls;
 
 import com.example.demo.domains.profile_medical.service.interfaces.AnimalService;
 import com.example.demo.domains.profile_medical.entity.Animal;
-import com.example.demo.domains.repository.AnimalRepository;
+import com.example.demo.domains.profile_medical.repository.AnimalRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

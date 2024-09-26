@@ -1,7 +1,7 @@
-package com.example.demo.domains.repository.querydsl.impls;
+package com.example.demo.domains.profile_medical.repository.querydsl.impls;
 
 import com.example.demo.domains.profile_medical.entity.AnimalDetail;
-import com.example.demo.domains.repository.querydsl.customs.AnimalDetailRepositoryCustom;
+import com.example.demo.domains.profile_medical.repository.querydsl.customs.AnimalDetailRepositoryCustom;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import lombok.RequiredArgsConstructor;

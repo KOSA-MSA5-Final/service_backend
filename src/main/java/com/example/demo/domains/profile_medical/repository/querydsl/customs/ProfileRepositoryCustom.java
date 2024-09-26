@@ -1,4 +1,4 @@
-package com.example.demo.domains.repository.querydsl.customs;
+package com.example.demo.domains.profile_medical.repository.querydsl.customs;
 /**
  * author : 최혜령
  * date : 2024-09-24

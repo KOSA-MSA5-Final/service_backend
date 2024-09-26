@@ -17,7 +17,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Data
 @Getter
 @Setter
 public class Efficacy {
@@ -27,7 +26,8 @@ public class Efficacy {
     @Column(name = "efficacy_id")
     private int id;
 
-    private String efficacy_details;
+    @Column(name = "efficacy_details")
+    private String details;
 
     @ManyToOne
     @JoinColumn(name = "product_id")  // Product 외래 키

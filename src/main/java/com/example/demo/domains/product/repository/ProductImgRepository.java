@@ -5,6 +5,9 @@ import com.example.demo.domains.product.repository.querydsl.customs.ProductImgRe
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-@Repository
+import java.util.List;
+
+
 public interface ProductImgRepository extends JpaRepository<ProductImg, Long>, ProductImgRepositoryCustom {
+
 }

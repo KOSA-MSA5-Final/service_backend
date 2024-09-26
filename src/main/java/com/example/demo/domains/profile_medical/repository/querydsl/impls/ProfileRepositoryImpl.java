@@ -1,6 +1,6 @@
-package com.example.demo.domains.repository.querydsl.impls;
+package com.example.demo.domains.profile_medical.repository.querydsl.impls;
 
-import com.example.demo.domains.repository.querydsl.customs.TreatmentRepositoryCustom;
+import com.example.demo.domains.profile_medical.repository.querydsl.customs.ProfileRepositoryCustom;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 /**
@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
  * 2024-09-24         최혜령          최초 생성
  */
 @RequiredArgsConstructor
-public class TreatmentRepositoryImpl implements TreatmentRepositoryCustom {
+public class ProfileRepositoryImpl implements ProfileRepositoryCustom {
     private final EntityManager em;
 
 }
