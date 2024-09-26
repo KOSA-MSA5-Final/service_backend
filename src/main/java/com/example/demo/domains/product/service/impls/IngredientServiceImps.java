@@ -1,7 +1,8 @@
 package com.example.demo.domains.product.service.impls;
 
 import com.example.demo.domains.product.entity.Ingredient;
-import com.example.demo.domains.product.repository.querydsl.impls.IngredientRepositoryImpl;
+import com.example.demo.domains.product.entity.Product;
+import com.example.demo.domains.product.repository.IngredientRepository;
 import com.example.demo.domains.product.service.interfaces.IngredientService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,28 +13,22 @@ import java.util.List;
 @RequiredArgsConstructor
 public class IngredientServiceImps implements IngredientService {
 
-    private final IngredientRepositoryImpl ingredientRepositoryImpl;
+    private final IngredientRepository ingredientRepository;
 
     public List<Ingredient> getAllIngredients() {
-        return ingredientRepositoryImpl.findAllIngredients();
+        return ingredientRepository.findAll();
     }
 
-    public Ingredient saveIngredient(Ingredient ingredient) {
-        return ingredientRepositoryImpl.saveIngredient(ingredient);
-    }
-
-    @Override
-    public Ingredient createIngredient(Ingredient ingredient) {
-        return null;
-    }
-
-    @Override
-    public Ingredient updateIngredient(Ingredient ingredient) {
-        return null;
+    public Ingredient saveIngredient(String name, String percentage, Product product) {
+        Ingredient ingredient = new Ingredient();
+        ingredient.setName(name);
+        ingredient.setPercentage(percentage);
+        ingredient.setProduct(product);
+        return ingredientRepository.save(ingredient);
     }
 
     @Override
     public void deleteIngredient(long id) {
-        ingredientRepositoryImpl.deleteIngredient(id);
+        ingredientRepository.deleteById(id);
     }
 }

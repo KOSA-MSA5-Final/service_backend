@@ -12,6 +12,7 @@
 
 package com.example.demo.domains.product.entity;
 
+import com.example.demo.domains.profile_medical.entity.Animal;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -27,15 +28,23 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "product_id")
-    private int product;
+    private int id;
 
-    private String product_name;
-    private String product_maker;
-    private String product_type;
+    @Column(name = "product_name")
+    private String name;
 
-    //@ManyToOne
-    //@JoinColumn(name = "animal_id")
-    //private Animal animal;
+    @Column(name = "product_maker")
+    private String maker;
+
+    @Column(name = "product_type")
+    private String type;
+
+    @Column(name = "product_price")
+    private long price;
+
+    @ManyToOne
+    @JoinColumn(name = "animal_id")
+    private Animal animal;
 
     // RawMaterial(원료) 다대다 관계 설정
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)

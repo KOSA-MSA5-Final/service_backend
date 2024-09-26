@@ -3,7 +3,7 @@ package com.example.demo.domains.profile_medical.service.impls;
 import com.example.demo.domains.profile_medical.entity.Medical;
 import com.example.demo.domains.profile_medical.entity.Profile;
 import com.example.demo.domains.profile_medical.service.interfaces.MedicalService;
-import com.example.demo.domains.repository.MedicalRepository;
+import com.example.demo.domains.profile_medical.repository.MedicalRepository;
 import com.example.demo.util.UTCtoKorea;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

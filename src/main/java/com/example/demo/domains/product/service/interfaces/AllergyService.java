@@ -6,7 +6,6 @@ import java.util.List;
 
 public interface AllergyService {
     List<Allergy> getAllAllergies();
-    Allergy saveAllergy(Allergy allergy);
-    Allergy updateAllergy(Allergy allergy);
+    Allergy saveAllergy(String name, String symptoms);
     void deleteAllergy(long id);
 }

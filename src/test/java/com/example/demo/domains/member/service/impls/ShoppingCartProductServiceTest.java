@@ -1,6 +1,7 @@
 package com.example.demo.domains.member.service.impls;
 
 import com.example.demo.domains.member.entity.ShoppingCartProduct;
+import com.example.demo.domains.product.repository.ProductRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

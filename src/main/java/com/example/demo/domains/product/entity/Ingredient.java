@@ -17,7 +17,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Data
 @Getter
 @Setter
 public class Ingredient {
@@ -27,8 +26,11 @@ public class Ingredient {
     @Column(name = "ingredient_id")
     private int id;
 
-    private String ingredient_name;
-    private String ingredient_percentage;
+    @Column(name = "ingredient_name")
+    private String name;
+
+    @Column(name = "ingredient_percentage")
+    private String percentage;
 
     @ManyToOne
     @JoinColumn(name = "product_id")  // Product 외래 키
