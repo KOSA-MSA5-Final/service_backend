@@ -5,6 +5,8 @@ import com.example.demo.domains.member.entity.Member;
 import com.example.demo.domains.member.repository.querydsl.customs.MemberRepositoryCustom;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Optional;
+
 /**
  * author : 나선주
  * date : 2024-09-24
@@ -17,5 +19,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * 2024-09-24       나선주          최초 생성
  */
 public interface MemberRepository extends JpaRepository<Member, Long>, MemberRepositoryCustom {
-    Member findByEmail(String email);
+    Optional<Member> findByEmail(String email);
 }

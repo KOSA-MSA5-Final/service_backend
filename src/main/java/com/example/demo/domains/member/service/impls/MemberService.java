@@ -1,5 +1,6 @@
 package com.example.demo.domains.member.service.impls;
 
+import com.example.demo.domains.member.dto.AddUserRequest;
 import com.example.demo.domains.member.entity.Member;
 
 import java.util.List;
@@ -18,7 +19,7 @@ import java.util.List;
  */
 public interface MemberService {
     //회원가입
-    Member saveMember(Member member);
+    Long saveMember(AddUserRequest dto);
     //전체 회원 조회
     List<Member> findAllMembers();
     //특정 회원 조회
