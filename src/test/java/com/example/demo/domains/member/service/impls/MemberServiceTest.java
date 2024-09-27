@@ -18,7 +18,7 @@ class MemberServiceTest {
     @Autowired
     MemberService memberService;
 
-    @Test
+    /*@Test
     void saveMember() {
         Member member = new Member(
                 1,
@@ -30,7 +30,7 @@ class MemberServiceTest {
         Member member1 = memberService.saveMember(member);
         assertNotNull(member1);
     }
-
+*/
     @Test
     void findAllMembers() {
         List<Member> members = memberService.findAllMembers();

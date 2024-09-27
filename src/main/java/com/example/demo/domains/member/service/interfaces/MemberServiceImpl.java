@@ -1,9 +1,12 @@
 package com.example.demo.domains.member.service.interfaces;
 
+import com.example.demo.domains.member.dto.AddUserRequest;
 import com.example.demo.domains.member.entity.Member;
 import com.example.demo.domains.member.repository.MemberRepository;
 import com.example.demo.domains.member.service.impls.MemberService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,13 +24,20 @@ import java.util.List;
  * 2024-09-24       나선주          메소드(조회, 삭제, 생성) 생성
  */
 @Service
+@RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
-    @Autowired
-    private MemberRepository memberRepository;
 
-    public Member saveMember(Member member){
-        Member m = memberRepository.save(member);
-        return m;
+    private final MemberRepository memberRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
+
+    public Long saveMember(AddUserRequest dto){
+        return memberRepository.save(
+                Member.builder()
+                        .email(dto.getEmail())
+                        .password(bCryptPasswordEncoder.encode(dto.getPassword()))
+                        .name(dto.getName())
+                        .build()).getMember_id();
     }
 
     public List<Member> findAllMembers(){
@@ -37,7 +47,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public Member findMemberByEmail(String email) {
-        Member byEmail = memberRepository.findByEmail(email);
+        Member byEmail = memberRepository.findByEmail(email).get();
         return byEmail;
     }
 

@@ -38,7 +38,7 @@ class ShoppingCartServiceTest {
         List<Product> products = productRepository.findAll();
         shoppingCart.setCartProductList(null);
 
-        Member byEmail = memberRepository.findByEmail("nasnju@naver.com");
+        Member byEmail = memberRepository.findByEmail("nasnju@naver.com").get();
         shoppingCart.setMember(byEmail);
         ShoppingCart shoppingCart1 = shoppingCartService.saveShoppingCart(shoppingCart);
         assertNotNull(shoppingCart1);
@@ -46,7 +46,7 @@ class ShoppingCartServiceTest {
 
     @Test
     void findShoppingCartByMember() {
-        Member byEmail = memberRepository.findByEmail("nasnju@naver.com");
+        Member byEmail = memberRepository.findByEmail("nasnju@naver.com").get();
         ShoppingCart shoppingCartByMember = shoppingCartService.findShoppingCartByMember(byEmail);
         assertNotNull(shoppingCartByMember);
     }
@@ -54,7 +54,7 @@ class ShoppingCartServiceTest {
     @Test
     @Transactional
     void deleteShoppingCart() {
-        Member byEmail = memberRepository.findByEmail("nasnju@naver.com");
+        Member byEmail = memberRepository.findByEmail("nasnju@naver.com").get();
         ShoppingCart shoppingCartByMember = shoppingCartService.findShoppingCartByMember(byEmail);
         Boolean b = shoppingCartService.deleteShoppingCart(shoppingCartByMember);
         assertTrue(b);
