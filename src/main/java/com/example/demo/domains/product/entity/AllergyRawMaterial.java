@@ -17,7 +17,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "Allergy-Rawmaterial")
+@Table(name = "AllergyRawmaterial")
 @Getter
 @Setter
 public class AllergyRawMaterial {

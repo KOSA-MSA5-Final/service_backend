@@ -2,28 +2,26 @@ package com.example.demo.domains.product.repository.querydsl.impls;
 
 import com.example.demo.domains.product.entity.ProductDetailImg;
 import com.example.demo.domains.product.repository.ProductDetailImgRepository;
-import org.springframework.stereotype.Repository;
+import com.example.demo.domains.product.repository.querydsl.customs.ProductDetailImgRepositoryCustom;
+import jakarta.persistence.EntityManager;
+import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
-@Repository
-public class ProductDetailImgRepositoryImpl {
+/**
+ * author : 윤다희
+ * date : 2024-09-24
+ * description : 상품 상세 이미지 레포지토리 구현
+ * 요약 :
+ * <p>
+ * ===========================================================
+ * DATE            AUTHOR             NOTE
+ * —————————————————————————————
+ * 2024-09-24         윤다희          최초 생성
+ */
 
-    private final ProductDetailImgRepository productDetailImgRepository;
+@RequiredArgsConstructor
+public class ProductDetailImgRepositoryImpl implements ProductDetailImgRepositoryCustom {
 
-    public ProductDetailImgRepositoryImpl(ProductDetailImgRepository productDetailImgRepository) {
-        this.productDetailImgRepository = productDetailImgRepository;
-    }
-
-    public List<ProductDetailImg> findAllProductDetailImgs() {
-        return productDetailImgRepository.findAll();
-    }
-
-    public ProductDetailImg saveProductDetailImg(ProductDetailImg productDetailImg) {
-        return productDetailImgRepository.save(productDetailImg);
-    }
-
-    public void deleteProductDetailImg(Long id) {
-        productDetailImgRepository.deleteById(id);
-    }
+    private final EntityManager em;
 }

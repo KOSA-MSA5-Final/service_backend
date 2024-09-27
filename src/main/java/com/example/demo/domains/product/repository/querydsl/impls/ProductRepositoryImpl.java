@@ -2,28 +2,26 @@ package com.example.demo.domains.product.repository.querydsl.impls;
 
 import com.example.demo.domains.product.entity.Product;
 import com.example.demo.domains.product.repository.ProductRepository;
-import org.springframework.stereotype.Repository;
+import com.example.demo.domains.product.repository.querydsl.customs.ProductRepositoryCustom;
+import jakarta.persistence.EntityManager;
+import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
-@Repository
-public class ProductRepositoryImpl {
+/**
+ * author : 윤다희
+ * date : 2024-09-24
+ * description : 상품 레포지토리 구현
+ * 요약 :
+ * <p>
+ * ===========================================================
+ * DATE            AUTHOR             NOTE
+ * —————————————————————————————
+ * 2024-09-24         윤다희          최초 생성
+ */
 
-    private final ProductRepository productRepository;
+@RequiredArgsConstructor
+public class ProductRepositoryImpl implements ProductRepositoryCustom {
 
-    public ProductRepositoryImpl(ProductRepository productRepository) {
-        this.productRepository = productRepository;
-    }
-
-    public List<Product> findAllProducts() {
-        return productRepository.findAll();
-    }
-
-    public Product saveProduct(Product product) {
-        return productRepository.save(product);
-    }
-
-    public void deleteProduct(Long id) {
-        productRepository.deleteById(id);
-    }
+    private final EntityManager em;
 }

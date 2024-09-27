@@ -1,14 +1,12 @@
 package com.example.demo.domains.member.service.interfaces;
 
-import com.example.demo.domains.member.entity.Member;
-import com.example.demo.domains.member.entity.Product;
 import com.example.demo.domains.member.entity.ShoppingCart;
 import com.example.demo.domains.member.entity.ShoppingCartProduct;
 import com.example.demo.domains.member.repository.ShoppingCartProductRepository;
 import com.example.demo.domains.member.service.impls.ShoppingCartProductService;
+import com.example.demo.domains.product.entity.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,36 +1,46 @@
 package com.example.demo.domains.product.service.impls;
 
 import com.example.demo.domains.product.entity.Allergy;
-import com.example.demo.domains.product.repository.querydsl.impls.AllergyRepositoryImpl;
+import com.example.demo.domains.product.repository.AllergyRepository;
 import com.example.demo.domains.product.service.interfaces.AllergyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * author : 윤다희
+ * date : 2024-09-24
+ * description : 알러지 서비스 구현
+ * 요약 :
+ * <p>
+ * ===========================================================
+ * DATE            AUTHOR             NOTE
+ * —————————————————————————————
+ * 2024-09-24         윤다희          최초 생성
+ */
+
 @Service
 @RequiredArgsConstructor
 public class AllergyServiceImps implements AllergyService {
-    private final AllergyRepositoryImpl allergyRepositoryImpl;
+    private final AllergyRepository allergyRepository;
 
     @Override
     public List<Allergy> getAllAllergies() {
-        return allergyRepositoryImpl.findAllAllergies();
+        return allergyRepository.findAll();
     }
 
     @Override
-    public Allergy saveAllergy(Allergy allergy) {
-        return allergyRepositoryImpl.saveAllergy(allergy);
-    }
-
-    @Override
-    public Allergy updateAllergy(Allergy allergy) {
-        return null;
+    public Allergy saveAllergy(String name, String symptoms) {
+        Allergy allergy = new Allergy();
+        allergy.setName(name);
+        allergy.setSymptoms(symptoms);
+        return allergyRepository.save(allergy);
     }
 
     @Override
     public void deleteAllergy(long id) {
-        allergyRepositoryImpl.deleteAllergy(id);
+        allergyRepository.deleteById(id);
     }
 
 }

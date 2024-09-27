@@ -4,8 +4,8 @@ import com.example.demo.domains.profile_medical.entity.Hospital;
 import com.example.demo.domains.profile_medical.entity.Medical;
 import com.example.demo.domains.profile_medical.entity.MedicalHospital;
 import com.example.demo.domains.profile_medical.service.interfaces.MedicalHospitalService;
-import com.example.demo.domains.repository.MedicalHospitalRepository;
-import com.example.demo.domains.repository.MedicalRepository;
+import com.example.demo.domains.profile_medical.repository.MedicalHospitalRepository;
+import com.example.demo.domains.profile_medical.repository.MedicalRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

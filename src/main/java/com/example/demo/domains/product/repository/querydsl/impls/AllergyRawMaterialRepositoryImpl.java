@@ -2,28 +2,26 @@ package com.example.demo.domains.product.repository.querydsl.impls;
 
 import com.example.demo.domains.product.entity.AllergyRawMaterial;
 import com.example.demo.domains.product.repository.AllergyRawMaterialRepository;
-import org.springframework.stereotype.Repository;
+import com.example.demo.domains.product.repository.querydsl.customs.AllergyRawMaterialRepositoryCustom;
+import jakarta.persistence.EntityManager;
+import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
-@Repository
-public class AllergyRawMaterialRepositoryImpl {
+/**
+ * author : 윤다희
+ * date : 2024-09-24
+ * description : 알러지-원료 레포지토리 구현
+ * 요약 :
+ * <p>
+ * ===========================================================
+ * DATE            AUTHOR             NOTE
+ * —————————————————————————————
+ * 2024-09-24         윤다희          최초 생성
+ */
 
-    private final AllergyRawMaterialRepository allergyRawMaterialRepository;
+@RequiredArgsConstructor
+public class AllergyRawMaterialRepositoryImpl implements AllergyRawMaterialRepositoryCustom {
 
-    public AllergyRawMaterialRepositoryImpl(AllergyRawMaterialRepository allergyRawMaterialRepository) {
-        this.allergyRawMaterialRepository = allergyRawMaterialRepository;
-    }
-
-    public List<AllergyRawMaterial> findAllAllergyRawMaterials() {
-        return allergyRawMaterialRepository.findAll();
-    }
-
-    public AllergyRawMaterial saveAllergyRawMaterial(AllergyRawMaterial allergyRawMaterial) {
-        return allergyRawMaterialRepository.save(allergyRawMaterial);
-    }
-
-    public void deleteAllergyRawMaterial(Long id) {
-        allergyRawMaterialRepository.deleteById(id);
-    }
+    private final EntityManager em;
 }

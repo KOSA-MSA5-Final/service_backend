@@ -2,28 +2,26 @@ package com.example.demo.domains.product.repository.querydsl.impls;
 
 import com.example.demo.domains.product.entity.RawMaterialsProduct;
 import com.example.demo.domains.product.repository.RawMaterialsProductRepository;
-import org.springframework.stereotype.Repository;
+import com.example.demo.domains.product.repository.querydsl.customs.RawMaterialsProductRepositoryCustom;
+import jakarta.persistence.EntityManager;
+import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
-@Repository
-public class RawMaterialsProductRepositoryImpl {
+/**
+ * author : 윤다희
+ * date : 2024-09-24
+ * description : 원료-상품 레포지토리 구현
+ * 요약 :
+ * <p>
+ * ===========================================================
+ * DATE            AUTHOR             NOTE
+ * —————————————————————————————
+ * 2024-09-24         윤다희          최초 생성
+ */
 
-    private final RawMaterialsProductRepository rawMaterialsProductRepository;
+@RequiredArgsConstructor
+public class RawMaterialsProductRepositoryImpl implements RawMaterialsProductRepositoryCustom {
 
-    public RawMaterialsProductRepositoryImpl(RawMaterialsProductRepository rawMaterialsProductRepository) {
-        this.rawMaterialsProductRepository = rawMaterialsProductRepository;
-    }
-
-    public List<RawMaterialsProduct> findAllRawMaterialsProducts() {
-        return rawMaterialsProductRepository.findAll();
-    }
-
-    public RawMaterialsProduct saveRawMaterialsProduct(RawMaterialsProduct rawMaterialsProduct) {
-        return rawMaterialsProductRepository.save(rawMaterialsProduct);
-    }
-
-    public void deleteRawMaterialsProduct(Long id) {
-        rawMaterialsProductRepository.deleteById(id);
-    }
+    private final EntityManager em;
 }

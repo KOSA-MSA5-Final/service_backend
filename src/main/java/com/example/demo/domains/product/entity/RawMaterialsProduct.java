@@ -16,7 +16,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "RawMaterials-Product")
+@Table(name = "RawMaterialsProduct")
 @Getter
 @Setter
 public class RawMaterialsProduct {

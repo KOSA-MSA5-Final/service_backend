@@ -19,7 +19,6 @@ import lombok.Setter;
 import java.util.List;
 
 @Entity
-@Data
 @Getter
 @Setter
 public class RawMaterial {
