@@ -2,6 +2,7 @@ package com.example.demo.domains.member.service.impls;
 
 import com.example.demo.domains.member.dto.AddUserRequest;
 import com.example.demo.domains.member.dto.JoinDTO;
+import com.example.demo.domains.member.dto.MemberDTO;
 import com.example.demo.domains.member.entity.Member;
 
 import java.util.List;
@@ -27,4 +28,6 @@ public interface MemberService {
     Member findMemberByEmail(String email);
     //회원탈퇴
     Boolean deleteMember(Member member);
+    //회원정보수정
+    void updateMember(MemberDTO memberDTO);
 }

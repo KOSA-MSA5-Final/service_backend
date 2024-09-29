@@ -2,6 +2,7 @@ package com.example.demo.domains.member.service.interfaces;
 
 import com.example.demo.domains.member.dto.AddUserRequest;
 import com.example.demo.domains.member.dto.JoinDTO;
+import com.example.demo.domains.member.dto.MemberDTO;
 import com.example.demo.domains.member.entity.Member;
 import com.example.demo.domains.member.repository.MemberRepository;
 import com.example.demo.domains.member.service.impls.MemberService;
@@ -79,5 +80,12 @@ public class MemberServiceImpl implements MemberService {
         }
     }
 
-
+    @Override
+    public void updateMember(MemberDTO memberDTO) {
+        Member byUsername = memberRepository.findByUsername(memberDTO.getUsername());
+        byUsername.setName(memberDTO.getName());
+        byUsername.setEmail(memberDTO.getEmail());
+        byUsername.setTelNum(memberDTO.getTelNum());
+        memberRepository.save(byUsername);
+    }
 }
