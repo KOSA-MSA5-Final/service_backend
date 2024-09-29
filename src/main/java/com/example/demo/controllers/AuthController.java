@@ -4,6 +4,7 @@ import com.example.demo.config.JWTUtil;
 import com.example.demo.domains.member.dto.JoinDTO;
 import com.example.demo.domains.member.dto.LoginRequest;
 import com.example.demo.domains.member.dto.LoginResponse;
+import com.example.demo.domains.member.dto.MemberDTO;
 import com.example.demo.domains.member.entity.CustomUserDetails;
 import com.example.demo.domains.member.entity.Member;
 import com.example.demo.domains.member.entity.RefreshToken;
@@ -14,6 +15,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -82,6 +84,16 @@ public class AuthController { //로그인 관련 컨트롤러
         Member byUsername = memberRepository.findByUsername(username);
 
         return ResponseEntity.ok(byUsername);
+    }
+
+
+    @PostMapping("/userinfo/update")
+    public ResponseEntity<?> updateUserInfo(@RequestBody MemberDTO memberDTO) {
+        memberService.updateMember(memberDTO);
+
+        Member updatedUserInfo = memberService.findMemberByEmail(memberDTO.getEmail());
+
+        return ResponseEntity.ok(updatedUserInfo);
     }
 
 //    @PostMapping("/login")
