@@ -1,6 +1,7 @@
 package com.example.demo.domains.member.service.interfaces;
 
 import com.example.demo.domains.member.dto.AddUserRequest;
+import com.example.demo.domains.member.dto.JoinDTO;
 import com.example.demo.domains.member.entity.Member;
 import com.example.demo.domains.member.repository.MemberRepository;
 import com.example.demo.domains.member.service.impls.MemberService;
@@ -10,6 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * author : 나선주
@@ -30,15 +32,31 @@ public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    public void joinProcess(JoinDTO joinDTO) {
 
-    public Long saveMember(AddUserRequest dto){
-        return memberRepository.save(
-                Member.builder()
-                        .email(dto.getEmail())
-                        .password(bCryptPasswordEncoder.encode(dto.getPassword()))
-                        .name(dto.getName())
-                        .build()).getMember_id();
+        String username = joinDTO.getUsername();
+        String password = joinDTO.getPassword();
+        String name = joinDTO.getName();
+        String email = joinDTO.getEmail();
+
+        Boolean isExist = memberRepository.existsByUsername(username);
+
+        if (isExist) {
+
+            return;
+        }
+
+        Member data = new Member();
+
+        data.setUsername(username);
+        data.setName(name);
+        data.setEmail(email);
+        data.setPassword(bCryptPasswordEncoder.encode(password));
+        data.setRole("ROLE_ADMIN");
+
+        memberRepository.save(data);
     }
+
 
     public List<Member> findAllMembers(){
         List<Member> members = memberRepository.findAll();

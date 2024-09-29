@@ -2,83 +2,54 @@ package com.example.demo.config;
 //import com.example.demo.oAuth.CustomOAuth2LoginSuccessHandler;
 //import com.example.demo.oAuth.CustomOAuth2UserService;
 //import com.nimbusds.jose.jwk.source.ImmutableSecret;
-import com.example.demo.config.jwt.JwtTokenProvider;
-import jakarta.servlet.DispatcherType;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.ProviderManager;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 //import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
 //import org.springframework.security.oauth2.jwt.JwtEncoder;
 //import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
-import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
-import org.springframework.security.web.firewall.HttpFirewall;
-import org.springframework.security.web.firewall.StrictHttpFirewall;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.List;
+import java.util.Collections;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
 
-@RequiredArgsConstructor
 @EnableWebSecurity
 @Configuration
 @Log4j2
 public class SecurityConfig  {
-    private final WebConfig webConfig;
-    private final UserDetailsService userService;
-    private final JwtTokenProvider jwtTokenProvider;
+//    private final WebConfig webConfig;
+//    private final UserDetailsService userService;
+//    private final JwtTokenProvider jwtTokenProvider;
 
+    //AuthenticationManager가 인자로 받을 AuthenticationConfiguraion 객체 생성자 주입
+    private final AuthenticationConfiguration authenticationConfiguration;
+    private final JWTUtil jwtUtil;
+
+    public SecurityConfig(AuthenticationConfiguration authenticationConfiguration, JWTUtil jwtUtil) {
+
+        this.authenticationConfiguration = authenticationConfiguration;
+        this.jwtUtil = jwtUtil;
+    }
+
+    //AuthenticationManager Bean 등록
     @Bean
-    public WebSecurityCustomizer configure(){
-        return (web) -> web.ignoring()
-                .requestMatchers("/static/**");
-    }
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
 
-    @Bean //csrf, cors관련 설정 여기서 해야함
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        return http
-                .csrf(AbstractHttpConfigurer::disable)  //csrf비활성화 (JWT를 사용할 때는 필요 없음)
-                .cors(withDefaults()) // CORS 활성화 (Vue.js와 통신하기 위함)
-                .authorizeHttpRequests(auth -> auth     //인증, 인가 설정
-                        .requestMatchers("/auth/login", "/auth/register", "/oauth2/**").permitAll()   // 로그인 및 회원가입 경로는 인증 불필요 // OAuth2 경로 허용
-                        .anyRequest().authenticated()  // 그 외의 모든 요청은 인증 필요
-                )
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))  // 세션 비활성화, JWT 사용
-                .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class) // 필터 등록
-//                .oauth2Login(withDefaults()) // OAuth2 로그인 활성화
-                .build();
-    }
-
-    @Bean //인증 관리자 관련 설정
-    public AuthenticationManager authenticationManager(
-            HttpSecurity http,
-            BCryptPasswordEncoder bCryptPasswordEncoder,
-            UserDetailsService userDetailService) {
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userService); //사용자 정보 서비스 설정
-        authProvider.setPasswordEncoder(bCryptPasswordEncoder);
-
-        return new ProviderManager(authProvider);
+        return configuration.getAuthenticationManager();
     }
 
     @Bean
@@ -86,11 +57,79 @@ public class SecurityConfig  {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    public JwtAuthenticationFilter jwtAuthenticationFilter() {
-        return new JwtAuthenticationFilter(jwtTokenProvider);
+
+
+    @Bean //csrf, cors관련 설정 여기서 해야함
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
+        http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
+
+
+        http
+                .csrf((auth) -> auth.disable());
+
+        http
+                .formLogin((auth) -> auth.disable());
+
+        http
+                .httpBasic((auth) -> auth.disable());
+
+        http
+                .authorizeHttpRequests((auth) -> auth
+                        .requestMatchers("/login", "/","/auth/**", "/join", "/auth/login", "/auth/register").permitAll()
+                        .anyRequest().authenticated());
+
+        http
+                .addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class);
+
+        //AuthenticationManager()와 JWTUtil 인수 전달
+        http
+                .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil), UsernamePasswordAuthenticationFilter.class);
+
+        http
+                .sessionManagement((session) -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+
+        return http.build();
     }
 
+    // CORS Configuration Source
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Collections.singletonList("http://localhost")); // 허용할 출처
+        configuration.setAllowedMethods(Collections.singletonList("*")); // 모든 메소드 허용
+        configuration.setAllowCredentials(true); // 쿠키 전달 허용
+        configuration.setAllowedHeaders(Collections.singletonList("*")); // 모든 헤더 허용
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration); // 모든 경로에 대해 CORS 적용
+        return source;
+    }
+
+//    @Bean //인증 관리자 관련 설정
+//    public AuthenticationManager authenticationManager(
+//            HttpSecurity http,
+//            BCryptPasswordEncoder bCryptPasswordEncoder,
+//            UserDetailsService userDetailService) {
+//        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+//        authProvider.setUserDetailsService(userService); //사용자 정보 서비스 설정
+//        authProvider.setPasswordEncoder(bCryptPasswordEncoder);
+//
+//        return new ProviderManager(authProvider);
+//    }
+
+
+//    @Bean
+//    public JwtAuthenticationFilter jwtAuthenticationFilter() {
+//        return new JwtAuthenticationFilter(jwtTokenProvider);
+//    }
+
+//    @Bean
+//    public WebSecurityCustomizer configure(){
+//        return (web) -> web.ignoring()
+//                .requestMatchers("/static/**");
+//    }
 
 
 }
