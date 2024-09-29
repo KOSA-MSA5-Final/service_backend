@@ -27,7 +27,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:80") // 해당 컨트롤러에만 CORS 설정
+@CrossOrigin(origins = "https://localhost:80") // 해당 컨트롤러에만 CORS 설정
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthController { //로그인 관련 컨트롤러

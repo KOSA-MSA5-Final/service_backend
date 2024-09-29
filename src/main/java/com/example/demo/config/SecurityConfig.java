@@ -73,6 +73,10 @@ public class SecurityConfig  {
 
         http
                 .httpBasic((auth) -> auth.disable());
+        http
+                .requiresChannel(channel -> channel
+                        .anyRequest()
+                        .requiresSecure()); // 모든 요청을 HTTPS로 요구
 
         http
                 .authorizeHttpRequests((auth) -> auth
@@ -81,6 +85,7 @@ public class SecurityConfig  {
 
         http
                 .addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class);
+
 
         //AuthenticationManager()와 JWTUtil 인수 전달
         http
@@ -97,7 +102,7 @@ public class SecurityConfig  {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Collections.singletonList("http://localhost")); // 허용할 출처
+        configuration.setAllowedOrigins(Collections.singletonList("https://localhost:80")); // 허용할 출처
         configuration.setAllowedMethods(Collections.singletonList("*")); // 모든 메소드 허용
         configuration.setAllowCredentials(true); // 쿠키 전달 허용
         configuration.setAllowedHeaders(Collections.singletonList("*")); // 모든 헤더 허용
