@@ -38,5 +38,5 @@ out/
 
 ### application.properties secret should not be included into github repository ###
 application-secret.properties
-!**/src/main/resources/pure-polymer-437011-c2-90b55a88e86e.json
-pure-polymer-437011-c2-90b55a88e86e.json
+!**/src/main/resources/pure-polymer-437011-c2-76a89e4314ab.json
+pure-polymer-437011-c2-76a89e4314ab.json

@@ -1,9 +1,12 @@
 package com.example.demo.controllers;
 
 import com.example.demo.util.AwsS3Service;
+import com.example.demo.util.GoogleVisionOCR;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 import java.util.List;
 @RestController
 @CrossOrigin(origins = "https://localhost:80")
@@ -16,11 +19,11 @@ public class AwsS3Controller {
     //return 성공 시 200 Success와 함께 업로드 된 파일의 파일명 리스트 반환
     @PostMapping("/file")
     public List<String> uploadFile(
-            @RequestParam("qimage") List<MultipartFile> multipartFile) {
+            @RequestParam("qimage") List<MultipartFile> multipartFile) throws IOException {
         List<String> result = awsS3Service.uploadFile(multipartFile);
-        for(String r: result){
-            System.out.println(r);
-        }
+        String resultURL = result.get(0);
+        String parsed = GoogleVisionOCR.execute(resultURL);
+        System.out.println(parsed);
         return result;
     }//end uploadFile
 
