@@ -36,4 +36,7 @@ public class Profile {
     @ManyToOne
     @JoinColumn(name = "animalDetail_id") // 외래 키를 명시적으로 지정
     private AnimalDetail animalDetail;
+
+    @Column(name="is_current")
+    private Integer isCurrent; // 0 = 현재프로필 아님, 1 = 현재프로필
 }

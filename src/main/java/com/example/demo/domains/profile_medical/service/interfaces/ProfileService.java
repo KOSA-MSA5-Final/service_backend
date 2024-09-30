@@ -23,4 +23,6 @@ public interface ProfileService {
     List<Profile> getAllProfiles();
     Profile save(String name, Integer age, Member member, AnimalDetail animalDetail);
     Boolean delete(Profile profile);
+    Profile getCurrentProfile(String accountId);
+    Profile switchProfile(Profile current, Profile toBe);
 }
