@@ -60,6 +60,9 @@ dependencies {
 
 	// Chat GPT
 	implementation 'io.github.flashvayne:chatgpt-spring-boot-starter:1.0.4'
+
+	// SMTP
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
 }
 
 tasks.named('test') {

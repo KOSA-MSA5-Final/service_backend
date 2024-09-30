@@ -10,6 +10,7 @@ import com.example.demo.domains.member.entity.Member;
 import com.example.demo.domains.member.entity.RefreshToken;
 import com.example.demo.domains.member.repository.MemberRepository;
 import com.example.demo.domains.member.service.impls.MemberService;
+import com.example.demo.util.MailService;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -23,10 +24,13 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Random;
 
 @RestController
 @CrossOrigin(origins = "https://localhost:80") // 해당 컨트롤러에만 CORS 설정
@@ -37,7 +41,7 @@ public class AuthController { //로그인 관련 컨트롤러
     private final MemberRepository memberRepository;
     private final AuthenticationManager authenticationManager;
     private final JWTUtil jwtUtil;
-
+    private final MailService mailService;
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody JoinDTO joinDTO) {
@@ -47,6 +51,13 @@ public class AuthController { //로그인 관련 컨트롤러
         memberService.joinProcess(joinDTO);
 
         return ResponseEntity.ok("User registered successfully");
+    }
+
+    @GetMapping("/register/email")
+    public String verfiyEmail(@RequestParam("email") String email) {
+        String code = createCode();
+        mailService.sendEmail(email, "멍지냥지 회원가입 인증코드", "인증 코드는 : " + code + " 입니다.");
+        return code;
     }
 
     @PostMapping("/login")
@@ -96,83 +107,19 @@ public class AuthController { //로그인 관련 컨트롤러
         return ResponseEntity.ok(updatedUserInfo);
     }
 
-//    @PostMapping("/login")
-//    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
-//        String username = loginRequest.getUsername();
-//        String password = loginRequest.getPassword();
-//
-//        try{
-//            // UsernamePasswordAuthenticationToken 생성
-//            UsernamePasswordAuthenticationToken authToken =
-//                    new UsernamePasswordAuthenticationToken(username, password);
-//
-//            // 인증 시도
-//            Authentication authentication = authenticationManager.authenticate(authToken);
-//
-//            // 인증 성공 시 JWT 생성
-//            CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
-//            String role = authentication.getAuthorities().iterator().next().getAuthority();
-//            String token = jwtUtil.createJwt(customUserDetails.getUsername(), role, 60 * 60 * 10L);
-//
-//            // JWT를 응답 헤더에 추가
-//            return ResponseEntity.ok()
-//                    .header("Authorization", "Bearer " + token)
-//                    .body(new LoginResponse(token));
-//
-//            } catch (AuthenticationException e) {
-//                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Login failed");
-//            }
-//    }
-
-
-
-//        @PostMapping("/login")
-//    public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
-//        System.out.println("=====================로그인요청");
-//        System.out.println(loginRequest.getEmail());
-//
-//        try {
-//            // 이메일과 비밀번호로 인증 시도
-//            Authentication authentication = authenticationManager.authenticate(
-//                    new UsernamePasswordAuthenticationToken(
-//                            loginRequest.getEmail(),
-//                            loginRequest.getPassword()
-//                    )
-//            );
-//
-//            // 인증이 성공했을 때 사용자 정보 가져오기
-//            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-//            Optional<Member> byEmail = memberRepository.findByEmail(loginRequest.getEmail());
-//            Member user = byEmail.get();
-//
-//            // 기존의 Refresh Token 확인
-//            System.out.println("1번위치예요");
-//            RefreshToken existingRefreshToken = refreshTokenService.findByUserId(user.getMember_id());
-//            System.out.println("2번위치입니다");
-//
-//            if(existingRefreshToken != null) {
-//                //이미 생성된 refresh token이 있는 경우, 기존 토큰 사용
-//                String accessToken = tokenProvider.generateToken(user, Duration.ofDays(1)); // 새로운 액세스 토큰 생성
-//                // 응답으로 토큰 전송
-//                return ResponseEntity.ok(new LoginResponse(accessToken, existingRefreshToken));
-//            }else{
-//                //새로운 Access Token과 Refresh Token 생성
-//                String accessToken = tokenProvider.generateToken(user, Duration.ofDays(1)); // 하루 유효한 액세스 토큰
-//                RefreshToken refreshToken = tokenProvider.generateRefreshToken(user.getMember_id()); // 리프레시 토큰
-//
-//                // Refresh Token 저장
-//                refreshTokenService.saveRefreshToken(refreshToken);
-//
-//                // 응답으로 토큰 전송
-//                return ResponseEntity.ok(new LoginResponse(accessToken, refreshToken));
-//            }
-//
-//
-//
-//        } catch (AuthenticationException e) {
-//            System.err.println("인증 실패: " + e.getMessage());
-//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 정보가 올바르지 않습니다.");
-//        }
-//    }
+    private static String createCode() {
+        int lenth = 6;
+        try {
+            Random random = SecureRandom.getInstanceStrong();
+            StringBuilder builder = new StringBuilder();
+            for (int i = 0; i < lenth; i++) {
+                builder.append(random.nextInt(10));
+            }
+            return builder.toString();
+        } catch (NoSuchAlgorithmException e) {
+            System.out.println("MemberService.createCode() exception occur");
+        }
+        return null;
+    }
 
 }
