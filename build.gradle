@@ -57,6 +57,9 @@ dependencies {
 	implementation platform('com.google.cloud:libraries-bom:26.1.5')
 	implementation 'com.google.cloud:google-cloud-vision:3.5.0'
 //	implementation 'com.google.oauth-client:google-oauth-client:2.1.0'
+
+	// Chat GPT
+	implementation 'io.github.flashvayne:chatgpt-spring-boot-starter:1.0.4'
 }
 
 tasks.named('test') {
