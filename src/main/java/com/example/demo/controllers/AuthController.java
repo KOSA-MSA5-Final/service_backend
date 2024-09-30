@@ -27,10 +27,7 @@ import org.springframework.web.bind.annotation.*;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.time.Duration;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 
 @RestController
 @CrossOrigin(origins = "https://localhost:80") // 해당 컨트롤러에만 CORS 설정
@@ -51,6 +48,16 @@ public class AuthController { //로그인 관련 컨트롤러
         memberService.joinProcess(joinDTO);
 
         return ResponseEntity.ok("User registered successfully");
+    }
+
+    @GetMapping("/register/fetch_ids")
+    public List<String> fetchUserIds() {
+        List<String> userIds = new ArrayList<>();
+        List<Member> members = memberRepository.findAll();
+        for (Member member : members) {
+            userIds.add(member.getUsername());
+        }
+        return userIds;
     }
 
     @GetMapping("/register/email")
