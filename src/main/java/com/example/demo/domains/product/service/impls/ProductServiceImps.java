@@ -2,7 +2,6 @@ package com.example.demo.domains.product.service.impls;
 
 import com.example.demo.domains.product.entity.Product;
 import com.example.demo.domains.product.repository.ProductRepository;
-import com.example.demo.domains.product.repository.querydsl.impls.ProductRepositoryImpl;
 import com.example.demo.domains.product.service.interfaces.ProductService;
 import com.example.demo.domains.profile_medical.entity.Animal;
 import lombok.RequiredArgsConstructor;

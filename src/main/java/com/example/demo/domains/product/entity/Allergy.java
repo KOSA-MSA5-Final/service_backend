@@ -12,7 +12,6 @@
 package com.example.demo.domains.product.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,16 +23,13 @@ public class Allergy {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "allergy_id")
-    private int id;
+    private long id;
 
     @Column(name = "allergy_name")
     private String name;    // 알러지 이름
 
-    @Column(name = "allergy_symptoms")
-    private String symptoms;// 알러지 증상
+    @Column(name = "allergy_type")
+    private String type;// 알러지 증상
 
-//    @ManyToOne
-//    @JoinColumn(name = "profile_id")  // Profile 외래 키
-//    private Profile profile;  // Profile와의 다대일 관계
 }
 

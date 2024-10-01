@@ -2,11 +2,8 @@ package com.example.demo.domains.member.repository;
 
 import com.example.demo.domains.member.entity.Member;
 import com.example.demo.domains.member.entity.ShoppingOrder;
-import com.example.demo.domains.member.entity.ShoppingOrderProduct;
 import com.example.demo.domains.member.repository.querydsl.customs.ShoppingOrderRepositoryCustom;
 import org.springframework.data.jpa.repository.JpaRepository;
-
-import java.util.List;
 
 /**
  * author : 나선주

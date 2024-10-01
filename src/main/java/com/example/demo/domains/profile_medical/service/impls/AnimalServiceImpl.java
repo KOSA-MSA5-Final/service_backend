@@ -1,8 +1,8 @@
 package com.example.demo.domains.profile_medical.service.impls;
 
-import com.example.demo.domains.profile_medical.service.interfaces.AnimalService;
 import com.example.demo.domains.profile_medical.entity.Animal;
 import com.example.demo.domains.profile_medical.repository.AnimalRepository;
+import com.example.demo.domains.profile_medical.service.interfaces.AnimalService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -31,12 +31,14 @@ public class AnimalServiceImpl implements AnimalService {
 
     @Override
     public Animal save(String name) {
-        if(animalRepository.isExist_AnimalByName(name) == false) {
-            Animal animal = new Animal();
-            animal.setName(name);
-            return animalRepository.save(animal);
+        // 동물 대분류 이름 중복 확인
+        if (animalRepository.existsByName(name)) {
+            System.out.println("동물 대분류가 이미 존재합니다: " + name);
+            return null; // 중복일 경우 null 반환 (또는 예외 발생)
         }
-        return null;
+        Animal animal = new Animal();
+        animal.setName(name);
+        return animalRepository.save(animal);
     }
 
     @Override

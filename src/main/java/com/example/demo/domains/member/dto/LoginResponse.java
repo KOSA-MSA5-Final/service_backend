@@ -1,7 +1,6 @@
 package com.example.demo.domains.member.dto;
 
 
-import com.example.demo.domains.member.entity.RefreshToken;
 import lombok.*;
 
 @Getter

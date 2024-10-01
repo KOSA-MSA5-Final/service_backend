@@ -12,7 +12,6 @@
 package com.example.demo.domains.product.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,7 +23,7 @@ public class ProductImg {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "productImg_id")
-    private int id;
+    private long id;
 
     private String imageUrl;
 

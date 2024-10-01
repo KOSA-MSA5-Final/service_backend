@@ -1,6 +1,5 @@
 package com.example.demo.domains.member.service.impls;
 
-import com.example.demo.domains.member.dto.AddUserRequest;
 import com.example.demo.domains.member.dto.JoinDTO;
 import com.example.demo.domains.member.dto.MemberDTO;
 import com.example.demo.domains.member.entity.Member;
