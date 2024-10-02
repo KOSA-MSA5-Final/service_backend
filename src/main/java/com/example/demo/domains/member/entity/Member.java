@@ -34,9 +34,9 @@ public class Member   {//implements UserDetails
     private long member_id;
 
     @Column(name="member_name")
-    private String name;
+    private String name;//진짜이름
 
-    private String username;
+    private String username;//아이디
 
     @Column(name="member_email")
     private String email;
