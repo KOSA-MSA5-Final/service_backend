@@ -36,6 +36,8 @@ public class Member   {//implements UserDetails
     @Column(name="member_name")
     private String name;//진짜이름
 
+
+    @Column(name="account_id")
     private String username;//아이디
 
     @Column(name="member_email")
