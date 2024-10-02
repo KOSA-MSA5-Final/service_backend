@@ -17,4 +17,5 @@ import java.util.List;
 public interface HospitalRepositoryCustom {
     List<Hospital> findOurHospitals();
     List<Hospital> findOurHospitalsByCurrentLocation(String location);
+
 }
