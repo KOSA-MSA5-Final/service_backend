@@ -2,9 +2,9 @@ package com.example.demo.domains.profile_medical.service.impls;
 
 import com.example.demo.domains.profile_medical.entity.Animal;
 import com.example.demo.domains.profile_medical.entity.AnimalDetail;
-import com.example.demo.domains.profile_medical.service.interfaces.AnimalDetailService;
 import com.example.demo.domains.profile_medical.repository.AnimalDetailRepository;
 import com.example.demo.domains.profile_medical.repository.AnimalRepository;
+import com.example.demo.domains.profile_medical.service.interfaces.AnimalDetailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -35,13 +35,19 @@ public class AnimalDetailServiceImpl implements AnimalDetailService {
     @Override
     public AnimalDetail save(String name, String animalName) {
         Animal animal = animalRepository.findAnimalByName(animalName);
-        if(animal != null) {
-            AnimalDetail animalDetail = new AnimalDetail();
-            animalDetail.setName(name);
-            animalDetail.setAnimal(animal);
-            return animalDetailRepository.save(animalDetail);
+        if (animal == null) {
+            System.out.println("존재하지 않는 대분류 동물입니다: " + animalName);
+            return null;
         }
-        return null;
+        // 소분류 동물 이름과 대분류 동물로 중복 확인
+        if (animalDetailRepository.existsByNameAndAnimal(name, animal)) {
+            System.out.println("동물 소분류가 이미 존재합니다: " + name);
+            return null; // 중복일 경우 null 반환 (또는 예외 발생)
+        }
+        AnimalDetail animalDetail = new AnimalDetail();
+        animalDetail.setName(name);
+        animalDetail.setAnimal(animal);
+        return animalDetailRepository.save(animalDetail);
     }
 
     @Override

@@ -2,8 +2,8 @@ package com.example.demo.domains.profile_medical.service.impls;
 
 import com.example.demo.domains.profile_medical.entity.Medical;
 import com.example.demo.domains.profile_medical.entity.Profile;
-import com.example.demo.domains.profile_medical.service.interfaces.MedicalService;
 import com.example.demo.domains.profile_medical.repository.MedicalRepository;
+import com.example.demo.domains.profile_medical.service.interfaces.MedicalService;
 import com.example.demo.util.UTCtoKorea;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -57,7 +57,7 @@ public class MedicalServiceImpl implements MedicalService {
     }
 
     @Override
-    public Medical save(Date utcDate, String receipt_img, Profile profile) {
+    public Medical save(Date utcDate, String receipt_img, String object, Profile profile, Long totalCost) {
         Medical medical = new Medical();
         medical.setProfile(profile);
         medical.setReceipt_img(receipt_img);

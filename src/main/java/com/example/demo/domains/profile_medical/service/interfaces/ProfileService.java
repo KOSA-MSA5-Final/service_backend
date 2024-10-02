@@ -2,8 +2,8 @@ package com.example.demo.domains.profile_medical.service.interfaces;
 
 import com.example.demo.domains.member.entity.Member;
 import com.example.demo.domains.profile_medical.entity.AnimalDetail;
-import com.example.demo.domains.profile_medical.entity.Profile;
 import com.example.demo.domains.profile_medical.entity.Medical;
+import com.example.demo.domains.profile_medical.entity.Profile;
 
 import java.util.List;
 
@@ -21,8 +21,6 @@ public interface ProfileService {
     List<Profile> getProfilesByMember(Member member);
     List<Medical> getMedicalsByMember(Member member);
     List<Profile> getAllProfiles();
-    Profile save(String name, Integer age, Member member, AnimalDetail animalDetail);
+    Profile save(String name, Integer age, Member member, AnimalDetail animalDetail, String pictureUrl);
     Boolean delete(Profile profile);
-    Profile getCurrentProfile(String accountId);
-    Profile switchProfile(Profile current, Profile toBe);
 }

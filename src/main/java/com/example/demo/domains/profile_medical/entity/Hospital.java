@@ -1,6 +1,8 @@
 package com.example.demo.domains.profile_medical.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.Setter;
 /**
@@ -31,4 +33,7 @@ public class Hospital {
 
     @Column(name = "is_ours")
     String is_ours;
+
+    @Column(name = "phone_number")
+    String phone_number;
 }

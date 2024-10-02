@@ -1,7 +1,6 @@
 package com.example.demo.domains.member.repository;
 
 import com.example.demo.domains.member.entity.Member;
-
 import com.example.demo.domains.member.repository.querydsl.customs.MemberRepositoryCustom;
 import org.springframework.data.jpa.repository.JpaRepository;
 

@@ -1,12 +1,11 @@
 package com.example.demo.domains.profile_medical.service.impls;
 
 import com.example.demo.domains.member.entity.Member;
-import com.example.demo.domains.member.repository.MemberRepository;
 import com.example.demo.domains.profile_medical.entity.AnimalDetail;
-import com.example.demo.domains.profile_medical.entity.Profile;
 import com.example.demo.domains.profile_medical.entity.Medical;
-import com.example.demo.domains.profile_medical.service.interfaces.ProfileService;
+import com.example.demo.domains.profile_medical.entity.Profile;
 import com.example.demo.domains.profile_medical.repository.ProfileRepository;
+import com.example.demo.domains.profile_medical.service.interfaces.ProfileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +25,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProfileServiceImpl implements ProfileService {
     private final ProfileRepository profileRepository;
-    private final MemberRepository memberRepository;
+
     @Override
     public List<Profile> getProfilesByMember(Member member) {
         return profileRepository.findByMember(member);
@@ -43,7 +42,7 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public Profile save(String name, Integer age, Member member, AnimalDetail animalDetail) {
+    public Profile save(String name, Integer age, Member member, AnimalDetail animalDetail, String pictureUrl) {
         Profile profile = new Profile();
         profile.setName(name);
         profile.setAge(age);
@@ -60,26 +59,5 @@ public class ProfileServiceImpl implements ProfileService {
         } catch (Exception e) {
             return false;
         }
-    }
-
-    @Override
-    public Profile getCurrentProfile(String accountId) {
-        Member member = memberRepository.findByUsername(accountId);
-        List<Profile> profiles = getProfilesByMember(member);
-        Profile profile = null;
-        for(Profile p : profiles) {
-            if (p.getMember().equals(1)) {
-                profile = p;
-            }
-        }
-        return profile;
-    }
-
-    @Override
-    public Profile switchProfile(Profile current, Profile toBe) {
-        current.setIsCurrent(0);
-        profileRepository.save(current);
-        toBe.setIsCurrent(1);
-        return profileRepository.save(toBe);
     }
 }

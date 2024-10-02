@@ -1,11 +1,11 @@
 package com.example.demo.domains.member.entity;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.Collection;
+
 public class CustomUserDetails implements UserDetails {
 
     private final Member member;
@@ -69,3 +69,4 @@ public class CustomUserDetails implements UserDetails {
         return true;
     }
 }
+

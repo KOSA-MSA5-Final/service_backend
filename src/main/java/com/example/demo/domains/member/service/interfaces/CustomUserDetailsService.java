@@ -3,7 +3,6 @@ package com.example.demo.domains.member.service.interfaces;
 import com.example.demo.domains.member.entity.CustomUserDetails;
 import com.example.demo.domains.member.entity.Member;
 import com.example.demo.domains.member.repository.MemberRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
