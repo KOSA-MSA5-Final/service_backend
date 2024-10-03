@@ -69,4 +69,6 @@ public class AnimalDetailServiceImpl implements AnimalDetailService {
     public List<AnimalDetail> getAnimalDetailsByAnimalName(String animalName) {
         return animalDetailRepository.findAnimalDetailByAnimalName(animalName);
     }
+
+
 }
