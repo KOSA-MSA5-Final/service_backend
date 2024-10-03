@@ -4,6 +4,8 @@ import com.example.demo.domains.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.checkerframework.checker.units.qual.C;
+
 /**
  * author : 최혜령
  * date : 2024-09-24
@@ -39,4 +41,7 @@ public class Profile {
 
     @Column(name = "profile_picture_url")
     private String pictureUrl;
+
+    @Column(name="is_current")
+    private String isCurrent;
 }

@@ -5,29 +5,26 @@ import com.example.demo.domains.member.dto.JoinDTO;
 import com.example.demo.domains.member.dto.LoginRequest;
 import com.example.demo.domains.member.dto.LoginResponse;
 import com.example.demo.domains.member.dto.MemberDTO;
-import com.example.demo.domains.member.entity.CustomUserDetails;
 import com.example.demo.domains.member.entity.Member;
-import com.example.demo.domains.member.entity.RefreshToken;
 import com.example.demo.domains.member.repository.MemberRepository;
 import com.example.demo.domains.member.service.impls.MemberService;
+import com.example.demo.domains.profile_medical.entity.Profile;
+import com.example.demo.domains.profile_medical.service.interfaces.ProfileService;
 import com.example.demo.util.MailService;
-import io.jsonwebtoken.Claims;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-
+import com.example.demo.dtos.UserAllInfoDTO;
+import com.example.demo.dtos.CurrentProfileDTO;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.time.Duration;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 @RestController
 @CrossOrigin(origins = "https://localhost:80") // 해당 컨트롤러에만 CORS 설정
@@ -39,6 +36,7 @@ public class AuthController { //로그인 관련 컨트롤러
     private final AuthenticationManager authenticationManager;
     private final JWTUtil jwtUtil;
     private final MailService mailService;
+    private final ProfileService profileService;
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody JoinDTO joinDTO) {
@@ -104,7 +102,6 @@ public class AuthController { //로그인 관련 컨트롤러
         return ResponseEntity.ok(byUsername);
     }
 
-
     @PostMapping("/userinfo/update")
     public ResponseEntity<?> updateUserInfo(@RequestBody MemberDTO memberDTO) {
         memberService.updateMember(memberDTO);
@@ -129,4 +126,42 @@ public class AuthController { //로그인 관련 컨트롤러
         return null;
     }
 
+    // 작성자 : 최혜령    작성일 : 2024년 10월 03일
+    // 계정 관련 모든 정보 로딩 컨트롤러 함수
+    @GetMapping("/userinfo-all")
+    public ResponseEntity<?> getUserInfoAll(@RequestHeader("Authorization") String token) {
+        // Bearer 앞의 "Bearer " 제거
+        String jwtToken = token.substring(7);
+
+        // 토큰에서 사용자 정보 추출
+        String username = jwtUtil.getUsername(jwtToken);
+        String role = jwtUtil.getRole(jwtToken);
+
+        // 사용자 정보를 반환할 DTO 객체 생성
+        Member member = memberRepository.findByUsername(username);
+
+        List<Profile> profiles = profileService.getProfilesByMember(member);
+
+        UserAllInfoDTO userAllInfoDTO = new UserAllInfoDTO(member, profiles);
+
+        return ResponseEntity.ok(userAllInfoDTO);
+    }
+
+    // 작성자 : 최혜령    작성일 : 2024년 10월 03일
+    // 현재 로그인 프로필 정보 로딩 컨트롤러 함수
+    @GetMapping("/currentProfileInfo")
+    public ResponseEntity<?> getCurrentProfileInfo(@RequestHeader("Authorization") String token) {
+        // Bearer 앞의 "Bearer " 제거
+        String jwtToken = token.substring(7);
+
+        // 토큰에서 사용자 정보 추출
+        String username = jwtUtil.getUsername(jwtToken);
+        String role = jwtUtil.getRole(jwtToken);
+
+        // 사용자 정보를 반환할 DTO 객체 생성
+        Member member = memberRepository.findByUsername(username);
+        Profile profile = profileService.getCurrentProfileByMember(member);
+        CurrentProfileDTO currentProfileDTO = new CurrentProfileDTO(profile);
+        return ResponseEntity.ok(currentProfileDTO);
+    }
 }

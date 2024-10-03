@@ -60,4 +60,16 @@ public class ProfileServiceImpl implements ProfileService {
             return false;
         }
     }
+
+    @Override
+    public Profile getCurrentProfileByMember(Member member) {
+        List<Profile> profiles = profileRepository.findByMember(member);
+        Profile profile = null;
+        for (Profile p : profiles) {
+            if(p.getIsCurrent().equals("T")){
+                profile = p;
+            }
+        }
+        return profile;
+    }
 }
