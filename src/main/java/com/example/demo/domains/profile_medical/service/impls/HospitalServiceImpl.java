@@ -36,7 +36,7 @@ public class HospitalServiceImpl implements HospitalService {
             hospital.setIs_ours("F");
             return hospitalRepository.save(hospital);
         } else {
-            return null;
+            return h.get();
         }
     }
 
