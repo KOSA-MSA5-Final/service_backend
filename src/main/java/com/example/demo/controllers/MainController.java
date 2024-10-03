@@ -1,6 +1,8 @@
 package com.example.demo.controllers;
 
 import com.example.demo.domains.disease.service.interfaces.DiseaseSubService;
+import com.example.demo.domains.product.entity.Allergy;
+import com.example.demo.domains.product.service.interfaces.AllergyService;
 import com.example.demo.domains.profile_medical.entity.Animal;
 import com.example.demo.domains.profile_medical.entity.AnimalDetail;
 import com.example.demo.domains.profile_medical.repository.AnimalRepository;
@@ -41,6 +43,8 @@ public class MainController {
     private AnimalDetailService animalDetailService;
     @Autowired
     private AnimalRepository animalRepository;
+    @Autowired
+    private AllergyService allergyService;
 
     @GetMapping("/message") // 수정: /api/message 경로로 매핑
     public String testController(){
@@ -90,5 +94,10 @@ public class MainController {
         result.put("cats", catNames);
 
         return result;
+    }
+
+    @GetMapping("/profile/allergies")
+    public List<Allergy> getAllAllergies(){
+        return allergyService.getAllAllergies();
     }
 }
