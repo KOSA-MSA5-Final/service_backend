@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @CrossOrigin(origins = "https://localhost:80") // 해당 컨트롤러에만 CORS 설정
@@ -72,8 +73,10 @@ public class AddressController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/changePrimary")
-    public ResponseEntity<?> addAddress(@RequestHeader("Authorization") String token, @RequestBody Long addressId) {
+    @PostMapping("/change_primary")
+    public ResponseEntity<?> addAddress(@RequestHeader("Authorization") String token, @RequestBody Map<String, Long> requestBody) {
+        Long addressId = requestBody.get("addressId");
+        System.out.println("하이룽");
         // Bearer 앞의 "Bearer " 제거
         String jwtToken = token.substring(7);
 
