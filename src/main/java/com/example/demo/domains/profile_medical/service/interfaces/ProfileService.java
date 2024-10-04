@@ -16,6 +16,7 @@ import java.util.List;
  * DATE            AUTHOR             NOTE
  * —————————————————————————————
  * 2024-09-24         최혜령          최초 생성
+ * 2024-10-04        나선주            saveSpecificProfile 메소드생성
  */
 public interface ProfileService {
     List<Profile> getProfilesByMember(Member member);
@@ -24,4 +25,6 @@ public interface ProfileService {
     Profile save(String name, Integer age, Member member, AnimalDetail animalDetail, String pictureUrl);
     Boolean delete(Profile profile);
     Profile getCurrentProfileByMember(Member member);
+
+    Profile saveSpecificProfile(Profile profile);
 }

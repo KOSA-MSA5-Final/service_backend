@@ -17,5 +17,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 
 public interface AllergyRepository  extends JpaRepository<Allergy, Long> , AllergyRepositoryCustom {
-
+    Allergy findByName(String name);
 }

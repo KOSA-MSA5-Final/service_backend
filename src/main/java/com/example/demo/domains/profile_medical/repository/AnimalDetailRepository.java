@@ -6,6 +6,7 @@ import com.example.demo.domains.profile_medical.repository.querydsl.customs.Anim
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * author : 최혜령
@@ -25,4 +26,6 @@ public interface AnimalDetailRepository extends JpaRepository<AnimalDetail, Long
     Boolean existsByNameAndAnimal(String name, Animal animal);
 
     List<AnimalDetail> findByAnimal(Animal animal);
+
+    Optional<AnimalDetail> findByName(String name);
 }
