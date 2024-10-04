@@ -2,6 +2,7 @@ package com.example.demo.domains.product.service.impls;
 
 import com.example.demo.domains.disease.entity.DiseaseNames;
 import com.example.demo.domains.product.entity.DiseaseProduct;
+import com.example.demo.domains.product.entity.Product;
 import com.example.demo.domains.product.repository.DiseaseProductRepository;
 import com.example.demo.domains.product.service.interfaces.DiseaseProductService;
 import com.example.demo.domains.profile_medical.entity.Profile;
@@ -30,10 +31,10 @@ public class DiseaseProductServiceImps implements DiseaseProductService {
     private final DiseaseProductRepository diseaseProductRepository;
 
     @Override
-    public DiseaseProduct createDiseaseProduct(DiseaseNames diseaseNames, Profile profile) {
+    public DiseaseProduct createDiseaseProduct(DiseaseNames diseaseNames, Product product) {
         DiseaseProduct diseaseProduct = new DiseaseProduct();
         diseaseProduct.setDiseaseNames(diseaseNames);
-        diseaseProduct.setProfile(profile);
+        diseaseProduct.setProduct(product);
         return diseaseProductRepository.save(diseaseProduct);
     }
 
@@ -49,12 +50,12 @@ public class DiseaseProductServiceImps implements DiseaseProductService {
     }
 
     @Override
-    public DiseaseProduct updateDiseaseProduct(Long id, DiseaseNames diseaseNames, Profile profile) {
+    public DiseaseProduct updateDiseaseProduct(Long id, DiseaseNames diseaseNames, Product product) {
         DiseaseProduct diseaseProduct = getDiseaseProductById(id);
 
         // Assuming you want to update some fields of DiseaseProduct
         diseaseProduct.setDiseaseNames(diseaseNames);
-        diseaseProduct.setProfile(profile);
+        diseaseProduct.setProduct(product);
 
         return diseaseProductRepository.save(diseaseProduct);
     }
