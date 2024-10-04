@@ -23,4 +23,5 @@ public interface ProfileService {
     List<Profile> getAllProfiles();
     Profile save(String name, Integer age, Member member, AnimalDetail animalDetail, String pictureUrl);
     Boolean delete(Profile profile);
+    Profile getCurrentProfileByMember(Member member);
 }

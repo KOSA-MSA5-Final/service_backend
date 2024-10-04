@@ -1,5 +1,6 @@
 package com.example.demo.domains.profile_medical.service.impls;
 
+import com.example.demo.domains.profile_medical.dto.HospitalDTO;
 import com.example.demo.domains.profile_medical.entity.Hospital;
 import com.example.demo.domains.profile_medical.repository.HospitalRepository;
 import com.example.demo.domains.profile_medical.service.interfaces.HospitalService;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * author : 최혜령
@@ -36,7 +38,7 @@ public class HospitalServiceImpl implements HospitalService {
             hospital.setIs_ours("F");
             return hospitalRepository.save(hospital);
         } else {
-            return null;
+            return h.get();
         }
     }
 
@@ -84,5 +86,24 @@ public class HospitalServiceImpl implements HospitalService {
 
     public Hospital getHospitalById(Long reg_num) {
         return hospitalRepository.findById(reg_num).get();
+    }
+
+    @Override
+    public List<HospitalDTO> getAffiliatedFacilities() {
+        return hospitalRepository.findAll()
+                .stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
+    private HospitalDTO convertToDTO(Hospital hospital) {
+        HospitalDTO dto = new HospitalDTO();
+        dto.setId(hospital.getId());
+        dto.setName(hospital.getName());
+        dto.setAddress(hospital.getAddress());
+        dto.setDoctor(hospital.getDoctor());
+        dto.setPhoneNumber(hospital.getPhone_number()); // 메서드명을 엔티티에 맞게 수정
+        dto.setIsOurs(hospital.getIs_ours().equalsIgnoreCase("T")); // 제휴 여부를 T/F로 저장한다면 변환
+        return dto;
     }
 }

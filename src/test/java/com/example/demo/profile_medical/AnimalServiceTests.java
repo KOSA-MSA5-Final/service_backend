@@ -1,9 +1,16 @@
 package com.example.demo.profile_medical;
 
+import com.example.demo.domains.member.entity.Member;
+import com.example.demo.domains.member.service.impls.MemberService;
 import com.example.demo.domains.profile_medical.entity.Animal;
 import com.example.demo.domains.profile_medical.entity.AnimalDetail;
+import com.example.demo.domains.profile_medical.entity.Profile;
+import com.example.demo.domains.profile_medical.repository.AnimalDetailRepository;
+import com.example.demo.domains.profile_medical.repository.ProfileRepository;
 import com.example.demo.domains.profile_medical.service.interfaces.AnimalDetailService;
 import com.example.demo.domains.profile_medical.service.interfaces.AnimalService;
+import com.example.demo.domains.profile_medical.service.interfaces.ProfileService;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,6 +29,13 @@ public class AnimalServiceTests {
     @Autowired
     private AnimalDetailService animalDetailService;
 
+    @Autowired
+    private AnimalDetailRepository animalDetailRepository;
+
+    @Autowired
+    private ProfileRepository profileRepository;
+    @Autowired
+    private MemberService memberService;
 
     @Test
     @Transactional
@@ -52,4 +66,24 @@ public class AnimalServiceTests {
         assertEquals(animalDetails, animalDeails1);
         assertEquals(animalDeails1.size(), 1);
     }
+
+    @Test
+    public void insert_test(){
+        AnimalDetail animalDetail = animalDetailRepository.findById(2L).get();
+        Member member = memberService.findMemberByEmail("tangkim98@naver.com");
+        if(member == null){
+            System.out.println("No member found");
+        } else {
+            Profile profile = new Profile();
+            profile.setAge(1);
+            profile.setName("장구니");
+            profile.setMember(member);
+            profile.setIsCurrent("T");
+            profile.setAnimalDetail(animalDetail);
+            profile.setPictureUrl("https://elliebucket1.s3.ap-northeast-2.amazonaws.com/jangoon.gif");
+            profileRepository.save(profile);
+        }
+
+    }
+
 }
