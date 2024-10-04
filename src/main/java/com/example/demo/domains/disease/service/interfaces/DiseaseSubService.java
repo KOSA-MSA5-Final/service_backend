@@ -13,6 +13,7 @@ import java.util.List;
  * DATE            AUTHOR             NOTE
  * —————————————————————————————
  * 2024-09-24        김진석          최초 생성
+ * 2024-10-03       나선주         getProfileSubDiseaseNames메소드생성
  */
 
 public interface DiseaseSubService {
@@ -34,4 +35,7 @@ public interface DiseaseSubService {
 
     // 커스텀 조회 메서드
     List<DiseaseSub> findCustomDiseaseSubs(String condition);
+
+    //조인컬럼 대분류이름으로 소분류 전부를 가져옴
+    List<String> getProfileSubDiseaseNames(String diseaseName);
 }

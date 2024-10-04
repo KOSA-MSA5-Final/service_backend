@@ -22,4 +22,6 @@ public interface AnimalDetailService {
     Boolean delete(AnimalDetail animalDetail);
     Map<AnimalDetail, Integer> countProfilesByAnimalDetail();
     List<AnimalDetail> getAnimalDetailsByAnimalName(String animalName);
+
+
 }

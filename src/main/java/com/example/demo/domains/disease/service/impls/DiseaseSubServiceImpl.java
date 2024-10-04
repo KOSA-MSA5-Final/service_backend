@@ -18,6 +18,7 @@ import java.util.List;
  * DATE            AUTHOR             NOTE
  * —————————————————————————————
  * 2024-09-24        김진석          최초 생성
+ * 2024-10-03        나선주         getProfileSubDiseaseNames메소드생성
  */
 
 @Service
@@ -66,5 +67,9 @@ public class DiseaseSubServiceImpl implements DiseaseSubService {
     @Transactional(readOnly = true)
     public List<DiseaseSub> findCustomDiseaseSubs(String condition) {
         return diseaseSubRepository.findCustomDiseaseSubs(condition);
+    }
+
+    public List<String> getProfileSubDiseaseNames(String diseaseName){
+        return diseaseSubRepository.findSubDiseasesByDiseaseName(diseaseName);
     }
 }

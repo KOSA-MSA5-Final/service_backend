@@ -29,7 +29,7 @@ public class Allergy {
     private String name;    // 알러지 이름
 
     @Column(name = "allergy_type")
-    private String type;// 알러지 증상
+    private String type;// 알러지 대분류
 
 }
 
