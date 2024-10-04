@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter
+@Setter
 public class CurrentProfileDTO {
     private Long id;
 
@@ -13,7 +14,7 @@ public class CurrentProfileDTO {
 
     private Integer age;
 
-    private AnimalDetail animalDetail;
+    private AnimalDetailDTO animalDetailDTO;
 
     private String pictureUrl;
 
@@ -22,6 +23,6 @@ public class CurrentProfileDTO {
         this.name = profile.getName();
         this.age = profile.getAge();
         this.pictureUrl = profile.getPictureUrl();
-        this.animalDetail = profile.getAnimalDetail();
+        this.animalDetailDTO = new AnimalDetailDTO(profile.getAnimalDetail());
     }
 }
