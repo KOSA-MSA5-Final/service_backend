@@ -1,6 +1,7 @@
 package com.example.demo.domains.member.service.impls;
 
 
+import com.example.demo.domains.member.entity.Member;
 import com.example.demo.domains.member.entity.MyLocation;
 
 import java.util.List;
@@ -24,4 +25,6 @@ public interface MyLocationService {
     List<MyLocation> findAllMyLocation();
     //배송지 삭제
     Boolean deleteMyLocation(MyLocation myLocation);
+
+    List<MyLocation> findMyLocations(Member member);
 }
