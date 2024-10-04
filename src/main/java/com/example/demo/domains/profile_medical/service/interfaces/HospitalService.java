@@ -1,5 +1,6 @@
 package com.example.demo.domains.profile_medical.service.interfaces;
 
+import com.example.demo.domains.profile_medical.dto.HospitalDTO;
 import com.example.demo.domains.profile_medical.entity.Hospital;
 
 import java.util.List;
@@ -21,4 +22,6 @@ public interface HospitalService {
     List<Hospital> getAll();
     List<Hospital> getOurHospitalsByCurrentLocation(String location);
     List<Hospital> getAllOurHospitals();
+
+    List<HospitalDTO> getAffiliatedFacilities();
 }
