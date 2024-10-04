@@ -72,4 +72,9 @@ public class ProfileServiceImpl implements ProfileService {
         }
         return profile;
     }
+
+    @Override
+    public Profile saveSpecificProfile(Profile profile) {
+        return profileRepository.save(profile);
+    }
 }
