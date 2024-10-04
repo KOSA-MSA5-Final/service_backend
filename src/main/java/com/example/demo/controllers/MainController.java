@@ -1,5 +1,9 @@
 package com.example.demo.controllers;
 
+import com.example.demo.domains.disease.entity.DiseaseSub;
+import com.example.demo.domains.disease.entity.DiseaseSubProfile;
+import com.example.demo.domains.disease.repository.DiseaseSubProfileRepository;
+import com.example.demo.domains.disease.repository.DiseaseSubRepository;
 import com.example.demo.domains.disease.service.interfaces.DiseaseSubService;
 import com.example.demo.domains.member.entity.Member;
 import com.example.demo.domains.member.repository.MemberRepository;
@@ -9,6 +13,7 @@ import com.example.demo.domains.product.entity.ProfileAllergy;
 import com.example.demo.domains.product.repository.AllergyRepository;
 import com.example.demo.domains.product.repository.ProfileAllergyRepository;
 import com.example.demo.domains.product.service.interfaces.AllergyService;
+import com.example.demo.domains.product.service.interfaces.ProfileAllergyService;
 import com.example.demo.domains.profile_medical.entity.Animal;
 import com.example.demo.domains.profile_medical.entity.AnimalDetail;
 import com.example.demo.domains.profile_medical.entity.Profile;
@@ -67,6 +72,11 @@ public class MainController {
     private ProfileAllergyRepository profileAllergyRepository;
     @Autowired
     private AllergyRepository allergyRepository;
+    @Autowired
+    private DiseaseSubRepository diseaseSubRepository;
+    @Autowired
+    private DiseaseSubProfileRepository diseaseSubProfileRepository;
+
 
 //    @GetMapping("/message") // 수정: /api/message 경로로 매핑
 //    public String testController(){
@@ -153,43 +163,55 @@ public class MainController {
 
         //check한 disease 뽑기
         Map<String, Object> checkedDiseases = profileData.getCheckedDiseases();
-        Map<String, List<String>> trueAllergies = new HashMap<>();
+        Map<String, List<String>> trueDiseases = new HashMap<>();
 
         for (Map.Entry<String, Object> entry : checkedDiseases.entrySet()) {
-            String systemName = entry.getKey();  // 시스템 이름 (ex. 소화기계통, 눈)
-            Map<String, Boolean> diseases = (Map<String, Boolean>) entry.getValue();  // 질병 목록을 Map으로 캐스팅
+            String systemName = entry.getKey();  // 시스템 이름 (예: 소화기계통, 눈)
+            Map<String, Boolean> diseases = (Map<String, Boolean>) entry.getValue();  // Object를 Map으로 캐스팅
 
-            List<String> trueDiseases = new ArrayList<>();
+            List<String> trueDiseaseNames = new ArrayList<>();
             for (Map.Entry<String, Boolean> diseaseEntry : diseases.entrySet()) {
                 if (diseaseEntry.getValue()) {
-                    trueDiseases.add(diseaseEntry.getKey());  // true인 질병만 추가
+                    trueDiseaseNames.add(diseaseEntry.getKey());  // true인 항목만 추가
                 }
             }
 
-            if (!trueDiseases.isEmpty()) {
-                trueAllergies.put(systemName, trueDiseases);  // true인 값이 있으면 시스템에 추가
+            if (!trueDiseaseNames.isEmpty()) {
+                trueDiseases.put(systemName, trueDiseaseNames);  // true인 항목이 있으면 추가
             }
         }
 
         //프로필저장
         Profile profile = profileService.saveSpecificProfile(newbie);
 
-        //Profile별 allergy저장
-//        for (Map.Entry<String, List<String>> entry : trueAllergies.entrySet()) {
-//            List<String> diseases = entry.getValue();
-//
-//            for (String diseaseName : diseases) {
-//                // Allergy 테이블에서 해당 allergy를 찾음
-//                Allergy allergy = allergyRepository.findByName(diseaseName);
-//                if (allergy != null) {
-//                    // ProfileAllergy 엔티티에 저장
-//                    ProfileAllergy profileAllergy = new ProfileAllergy();
-//                    profileAllergy.setProfile(profile);
-//                    profileAllergy.setAllergy(allergy);
-//                    profileAllergyRepository.save(profileAllergy);
-//                }
-//            }
-//        }
+        //Profile별 disease저장
+        for (Map.Entry<String, List<String>> entry : trueDiseases.entrySet()) {
+            List<String> diseases = entry.getValue();
+
+            for (String diseaseName : diseases) {
+                // DiseaseSub 테이블에서 질병 이름으로 해당 엔티티를 찾음
+                DiseaseSub diseaseSub = diseaseSubRepository.findByName(diseaseName);
+                if (diseaseSub != null) {
+                    // DiseaseSubProfile 엔티티에 저장
+                    DiseaseSubProfile diseaseSubProfile = new DiseaseSubProfile();
+                    diseaseSubProfile.setProfile(profile);
+                    diseaseSubProfile.setDiseaseSub(diseaseSub);
+
+                    diseaseSubProfileRepository.save(diseaseSubProfile);  // 체크한 diseases 저장
+                }
+            }
+        }
+        
+        //알러지 저장
+        List<String> selectedAllergies = profileData.getSelectedAllergies();
+        for(String selectedAllergy : selectedAllergies){
+            Allergy byName = allergyRepository.findByName(selectedAllergy);
+            ProfileAllergy profileAllergy = new ProfileAllergy();
+            profileAllergy.setAllergy(byName);
+            profileAllergy.setProfile(profile);
+            profileAllergyRepository.save(profileAllergy);
+        }
+
 
         return ResponseEntity.ok("일단 저장이 됐어");
     }
