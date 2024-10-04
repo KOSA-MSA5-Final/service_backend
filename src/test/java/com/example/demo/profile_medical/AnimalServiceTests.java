@@ -70,7 +70,7 @@ public class AnimalServiceTests {
     @Test
     public void insert_test(){
         AnimalDetail animalDetail = animalDetailRepository.findById(2L).get();
-        Member member = memberService.findMemberByEmail("tangkim98@naver.com");
+        Member member = memberService.findMemberByEmail("tangkim98@naver.com"); // 자기 이메일에 맞게 넣기
         if(member == null){
             System.out.println("No member found");
         } else {
