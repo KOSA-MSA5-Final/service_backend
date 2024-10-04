@@ -32,7 +32,8 @@ public interface DiseaseSubRepository extends JpaRepository<DiseaseSub, Long>, D
     // JPQL 쿼리로 DiseaseNames와 DiseaseSub을 JOIN하여 결과 가져옴
     @Query("SELECT ds.name FROM DiseaseSub ds JOIN ds.diseaseNames dn WHERE dn.name = :diseaseName")
     List<String> findSubDiseasesByDiseaseName(@Param("diseaseName") String diseaseName);
-    
+
+    DiseaseSub findByName(String name);
 }
 
 
