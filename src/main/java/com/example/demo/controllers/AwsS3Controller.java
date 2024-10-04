@@ -84,6 +84,8 @@ public class AwsS3Controller {
             }
             receiptDTO.setMedicalDTOs(medicalDTOs);
 
+
+
             return receiptDTO;
 
         } catch (Exception e) {

@@ -157,10 +157,12 @@ public class AuthController { //로그인 관련 컨트롤러
         // 토큰에서 사용자 정보 추출
         String username = jwtUtil.getUsername(jwtToken);
         String role = jwtUtil.getRole(jwtToken);
+        System.out.println("token: "+ jwtToken);
 
         // 사용자 정보를 반환할 DTO 객체 생성
         Member member = memberRepository.findByUsername(username);
         Profile profile = profileService.getCurrentProfileByMember(member);
+        System.out.println("여기까지는 괜찮아!");
         CurrentProfileDTO currentProfileDTO = new CurrentProfileDTO(profile);
         return ResponseEntity.ok(currentProfileDTO);
     }

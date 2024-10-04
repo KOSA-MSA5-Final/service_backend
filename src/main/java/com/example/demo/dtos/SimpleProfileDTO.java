@@ -7,22 +7,19 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class CurrentProfileDTO {
+public class SimpleProfileDTO {
     private Long id;
 
     private String name;
 
-    private Integer age;
-
-    private AnimalDetailDTO animalDetailDTO;
-
     private String pictureUrl;
 
-    public CurrentProfileDTO(Profile profile) {
+    private String isCurrent;
+
+    public SimpleProfileDTO(Profile profile) {
         this.id = profile.getId();
         this.name = profile.getName();
-        this.age = profile.getAge();
         this.pictureUrl = profile.getPictureUrl();
-        this.animalDetailDTO = new AnimalDetailDTO(profile.getAnimalDetail());
+        this.isCurrent = profile.getIsCurrent();
     }
 }
