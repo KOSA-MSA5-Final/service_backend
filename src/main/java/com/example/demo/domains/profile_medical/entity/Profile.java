@@ -58,5 +58,5 @@ public class Profile {
     private String pictureUrl;
 
     @Column(name="is_current")
-    private String isCurrent; //t: true, f: false로 구분
+    private String isCurrent; //T: true, F: false로 구분
 }

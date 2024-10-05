@@ -163,6 +163,8 @@ public class AuthController { //로그인 관련 컨트롤러
         Member member = memberRepository.findByUsername(username);
         Profile profile = profileService.getCurrentProfileByMember(member);
         System.out.println("여기까지는 괜찮아!");
+        System.out.println("nsj: profile값은 "+profile);
+
         CurrentProfileDTO currentProfileDTO = new CurrentProfileDTO(profile);
         return ResponseEntity.ok(currentProfileDTO);
     }

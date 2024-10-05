@@ -198,14 +198,14 @@ public class MainController {
         List<Profile> byMember = profileRepository.findByMember(byUsername);
         if(byMember.size() > 1){
             for(Profile p : byMember){
-                if(p.getIsCurrent()=="t"){
-                    p.setIsCurrent("f");
+                if(p.getIsCurrent()=="T"){
+                    p.setIsCurrent("F");
                     profileRepository.save(p); //나머지 profile를 f로 만듬
                 }
             }
-            newbie.setIsCurrent("t");
+            newbie.setIsCurrent("T");
         }else{
-            newbie.setIsCurrent("t");
+            newbie.setIsCurrent("T");
         }
 
         //프로필저장
