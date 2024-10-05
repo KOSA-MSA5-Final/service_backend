@@ -164,8 +164,11 @@ public class AuthController { //로그인 관련 컨트롤러
         Profile profile = profileService.getCurrentProfileByMember(member);
         System.out.println("여기까지는 괜찮아!");
         System.out.println("nsj: profile값은 "+profile);
-
-        CurrentProfileDTO currentProfileDTO = new CurrentProfileDTO(profile);
+        
+        // profile이 null이면 CurrentProfileDTO도 null로 반환 - 나선주 추가
+        CurrentProfileDTO currentProfileDTO = (profile != null) ? new CurrentProfileDTO(profile) : null;
+//        CurrentProfileDTO currentProfileDTO = new CurrentProfileDTO(profile); //나선주 주석처리
+        
         return ResponseEntity.ok(currentProfileDTO);
     }
 }

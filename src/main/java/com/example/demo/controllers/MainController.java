@@ -194,19 +194,17 @@ public class MainController {
             }
         }
 
-        //isCurrent값 변경
+        // 기존 프로필의 isCurrent 값을 F로 변경
         List<Profile> byMember = profileRepository.findByMember(byUsername);
-        if(byMember.size() > 1){
-            for(Profile p : byMember){
-                if(p.getIsCurrent()=="T"){
-                    p.setIsCurrent("F");
-                    profileRepository.save(p); //나머지 profile를 f로 만듬
-                }
+        for (Profile existingProfile : byMember) {
+            if ("T".equals(existingProfile.getIsCurrent())) {
+                existingProfile.setIsCurrent("F");
+                profileRepository.save(existingProfile);  // 기존 프로필의 isCurrent를 F로 변경
             }
-            newbie.setIsCurrent("T");
-        }else{
-            newbie.setIsCurrent("T");
         }
+
+        // 새로 생성되는 프로필의 isCurrent 값을 T로 설정
+        newbie.setIsCurrent("T");
 
         //프로필저장
         Profile profile = profileService.saveSpecificProfile(newbie);
