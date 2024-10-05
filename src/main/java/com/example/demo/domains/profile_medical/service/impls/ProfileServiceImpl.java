@@ -68,6 +68,7 @@ public class ProfileServiceImpl implements ProfileService {
         for (Profile p : profiles) {
             if(p.getIsCurrent().equals("T")){
                 profile = p;
+                break; // T인 프로필을 찾으면 더 이상 반복할 필요가 없으므로 종료 //나선주 추가
             }
         }
         return profile;
