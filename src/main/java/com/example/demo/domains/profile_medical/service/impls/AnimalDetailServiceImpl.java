@@ -34,7 +34,7 @@ public class AnimalDetailServiceImpl implements AnimalDetailService {
 
     @Override
     public AnimalDetail save(String name, String animalName) {
-        Animal animal = animalRepository.findAnimalByName(animalName);
+        Animal animal = animalRepository.findByName(animalName);
         if (animal == null) {
             System.out.println("존재하지 않는 대분류 동물입니다: " + animalName);
             return null;
