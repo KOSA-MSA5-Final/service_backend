@@ -60,15 +60,15 @@ public class AnimalRepositoryImpl implements AnimalRepositoryCustom {
         return !results.isEmpty(); // 리스트가 비어있지 않으면 true
     }
 
-    @Override
-    public Animal findAnimalByName(String name) {
-        String jpql = "SELECT a FROM Animal a WHERE a.name LIKE :name";
-
-        TypedQuery<Animal> query = em.createQuery(jpql, Animal.class);
-        query.setParameter("name", "%" + name + "%"); // 정확히 일치하는 파라미터 설정
-        List<Animal> results = query.getResultList();
-        return results.get(0);
-    }
+//    @Override
+//    public Animal findAnimalByName(String name) {
+//        String jpql = "SELECT a FROM Animal a WHERE a.name LIKE :name";
+//
+//        TypedQuery<Animal> query = em.createQuery(jpql, Animal.class);
+//        query.setParameter("name", "%" + name + "%"); // 정확히 일치하는 파라미터 설정
+//        List<Animal> results = query.getResultList();
+//        return results.get(0);
+//    }
 
 
 }

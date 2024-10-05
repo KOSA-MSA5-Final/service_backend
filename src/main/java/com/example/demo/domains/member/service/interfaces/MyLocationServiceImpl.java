@@ -1,5 +1,6 @@
 package com.example.demo.domains.member.service.interfaces;
 
+import com.example.demo.domains.member.entity.Member;
 import com.example.demo.domains.member.entity.MyLocation;
 import com.example.demo.domains.member.repository.MyLocationRepository;
 import com.example.demo.domains.member.service.impls.MyLocationService;
@@ -44,5 +45,10 @@ public class MyLocationServiceImpl implements MyLocationService {
         }catch(Exception e){
             return false;
         }
+    }
+
+    @Override
+    public List<MyLocation> findMyLocations(Member member) {
+        return myLocationRepository.findByMember(member);
     }
 }

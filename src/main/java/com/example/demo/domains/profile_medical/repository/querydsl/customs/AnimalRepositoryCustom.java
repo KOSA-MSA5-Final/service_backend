@@ -21,6 +21,6 @@ public interface AnimalRepositoryCustom {
 
     Boolean isExist_AnimalByName(String name);
 
-    Animal findAnimalByName(String name);
+//    Animal findAnimalByName(String name);
 
 }

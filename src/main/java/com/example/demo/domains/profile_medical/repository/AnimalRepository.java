@@ -19,4 +19,6 @@ public interface AnimalRepository extends JpaRepository<Animal, Long>, AnimalRep
 
     // 대분류 동물 이름으로 중복 확인
     Boolean existsByName(String name);
+
+    Animal findByName(String name);
 }

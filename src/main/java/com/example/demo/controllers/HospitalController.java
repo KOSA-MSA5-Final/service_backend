@@ -2,6 +2,7 @@ package com.example.demo.controllers;
 
 import com.example.demo.domains.profile_medical.dto.HospitalDTO;
 import com.example.demo.domains.profile_medical.service.interfaces.HospitalService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import java.util.List;
 @RestController
 @CrossOrigin(origins = "https://localhost:80")
 @RequestMapping("/api/maps")
+@RequiredArgsConstructor
 public class HospitalController {
 
     @Autowired
