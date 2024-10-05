@@ -21,5 +21,5 @@ public class ProfileDataDTO {
     private Map<String, Object> isDisease;
     private Map<String, Object> checkedDiseases;
     private String username;
-
+    private List<Map<String, String>> etcDisease;
 }
