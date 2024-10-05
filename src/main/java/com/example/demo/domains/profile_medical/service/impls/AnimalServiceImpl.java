@@ -57,6 +57,6 @@ public class AnimalServiceImpl implements AnimalService {
     }
 
     public Animal findAnimalByName(String name) {
-        return animalRepository.findAnimalByName(name);
+        return animalRepository.findByName(name);
     }
 }

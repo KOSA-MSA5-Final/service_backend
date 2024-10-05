@@ -95,27 +95,37 @@ public class MainController {
         System.out.println("품종 api가 왔어요");
 
         //개
-        Animal dog = animalRepository.findById(1L).orElse(null);
-        List<AnimalDetail> dogDetails= animalDetailService.findAllDetailsByAnimal(dog);
-        List<String> dogsNames = new ArrayList<>();
-        for(AnimalDetail animalDetail : dogDetails){
-            String name = animalDetail.getName();
-            dogsNames.add(name);
-        }
-        //고양이
-        Animal cat = animalRepository.findById(2L).orElse(null);
-        List<AnimalDetail> catDetails = animalDetailService.findAllDetailsByAnimal(cat);
-        List<String> catNames = new ArrayList<>();
-        for(AnimalDetail animalDetail : catDetails){
-            String name = animalDetail.getName();
-            catNames.add(name);
-        }
-        //결과를 map으로 반환
-        Map<String, List<String>> result = new HashMap<>();
-        result.put("dogs", dogsNames);
-        result.put("cats", catNames);
+        Animal dog = animalRepository.findByName("강아지");
+        if (dog != null) {
+            List<AnimalDetail> dogDetails= animalDetailService.findAllDetailsByAnimal(dog);
+            List<String> dogsNames = new ArrayList<>();
+            for(AnimalDetail animalDetail : dogDetails){
+                String name = animalDetail.getName();
+                dogsNames.add(name);
+            }
+            Map<String, List<String>> result = new HashMap<>();
+            result.put("dogs", dogsNames);
 
-        return result;
+            //고양이
+            Animal cat = animalRepository.findByName("고양이");
+            if (cat != null) {
+                List<AnimalDetail> catDetails = animalDetailService.findAllDetailsByAnimal(cat);
+                List<String> catNames = new ArrayList<>();
+                for (AnimalDetail animalDetail : catDetails) {
+                    String name = animalDetail.getName();
+                    catNames.add(name);
+                }
+                //결과를 map으로 반환
+
+
+                result.put("cats", catNames);
+                return result;
+            }
+            return result;
+
+        }
+
+        return null;
     }
 
     @GetMapping("/profile/allergies")
