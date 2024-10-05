@@ -1,9 +1,13 @@
 package com.example.demo.controllers;
 
+import com.example.demo.domains.disease.entity.DiseaseNames;
 import com.example.demo.domains.disease.entity.DiseaseSub;
 import com.example.demo.domains.disease.entity.DiseaseSubProfile;
+import com.example.demo.domains.disease.entity.NewDisease;
+import com.example.demo.domains.disease.repository.DiseaseNamesRepository;
 import com.example.demo.domains.disease.repository.DiseaseSubProfileRepository;
 import com.example.demo.domains.disease.repository.DiseaseSubRepository;
+import com.example.demo.domains.disease.repository.NewDiseaseRepository;
 import com.example.demo.domains.disease.service.interfaces.DiseaseSubService;
 import com.example.demo.domains.member.entity.Member;
 import com.example.demo.domains.member.repository.MemberRepository;
@@ -79,6 +83,10 @@ public class MainController {
     private DiseaseSubProfileRepository diseaseSubProfileRepository;
     @Autowired
     private ProfileRepository profileRepository;
+    @Autowired
+    private DiseaseNamesRepository diseaseNamesRepository;
+    @Autowired
+    private NewDiseaseRepository newDiseaseRepository;
 
 
 //    @GetMapping("/message") // 수정: /api/message 경로로 매핑
@@ -158,6 +166,8 @@ public class MainController {
         System.out.println("isDisease: "+profileData.getIsDisease());
         System.out.println("checkedDiseases: "+ profileData.getCheckedDiseases());
         System.out.println("Username: "+profileData.getUsername());
+        System.out.println("받아온etcDisease는: "+profileData.getEtcDisease().size());
+
 
         Profile newbie = new Profile();
         newbie.setName(profileData.getPetName());
@@ -236,6 +246,27 @@ public class MainController {
             profileAllergy.setProfile(profile);
             profileAllergyRepository.save(profileAllergy);
         }
+
+        //기타에서 새로운 병 추가
+        List<Map<String, String>> etcDiseaseList = profileData.getEtcDisease();
+        for (Map<String, String> etcDiseaseEntry : etcDiseaseList) {
+            String diseaseName = etcDiseaseEntry.get("selectedDisease"); // 선택한 대분류
+            String inputData = etcDiseaseEntry.get("inputData"); // 사용자가 입력한 병명
+
+            // 해당 대분류(DiseaseNames)를 DB에서 찾아옴
+            DiseaseNames diseaseNames = diseaseNamesRepository.findByName(diseaseName);
+
+            if (diseaseNames != null) {
+                // NewDisease 엔티티 생성
+                NewDisease newDisease = new NewDisease();
+                newDisease.setName(inputData);
+                newDisease.setDiseaseNames(diseaseNames); // DiseaseNames와 연관 설정
+
+                // DB에 저장
+                newDiseaseRepository.save(newDisease);
+            }
+        }
+
 
         return ResponseEntity.ok("일단 저장이 됐어");
     }
