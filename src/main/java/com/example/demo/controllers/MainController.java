@@ -19,6 +19,7 @@ import com.example.demo.domains.profile_medical.entity.AnimalDetail;
 import com.example.demo.domains.profile_medical.entity.Profile;
 import com.example.demo.domains.profile_medical.repository.AnimalDetailRepository;
 import com.example.demo.domains.profile_medical.repository.AnimalRepository;
+import com.example.demo.domains.profile_medical.repository.ProfileRepository;
 import com.example.demo.domains.profile_medical.service.interfaces.AnimalDetailService;
 import com.example.demo.domains.profile_medical.service.interfaces.AnimalService;
 import com.example.demo.domains.profile_medical.service.interfaces.ProfileService;
@@ -76,6 +77,8 @@ public class MainController {
     private DiseaseSubRepository diseaseSubRepository;
     @Autowired
     private DiseaseSubProfileRepository diseaseSubProfileRepository;
+    @Autowired
+    private ProfileRepository profileRepository;
 
 
 //    @GetMapping("/message") // 수정: /api/message 경로로 매핑
@@ -191,6 +194,20 @@ public class MainController {
             }
         }
 
+        //isCurrent값 변경
+        List<Profile> byMember = profileRepository.findByMember(byUsername);
+        if(byMember.size() > 1){
+            for(Profile p : byMember){
+                if(p.getIsCurrent()=="T"){
+                    p.setIsCurrent("F");
+                    profileRepository.save(p); //나머지 profile를 f로 만듬
+                }
+            }
+            newbie.setIsCurrent("T");
+        }else{
+            newbie.setIsCurrent("T");
+        }
+
         //프로필저장
         Profile profile = profileService.saveSpecificProfile(newbie);
 
@@ -222,10 +239,10 @@ public class MainController {
             profileAllergyRepository.save(profileAllergy);
         }
 
-
         return ResponseEntity.ok("일단 저장이 됐어");
     }
 
+    //나이 생성 메소드
     public  int calculateAge(Date birthDate) {
         // Date 타입을 LocalDate로 변환
         LocalDate birthLocalDate = birthDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
