@@ -37,15 +37,15 @@ public class ProfileController {
         }
     }
 
-    // 특정 프로필을 가져오는 메서드 (필요시 추가 가능)
+    // 특정 프로필을 가져오는 메서드
     @GetMapping("/profile/{profileId}")
     public ResponseEntity<ProfileDTO> getProfileById(@PathVariable Long profileId) {
-        Optional<Profile> profile = profileService.getAllProfiles().stream()
+        Optional<ProfileDTO> profileDTO = profileService.getAllProfiles().stream()
                 .filter(p -> p.getId().equals(profileId))
+                .map(profileService::convertToDTO)
                 .findFirst();
 
-        // Profile 엔티티를 ProfileDTO로 변환하여 반환
-        return profile.map(p -> ResponseEntity.ok(profileService.convertToDTO(p)))
+        return profileDTO.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 }

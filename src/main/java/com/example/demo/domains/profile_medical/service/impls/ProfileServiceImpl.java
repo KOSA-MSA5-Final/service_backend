@@ -1,6 +1,12 @@
 package com.example.demo.domains.profile_medical.service.impls;
 
+import com.example.demo.domains.disease.dto.DiseaseSubProfileDTO;
+import com.example.demo.domains.disease.entity.DiseaseSubProfile;
+import com.example.demo.domains.disease.repository.DiseaseSubProfileRepository;
 import com.example.demo.domains.member.entity.Member;
+import com.example.demo.domains.product.dto.ProfileAllergyDTO;
+import com.example.demo.domains.product.entity.ProfileAllergy;
+import com.example.demo.domains.product.repository.ProfileAllergyRepository;
 import com.example.demo.domains.profile_medical.dto.ProfileDTO;
 import com.example.demo.domains.profile_medical.entity.AnimalDetail;
 import com.example.demo.domains.profile_medical.entity.Medical;
@@ -30,6 +36,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ProfileServiceImpl implements ProfileService {
     private final ProfileRepository profileRepository;
+    private final ProfileAllergyRepository profileAllergyRepository;
+    private final DiseaseSubProfileRepository diseaseSubProfileRepository;
 
     @Override
     public List<Profile> getProfilesByMember(Member member) {
@@ -108,12 +116,46 @@ public class ProfileServiceImpl implements ProfileService {
         dto.setPictureUrl(profile.getPictureUrl());
         dto.setIsCurrent(profile.getIsCurrent());
 
-        // AnimalDetail의 이름을 PetType으로 설정
+        // AnimalDetail의 이름을 설정
         if (profile.getAnimalDetail() != null) {
             dto.setAnimalType(profile.getAnimalDetail().getName());
+            // Animal의 이름을 설정
+            if (profile.getAnimalDetail().getAnimal() != null) {
+                dto.setAnimalName(profile.getAnimalDetail().getAnimal().getName());
+            } else {
+                dto.setAnimalName("Unknown"); // Animal이 없는 경우 기본값 설정
+            }
         } else {
             dto.setAnimalType("Unknown");
+            dto.setAnimalName("Unknown");
         }
+
+        // ProfileAllergy를 ProfileAllergyDTO로 변환하여 DTO에 추가
+        List<ProfileAllergy> profileAllergies = profileAllergyRepository.findByProfile(profile);
+        List<ProfileAllergyDTO> allergyDTOs = profileAllergies.stream()
+                .map(allergy -> {
+                    ProfileAllergyDTO allergyDTO = new ProfileAllergyDTO();
+                    allergyDTO.setAllergyId(allergy.getAllergy().getId());
+                    allergyDTO.setAllergyName(allergy.getAllergy().getName());
+                    allergyDTO.setAllergyType(allergy.getAllergy().getType());
+                    return allergyDTO;
+                }).collect(Collectors.toList());
+        dto.setAllergies(allergyDTOs);
+
+        // DiseaseSubProfileRepository를 사용하여 질병 정보를 가져옴
+        List<DiseaseSubProfile> diseaseSubProfiles = diseaseSubProfileRepository.findByProfile(profile);
+        List<DiseaseSubProfileDTO> diseaseSubProfileDTOs = diseaseSubProfiles.stream()
+                .map(diseaseSubProfile -> {
+                    DiseaseSubProfileDTO diseaseSubProfileDTO = new DiseaseSubProfileDTO();
+                    diseaseSubProfileDTO.setId(diseaseSubProfile.getId());
+                    diseaseSubProfileDTO.setDiseaseName(diseaseSubProfile.getDiseaseSub().getDiseaseNames().getName()); // 대분류 이름
+                    diseaseSubProfileDTO.setDiseaseSubCategory(diseaseSubProfile.getDiseaseSub().getName()); // 소분류 이름
+                    diseaseSubProfileDTO.setDiagnosisDate(diseaseSubProfile.getDiagnosisDate());
+                    diseaseSubProfileDTO.setProgressStatus(diseaseSubProfile.getProgressStatus());
+                    return diseaseSubProfileDTO;
+                })
+                .collect(Collectors.toList());
+        dto.setDiseases(diseaseSubProfileDTOs);
 
         return dto;
     }

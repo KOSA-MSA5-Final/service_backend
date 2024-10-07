@@ -16,7 +16,7 @@ public class MedicalDiseaseRepositoryImpl implements MedicalDiseaseRepositoryCus
     @Override
     public List<MedicalDisease> findCustomMedicalDiseases(String diseaseName, String progressStatus) {
         String jpql = "SELECT md FROM MedicalDisease md " +
-                "JOIN md.diseaseNames dn " +
+                "JOIN md.diseaseSub dn " +
                 "WHERE dn.name LIKE :diseaseName " +
                 "AND md.progressStatus = :progressStatus";
 

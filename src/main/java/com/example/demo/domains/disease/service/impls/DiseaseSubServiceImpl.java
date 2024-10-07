@@ -62,12 +62,12 @@ public class DiseaseSubServiceImpl implements DiseaseSubService {
         }
     }
 
-    // 커스텀 조회 메서드
-    @Override
-    @Transactional(readOnly = true)
-    public List<DiseaseSub> findCustomDiseaseSubs(String condition) {
-        return diseaseSubRepository.findCustomDiseaseSubs(condition);
-    }
+//    // 커스텀 조회 메서드
+//    @Override
+//    @Transactional(readOnly = true)
+//    public List<DiseaseSub> findCustomDiseaseSubs(String condition) {
+//        return diseaseSubRepository.findCustomDiseaseSubs(condition);
+//    }
 
     public List<String> getProfileSubDiseaseNames(String diseaseName){
         return diseaseSubRepository.findSubDiseasesByDiseaseName(diseaseName);

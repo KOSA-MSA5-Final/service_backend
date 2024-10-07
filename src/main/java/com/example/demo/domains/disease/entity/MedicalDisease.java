@@ -27,10 +27,10 @@ public class MedicalDisease {
     @Column(name = "medical_disease_id")
     private Long id;
 
-    // 병명 대분류와 연관관계 (ManyToOne)
+    // 병명 소분류와 연관관계 (ManyToOne)
     @ManyToOne
-    @JoinColumn(name = "disease_name_id")
-    private DiseaseNames diseaseNames;
+    @JoinColumn(name = "sub_disease_id") // 기존의 disease_name_id에서 변경
+    private DiseaseSub diseaseSub;
 
     // 진료 기록과 연관관계 (ManyToOne)
     @ManyToOne

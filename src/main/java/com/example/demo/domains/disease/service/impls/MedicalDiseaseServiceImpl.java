@@ -23,8 +23,8 @@ public class MedicalDiseaseServiceImpl implements MedicalDiseaseService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<MedicalDisease> findByDiseaseNameAndProgressStatus(String diseaseName, String progressStatus) {
-        return medicalDiseaseRepository.findByDiseaseNames_NameAndProgressStatus(diseaseName, progressStatus);
+    public List<MedicalDisease> findByDiseaseSubAndProgressStatus(String diseaseName, String progressStatus) {
+        return medicalDiseaseRepository.findByDiseaseSub_NameAndProgressStatus(diseaseName, progressStatus);
     }
 
     @Override
