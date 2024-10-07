@@ -1,9 +1,11 @@
 package com.example.demo.domains.profile_medical.service.interfaces;
 
 import com.example.demo.domains.member.entity.Member;
+import com.example.demo.domains.profile_medical.dto.ProfileDTO;
 import com.example.demo.domains.profile_medical.entity.AnimalDetail;
 import com.example.demo.domains.profile_medical.entity.Medical;
 import com.example.demo.domains.profile_medical.entity.Profile;
+import com.example.demo.dtos.ProfileDataDTO;
 
 import java.util.List;
 
@@ -27,4 +29,8 @@ public interface ProfileService {
     Profile getCurrentProfileByMember(Member member);
 
     Profile saveSpecificProfile(Profile profile);
+
+    // 추가된 메서드 정의
+    ProfileDTO convertToDTO(Profile profile);
+    List<ProfileDTO> getAllProfilesByMember(Member member);
 }
