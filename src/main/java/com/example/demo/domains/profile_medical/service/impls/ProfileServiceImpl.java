@@ -81,6 +81,16 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
+    public Profile changeProfile(Profile before, Long afterId) {
+        before.setIsCurrent("F");
+        Profile after = profileRepository.findById(afterId).get();
+        after.setIsCurrent("T");
+        profileRepository.save(before);
+
+        return profileRepository.save(after);
+    }
+
+    @Override
     public Profile saveSpecificProfile(Profile profile) {
         return profileRepository.save(profile);
     }

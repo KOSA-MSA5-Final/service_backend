@@ -7,9 +7,9 @@ import lombok.Setter;
 @Getter
 public class MedicalDTO {
     String medical_name;
-    Integer medical_price;
+    String medical_price;
     public MedicalDTO(String medical_name, String medical_price) {
         this.medical_name = medical_name;
-        this.medical_price = Integer.valueOf(medical_price);
+        this.medical_price = medical_price;
     }
 }
