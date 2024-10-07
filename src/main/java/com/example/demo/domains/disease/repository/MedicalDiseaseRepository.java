@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public interface MedicalDiseaseRepository extends JpaRepository<MedicalDisease, Long>, MedicalDiseaseRepositoryCustom {
     // 특정 병명으로 MedicalDisease 조회 (진행 중인 질병만 조회)
-    List<MedicalDisease> findByDiseaseNames_NameAndProgressStatus(String diseaseName, String progressStatus);
+    List<MedicalDisease> findByDiseaseSub_NameAndProgressStatus(String diseaseName, String progressStatus);
 
     // 특정 진료 기록과 연관된 MedicalDisease 조회
     List<MedicalDisease> findByMedical_Id(Long medicalId);

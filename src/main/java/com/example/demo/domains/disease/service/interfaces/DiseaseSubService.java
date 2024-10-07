@@ -33,8 +33,8 @@ public interface DiseaseSubService {
     // 소분류 병명 삭제
     Boolean deleteDiseaseSubById(Long id);
 
-    // 커스텀 조회 메서드
-    List<DiseaseSub> findCustomDiseaseSubs(String condition);
+//    // 커스텀 조회 메서드
+//    List<DiseaseSub> findCustomDiseaseSubs(String condition);
 
     //조인컬럼 대분류이름으로 소분류 전부를 가져옴
     List<String> getProfileSubDiseaseNames(String diseaseName);
