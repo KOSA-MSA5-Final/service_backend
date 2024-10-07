@@ -37,8 +37,9 @@ public class AwsS3Controller {
         System.out.println(parsed);
 
         System.out.println("\n>>>>여기부터 gpt의 대답");
-        String beforeAsk = "아래는 영수증(청구서) 내용을 OCR로 읽어낸거야. 내가 원하는 값들은 진료 내역들 (이름-가격)과 병원명, 대표자이름, 사업자 등록번호와 사업장 소재지, 전화번호, 총 가격 및 방문 날짜시간이야. 각 json 형태로 key 이름을 진료내역 (안에 값은 또다른 json으로 키는 진료이름, 값은 가격), 병원명, 대표자이름, 사업자등록번호, 사업장주소, 전화번호, 총가격, 방문날짜시각 이라고 명시하여 아래내용들을 정형화 해줘. 혹시나, 동물명이 들어가는 결과값이 안생기도록 조심해줘.\n";
+        String beforeAsk = "아래는 영수증(청구서) 내용을 OCR로 읽어낸거야. 내가 원하는 값들은 진료 내역들 (이름-가격)과 병원명, 대표자이름, 사업자 등록번호와 사업장 소재지, 전화번호, 총 가격 및 방문 날짜시간이야. 각 json 형태로 key 이름을 '진료내역리스트'(각 항목의 키는 진료이름, 값은 가격), '병원명', '대표자이름', '사업자등록번호', '사업장주소', '전화번호', '총가격', '방문날짜시간' 이라고 명시하여 아래내용들을 정형화 해줘. key 이름에 빈 문자열 생기지 않도록 주의하고, 만약 각 key의 값을 찾을 수 없다면, 키는 그대로 넣고 빈 문자열을 넣어서 보내줘\n";
         ResponseEntity<?> gptResponse = gptService.getAssistantMsg(beforeAsk + parsed);
+        System.out.println(gptResponse.getBody());
         ReceiptDTO receiptDTO = parseReceipt(gptResponse);
 
         return receiptDTO;
@@ -70,18 +71,21 @@ public class AwsS3Controller {
             receiptDTO.setHospital_name(String.valueOf(resultMap.get("병원명")));
             receiptDTO.setHospital_address(String.valueOf(resultMap.get("사업장주소")));
             receiptDTO.setHospital_phoneNum(String.valueOf(resultMap.get("전화번호")));
-            receiptDTO.setVisitDate(String.valueOf(resultMap.get("방문날짜시각")));
+            receiptDTO.setVisitDate(String.valueOf(resultMap.get("방문날짜시간")));
 
             String totalCost = String.valueOf(resultMap.get("총가격"));
             receiptDTO.setTotalCost(Integer.parseInt(totalCost.replace(",", "")));
 
             // 진료내역을 MedicalDTO 리스트로 변환
             List<MedicalDTO> medicalDTOs = new ArrayList<>();
-            Map<String, Object> medicalDetails = (Map<String, Object>) resultMap.get("진료내역");
-            for (Map.Entry<String, Object> entry : medicalDetails.entrySet()) {
-                String price = String.valueOf(entry.getValue());
-                medicalDTOs.add(new MedicalDTO(entry.getKey(), price.replace(",", "")));
+            Map<String, Object> medicalDetails = (Map<String, Object>) resultMap.get("진료내역리스트");
+            if (medicalDetails != null) {
+                for (Map.Entry<String, Object> entry : medicalDetails.entrySet()) {
+                    String price = String.valueOf(entry.getValue());
+                    medicalDTOs.add(new MedicalDTO(entry.getKey(), price.replace(",", "")));
+                }
             }
+
             receiptDTO.setMedicalDTOs(medicalDTOs);
 
 

@@ -171,4 +171,38 @@ public class AuthController { //로그인 관련 컨트롤러
         
         return ResponseEntity.ok(currentProfileDTO);
     }
+
+    @PostMapping("/changeCurrentProfile")
+    public ResponseEntity<?> changeCurrentProfile(
+            @RequestHeader("Authorization") String token,
+            @RequestParam Long profileId) {
+
+        System.out.println("Received request to change profile. ProfileId: " +  profileId);
+
+        try {
+            // Bearer 토큰에서 "Bearer " 제거
+            String jwtToken = token.replace("Bearer ", "");
+
+            // 토큰에서 사용자 정보 추출
+            String username = jwtUtil.getUsername(jwtToken);
+            Member member = memberRepository.findByUsername(username);
+
+            if (member == null) {
+                System.out.println("User not found for username: " + username);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+            }
+
+            Profile currentProfile = profileService.getCurrentProfileByMember(member);
+            if (!currentProfile.getId().equals(profileId)){
+                profileService.changeProfile(currentProfile, profileId);
+
+                System.out.println("Profile changed successfully for user: " + username);
+            }
+
+            return ResponseEntity.ok("success");
+        } catch (Exception e) {
+            System.out.println("Error changing profile" + e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
+        }
+    }
 }

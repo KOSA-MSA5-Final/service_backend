@@ -27,6 +27,7 @@ public interface ProfileService {
     Profile save(String name, Integer age, Member member, AnimalDetail animalDetail, String pictureUrl);
     Boolean delete(Profile profile);
     Profile getCurrentProfileByMember(Member member);
+    Profile changeProfile(Profile before, Long afterId);
 
     Profile saveSpecificProfile(Profile profile);
 
