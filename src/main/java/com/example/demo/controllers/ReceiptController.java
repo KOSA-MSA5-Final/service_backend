@@ -107,44 +107,47 @@ public class ReceiptController {
         return null;
     }
 
-    @GetMapping("/disease/analysis")
-    public ResponseEntity<?> analyzeDisease(@RequestBody ReceiptDTO receiptData) {
+
+    @PostMapping("/disease/analysis")
+    public ResponseEntity<?> analyzeDisease(@RequestBody List<MedicalDTO> medicalDTOs) {
+        System.out.println("Received data: " + medicalDTOs);
+        String medicalList = "";
+        if(medicalDTOs != null && medicalDTOs.size() > 0) {
+            for (MedicalDTO medicalDTO : medicalDTOs) {
+                medicalList += "'";
+                medicalList += medicalDTO.getMedical_name();
+                medicalList += "', ";
+            }
+        }
         try {
-            String beforeAsk = "아래 목록에 대해서 추론할 수 있는 질병을 대분류 기준으로 key로 작성하고, 근거를 해당 키의 value에 작성하여 json으로 나에게 보내줘.\n" +
-                    "근거는 아래 목록의 키값으로 이루어진 목록이야." + receiptData.getMedicalDTOs() + "대분류는 아래와 같아. 띄어쓰기 하지 말고, 추론할수 있는 병의 대분류를 키로 사용해줘.\n" +
-                    "피부계통(귀)\t호흡기계통\t소화기계통\t근골격계통\t대사계통\t신경계통\t내분비(호르몬)계통\t순환계통(심장)\t비뇨생식계통\t눈\t구강\t종양성";
+            String beforeAsk = "근거 목록에서 추론할 수 있는 질병을 대분류 기준으로 key로 작성하고, 근거들을 해당 키의 value에 작성하여 json으로 나에게 보내줘. 근거목록은 [" + medicalList + "] 이고, 병명 대분류는 '피부계통(귀)', '호흡기계통', '소화기계통', '근골격계통', '대사계통', '신경계통', '내분비(호르몬)계통', '순환계통(심장)', '비뇨생식계통, '눈','구강', '종양성' 이야. 띄어쓰기 하지 말고, 추론할수 있는 병의 대분류를 키로 사용해줘.\n";
 
             ResponseEntity<?> gptResponse = gptService.getAssistantMsg(beforeAsk);
 
             String jsonString = gptResponse.getBody().toString();
+            System.out.println("GPT Response: " + jsonString);
             List<DiseaseAnalysisDTO> formattedResponse = parseJsonString(jsonString);
 
+            System.out.println(">>>>여기는 disease/analysis");
             System.out.println(formattedResponse);
 
             return ResponseEntity.ok(formattedResponse);
-        } catch (JsonProcessingException e) {
-            return ResponseEntity.internalServerError().body("healthy!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().body("Error: " + e.getMessage());
         }
-
     }
 
-    private List<DiseaseAnalysisDTO> parseJsonString(String jsonString) {
+    private List<DiseaseAnalysisDTO> parseJsonString(String jsonString) throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        Map<String, List<String>> map = mapper.readValue(jsonString, new TypeReference<Map<String, List<String>>>(){});
+
         List<DiseaseAnalysisDTO> result = new ArrayList<>();
-        Pattern pattern = Pattern.compile("\"(.*?)\":\\s*\\[(.*?)\\]");
-        Matcher matcher = pattern.matcher(jsonString);
-
-        while (matcher.find()) {
-            String diseaseTitle = matcher.group(1);
-            String[] reasons = matcher.group(2).split(",");
-            List<String> reasonList = new ArrayList<>();
-            for (String reason : reasons) {
-                reasonList.add(reason.trim().replaceAll("\"", ""));
-            }
-            result.add(new DiseaseAnalysisDTO(diseaseTitle, reasonList));
+        for (Map.Entry<String, List<String>> entry : map.entrySet()) {
+            result.add(new DiseaseAnalysisDTO(entry.getKey(), entry.getValue()));
         }
-
         return result;
     }
-}
+
 }
 
