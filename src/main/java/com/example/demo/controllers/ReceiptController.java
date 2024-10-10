@@ -2,12 +2,10 @@ package com.example.demo.controllers;
 
 import com.example.demo.domains.disease.entity.DiseaseNames;
 import com.example.demo.domains.disease.entity.DiseaseSub;
+import com.example.demo.domains.disease.repository.DiseaseSubRepository;
 import com.example.demo.domains.disease.service.interfaces.DiseaseNamesService;
 import com.example.demo.domains.disease.service.interfaces.DiseaseSubService;
-import com.example.demo.dtos.AnalysedDiseaseDTO;
-import com.example.demo.dtos.DiseaseAnalysisDTO;
-import com.example.demo.dtos.MedicalDTO;
-import com.example.demo.dtos.ReceiptDTO;
+import com.example.demo.dtos.*;
 import com.example.demo.util.AwsS3Service;
 import com.example.demo.util.GoogleVisionOCR;
 import com.example.demo.util.GptService;
@@ -21,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -34,6 +33,8 @@ public class ReceiptController {
     private final GptService gptService;
     private final DiseaseNamesService diseaseNamesService;
     private final DiseaseSubService diseaseSubService;
+    private final DiseaseSubRepository diseaseSubRepository;
+
     //Amazon S3에 파일 업로드
     //return 성공 시 200 Success와 함께 업로드 된 파일의 파일명 리스트 반환
     @PostMapping("/s3/file")
@@ -108,6 +109,7 @@ public class ReceiptController {
     }
 
 
+
     @PostMapping("/disease/analysis")
     public ResponseEntity<?> analyzeDisease(@RequestBody List<MedicalDTO> medicalDTOs) {
         System.out.println("Received data: " + medicalDTOs);
@@ -158,25 +160,56 @@ public class ReceiptController {
             for (String name : diseaseNames) {
                 DiseaseNames disease = diseaseNamesService.findDiseaseByName(name);
                 if (disease != null){
-                    List<DiseaseSub> subDiseases = diseaseSubService.findSubDiseasesByDiseaseNameId(disease.getId());
+
+                    List<String> subDiseases = diseaseSubRepository.findSubDiseasesByDiseaseName(name);
                     AnalysedDiseaseDTO analysedDiseaseDTO = new AnalysedDiseaseDTO();
                     analysedDiseaseDTO.setDiseaseName(name);
-                    List<String> subDiseaseNames = new ArrayList<>();
-                    if (subDiseases.size() > 0) {
-                        for (DiseaseSub diseaseSub : subDiseases) {
-                            subDiseaseNames.add(diseaseSub.getName());
-                        }
-                    }
-                    analysedDiseaseDTO.setSubDiseases(subDiseaseNames);
+                    analysedDiseaseDTO.setSubDiseases(subDiseases);
                     analysedDiseaseDTOS.add(analysedDiseaseDTO);
                 }
 
             }
+
             return ResponseEntity.ok(analysedDiseaseDTOS);
         } catch (Exception e) {
             return ResponseEntity.ok("healthy");
         }
     }
+
+    @PostMapping("/unfound_diseases")
+    public ResponseEntity<?> fetchUnfoundDiseases(@RequestBody List<String> diseaseNames) {
+        try {
+            List<DiseaseNames> allDiseases = diseaseNamesService.findAllDiseases();
+            List<UnfoundDiseaseDTO> unfoundDiseases = new ArrayList<>();
+            for (DiseaseNames found : allDiseases) {
+                String foundName = found.getName();
+                Boolean f = false;
+                for (String name : diseaseNames) {
+                    if (foundName.equals(name)) {
+                        f = true;
+                    }
+                }
+                if (!f) {
+                    List<DiseaseSub> subDiseases = diseaseSubService.findSubDiseasesByDiseaseNameId(found.getId());
+                    List<String> subs = new ArrayList<>();
+                    for (DiseaseSub sub : subDiseases) {
+                        subs.add(sub.getName());
+                    }
+                    UnfoundDiseaseDTO unfoundDiseaseDTO = new UnfoundDiseaseDTO();
+                    unfoundDiseaseDTO.setDiseaseName(foundName);
+                    unfoundDiseaseDTO.setSubDiseases(subs);
+                    unfoundDiseases.add(unfoundDiseaseDTO);
+                }
+            }
+            if (unfoundDiseases.size() > 0) {
+                return ResponseEntity.ok(unfoundDiseases);
+            }
+            return ResponseEntity.ok("none");
+        } catch (Exception e) {
+            return ResponseEntity.ok("none");
+        }
+    }
+
 
 }
 
