@@ -4,6 +4,9 @@ import com.example.demo.domains.product.entity.Product;
 import com.example.demo.domains.product.repository.querydsl.customs.ProductRepositoryCustom;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Collection;
+import java.util.List;
+
 /**
  * author : 윤다희
  * date : 2024-09-24
@@ -18,4 +21,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ProductRepository extends JpaRepository<Product, Long>, ProductRepositoryCustom {
 
+    // 모든 상품 조회
+    List<Product> findAll();
+
+    // 특정 타입의 상품 조회
+    List<Product> findByType(String type);
 }
