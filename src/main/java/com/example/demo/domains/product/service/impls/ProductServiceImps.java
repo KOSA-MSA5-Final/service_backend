@@ -89,4 +89,10 @@ public class ProductServiceImps implements ProductService {
                 .map(this::convertToProductDTO)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public ProductDTO getProductsById(Long id) {
+        Product product = productRepository.findById(id).orElse(null);
+        return convertToProductDTO(product);
+    }
 }

@@ -25,4 +25,6 @@ public interface ProductService {
     List<ProductDTO> getAllProductDTOs();
 
     List<ProductDTO> getProductsByType(String type);
+
+    ProductDTO getProductsById(Long id);
 }
