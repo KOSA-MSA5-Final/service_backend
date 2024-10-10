@@ -36,6 +36,9 @@ public class Product {
     @Column(name = "product_type")
     private String type;
 
+    @Column(name = "product_sub_type")
+    private String subtype;
+
     @Column(name = "product_price")
     private long price;
 
@@ -47,7 +50,7 @@ public class Product {
     @Column(name = "product_origin")
     private String origin;
 
-    @Column(name = "product_all_rawmaterial")
+    @Column(name = "product_all_rawmaterial", length = 4000)
     private String all_rawmaterial;
 
     @Column(name = "product_ingredient")

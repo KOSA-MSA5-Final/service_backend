@@ -1,8 +1,11 @@
 package com.example.demo.domains.product.repository;
 
+import com.example.demo.domains.product.entity.Product;
 import com.example.demo.domains.product.entity.ProductDetailImg;
 import com.example.demo.domains.product.repository.querydsl.customs.ProductDetailImgRepositoryCustom;
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
 
 /**
  * author : 윤다희
@@ -18,4 +21,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ProductDetailImgRepository extends JpaRepository<ProductDetailImg, Long>, ProductDetailImgRepositoryCustom {
 
+    List<ProductDetailImg> findByProduct(Product product);
 }
