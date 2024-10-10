@@ -11,6 +11,7 @@ import java.util.Map;
 @Getter
 @Setter
 public class ProfileDataDTO {
+    private String petImg;
     private String petName;
     private String petType;
     private String petGender;

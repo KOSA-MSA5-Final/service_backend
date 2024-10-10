@@ -1,10 +1,22 @@
 package com.example.demo.controllers;
 
+import com.example.demo.config.JWTUtil;
 import com.example.demo.domains.disease.entity.DiseaseNames;
 import com.example.demo.domains.disease.entity.DiseaseSub;
+import com.example.demo.domains.disease.entity.MedicalDisease;
 import com.example.demo.domains.disease.repository.DiseaseSubRepository;
+import com.example.demo.domains.disease.repository.MedicalDiseaseRepository;
 import com.example.demo.domains.disease.service.interfaces.DiseaseNamesService;
 import com.example.demo.domains.disease.service.interfaces.DiseaseSubService;
+import com.example.demo.domains.member.entity.Member;
+import com.example.demo.domains.member.repository.MemberRepository;
+import com.example.demo.domains.member.service.impls.MemberService;
+import com.example.demo.domains.profile_medical.entity.*;
+import com.example.demo.domains.profile_medical.repository.HospitalRepository;
+import com.example.demo.domains.profile_medical.repository.MedicalHospitalRepository;
+import com.example.demo.domains.profile_medical.repository.MedicalRepository;
+import com.example.demo.domains.profile_medical.repository.TreatmentRepository;
+import com.example.demo.domains.profile_medical.service.interfaces.ProfileService;
 import com.example.demo.dtos.*;
 import com.example.demo.util.AwsS3Service;
 import com.example.demo.util.GoogleVisionOCR;
@@ -13,15 +25,16 @@ import com.example.demo.util.ReceiptParserService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @RestController
 @CrossOrigin(origins = "https://localhost:80")
@@ -34,6 +47,16 @@ public class ReceiptController {
     private final DiseaseNamesService diseaseNamesService;
     private final DiseaseSubService diseaseSubService;
     private final DiseaseSubRepository diseaseSubRepository;
+    private final MemberService memberService;
+    private final MemberRepository memberRepository;
+    private final AuthenticationManager authenticationManager;
+    private final JWTUtil jwtUtil;
+    private final ProfileService profileService;
+    private final HospitalRepository hospitalRepository;
+    private final MedicalRepository medicalRepository;
+    private final MedicalDiseaseRepository medicalDiseaseRepository;
+    private final MedicalHospitalRepository medicalHospitalRepository;
+    private final TreatmentRepository treatmentRepository;
 
     //Amazon S3에 파일 업로드
     //return 성공 시 200 Success와 함께 업로드 된 파일의 파일명 리스트 반환
@@ -47,10 +70,10 @@ public class ReceiptController {
         System.out.println(parsed);
 
         System.out.println("\n>>>>여기부터 gpt의 대답");
-        String beforeAsk = "아래는 영수증(청구서) 내용을 OCR로 읽어낸거야. 내가 원하는 값들은 진료 내역들 (이름-가격)과 병원명, 대표자이름, 사업자 등록번호와 사업장 소재지, 전화번호, 총 가격 및 방문 날짜시간이야. 각 json 형태로 key 이름을 '진료내역리스트'(각 항목의 키는 진료이름, 값은 가격), '병원명', '대표자이름', '사업자등록번호', '사업장주소', '전화번호', '총가격', '방문날짜시간' 이라고 명시하여 아래내용들을 정형화 해줘. key 이름에 빈 문자열 생기지 않도록 주의하고, 만약 각 key의 값을 찾을 수 없다면, 키는 그대로 넣고 빈 문자열을 넣어서 보내줘\n";
+        String beforeAsk = "아래는 영수증(청구서) 내용을 OCR로 읽어낸거야. 내가 원하는 값들은 진료 내역들 (이름-가격)과 병원명, 대표자이름, 사업자 등록번호와 사업장 소재지, 전화번호, 총 가격 및 방문 날짜시간이야. 각 json 형태로 key 이름을 '진료내역리스트'(각 항목의 키는 진료이름(정형화된 실제 데이터로 작성해줘. 진료내역1 이런식으론 절대로 하지마.), 값은 가격), '병원명', '대표자이름', '사업자등록번호', '사업장주소', '전화번호', '총가격', '방문날짜시간' 이라고 명시하여 아래내용들을 정형화 해줘. key 이름에 빈 문자열 생기지 않도록 주의하고, 만약 각 key의 값을 찾을 수 없다면, 키는 그대로 넣고 빈 문자열을 넣어서 보내줘. 가격은 숫자만 넣어.\n";
         ResponseEntity<?> gptResponse = gptService.getAssistantMsg(beforeAsk + parsed);
         System.out.println(gptResponse.getBody());
-        ReceiptDTO receiptDTO = parseReceipt(gptResponse);
+        ReceiptDTO receiptDTO = parseReceipt(gptResponse, resultURL);
 
         return receiptDTO;
     }
@@ -61,7 +84,7 @@ public class ReceiptController {
         awsS3Service.deleteFile(fileName);
     }//end deleteFile
 
-    private static ReceiptDTO parseReceipt(ResponseEntity<?> receipt) {
+    private static ReceiptDTO parseReceipt(ResponseEntity<?> receipt, String receipt_url) {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             Map<String, Object> resultMap;
@@ -99,7 +122,7 @@ public class ReceiptController {
             receiptDTO.setMedicalDTOs(medicalDTOs);
 
 
-
+            receiptDTO.setReceipt_url(receipt_url);
             return receiptDTO;
 
         } catch (Exception e) {
@@ -190,14 +213,10 @@ public class ReceiptController {
                     }
                 }
                 if (!f) {
-                    List<DiseaseSub> subDiseases = diseaseSubService.findSubDiseasesByDiseaseNameId(found.getId());
-                    List<String> subs = new ArrayList<>();
-                    for (DiseaseSub sub : subDiseases) {
-                        subs.add(sub.getName());
-                    }
+
                     UnfoundDiseaseDTO unfoundDiseaseDTO = new UnfoundDiseaseDTO();
                     unfoundDiseaseDTO.setDiseaseName(foundName);
-                    unfoundDiseaseDTO.setSubDiseases(subs);
+                    unfoundDiseaseDTO.setSelected(false);
                     unfoundDiseases.add(unfoundDiseaseDTO);
                 }
             }
@@ -210,6 +229,142 @@ public class ReceiptController {
         }
     }
 
+    @PostMapping("/uploadProfileImage")
+    public ResponseEntity<?> uploadProfileImage(
+            @RequestParam("qimage") List<MultipartFile> multipartFile) throws IOException {
+        List<String> result = awsS3Service.uploadFile(multipartFile);
+        String resultURL = result.get(0);
+        System.out.println(resultURL);
+        return ResponseEntity.ok(resultURL);
+    }
+
+    @PostMapping("/save_receipt")
+    public ResponseEntity<?> saveReceipt(@RequestBody SaveReceiptRequestDTO requestDTO,
+                                         @RequestHeader("Authorization") String token) {
+        System.out.println("I'm here!!!!!!!!! " + requestDTO.toString());
+        try {
+            // Bearer 토큰에서 "Bearer " 제거
+            String jwtToken = token.replace("Bearer ", "");
+
+            // 토큰에서 사용자 정보 추출
+            String username = jwtUtil.getUsername(jwtToken);
+            Member member = memberRepository.findByUsername(username);
+
+            if (member == null) {
+                System.out.println("User not found for username: " + username);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+            }
+
+            Profile currentProfile = profileService.getCurrentProfileByMember(member);
+
+            List<UnfoundDiseaseDTO> extraMedicals = requestDTO.getExtraMedical();
+            ReceiptDTO receiptInfo = requestDTO.getReceiptInfo();
+            List<AnalysedDiseaseDTO> selectedDiseases = requestDTO.getSelectedDiseases();
+
+            // 진료 기록 정보 세팅
+            Medical newMedical = new Medical();
+            newMedical.setReceipt_img(receiptInfo.getReceipt_url());
+            newMedical.setTotalCost(receiptInfo.getTotalCost());
+            newMedical.setProfile(currentProfile);
+            newMedical.setVisitDate(convertToDate(receiptInfo.getVisitDate()));
+
+            Medical myMedical = medicalRepository.save(newMedical);
+            // 병원 정보 세팅 (및 저장)
+            Hospital myHospital;
+            Long hospitalId = extractNumbers(receiptInfo.getReg_num());
+            Optional<Hospital> hospitalOptional = hospitalRepository.findById(hospitalId);
+
+            if (hospitalOptional.isPresent()) {
+                myHospital = hospitalOptional.get();
+            } else {
+                Hospital newHospital = new Hospital();
+                newHospital.setAddress(receiptInfo.getHospital_address());
+                newHospital.setName(receiptInfo.getHospital_name());
+                newHospital.setIs_ours("F");
+                newHospital.setDoctor("잘 모름");
+                newHospital.setPhone_number(receiptInfo.getHospital_phoneNum());
+                newHospital.setId(hospitalId);
+                myHospital = hospitalRepository.save(newHospital);
+            }
+
+            // ExtraMedical은 저장을 할 수 없음 ... 연결이 안됨... 대분류라서...
+
+            // 진단명 String으로 뽑아내기 시작.
+            String objectNames = "";
+            for(AnalysedDiseaseDTO analysedDiseaseDTO : selectedDiseases) {
+                String DiseaseName = analysedDiseaseDTO.getDiseaseName();
+                List<String> subDiseases = analysedDiseaseDTO.getSubDiseases();
+                if(subDiseases.size() > 0){
+                    for(String sub : subDiseases){
+                        objectNames = objectNames + "#" + sub;
+
+                        List<DiseaseSub> diseaseSubs = diseaseSubRepository.findAllByName(sub);
+                        DiseaseSub currentSub = null;
+                        if (diseaseSubs.size() > 0) {
+                            for (DiseaseSub ds : diseaseSubs){
+                                if (ds.getDiseaseNames().getName().equals(DiseaseName)){
+                                    currentSub = ds;
+                                }
+                            }
+                        }
+
+                        // medicalSub - Medical 관계 엔티티 저장
+                        if(currentSub != null){
+                            MedicalDisease medicalDisease = new MedicalDisease();
+                            medicalDisease.setMedical(myMedical);
+                            medicalDisease.setDiseaseSub(currentSub);
+                            medicalDisease.setProgressStatus("T");
+                            medicalDisease.setDiagnosisDate(myMedical.getVisitDate());
+                            medicalDiseaseRepository.save(medicalDisease);
+                        }
+
+                    }
+                }
+            }
+
+            // 진료 기록 저장
+            myMedical.setObject(objectNames);
+            myMedical = medicalRepository.save(myMedical);
+
+            // medical-hospital 관계식 저장
+            MedicalHospital medicalHospital = new MedicalHospital();
+            medicalHospital.setHospital(myHospital);
+            medicalHospital.setMedical(myMedical);
+            medicalHospitalRepository.save(medicalHospital);
+
+            // 영수증 내역들 세팅
+            List<MedicalDTO> treatments = receiptInfo.getMedicalDTOs();
+            for (MedicalDTO medicalDTO : treatments) {
+                String treatment_name = medicalDTO.getMedical_name();
+                Long treatment_price = Long.parseLong(medicalDTO.getMedical_price());
+
+                Treatment newTreatment = new Treatment();
+                newTreatment.setHospital(myHospital);
+                newTreatment.setMedical(myMedical);
+                newTreatment.setName(treatment_name);
+                newTreatment.setPrice(treatment_price);
+                treatmentRepository.save(newTreatment);
+            }
+
+            return ResponseEntity.ok("success");
+        } catch (Exception e) {
+            System.out.println("Error saving receipt" + e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
+        }
+
+    }
+
+    public static Date convertToDate(String dateString) throws ParseException {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        return formatter.parse(dateString);
+    }
+    public static Long extractNumbers(String input) {
+        String numericString = input.replaceAll("[^0-9]", "");
+        if (numericString.isEmpty()) {
+            return null; // or you could return 0L, depending on your requirements
+        }
+        return Long.parseLong(numericString);
+    }
 
 }
 

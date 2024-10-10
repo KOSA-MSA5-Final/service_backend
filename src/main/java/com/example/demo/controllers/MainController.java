@@ -156,6 +156,7 @@ public class MainController {
 
     @PostMapping("/profile/saveProfile")
     public ResponseEntity<String> saveProfile(@RequestBody ProfileDataDTO profileData){
+        System.out.println("pet img: "+profileData.getPetImg());
         System.out.println("pet name: "+profileData.getPetName());
         System.out.println("petType: "+profileData.getPetType());//품종 이름
         System.out.println("petGender: "+profileData.getPetGender());
@@ -170,6 +171,7 @@ public class MainController {
 
 
         Profile newbie = new Profile();
+        newbie.setPictureUrl(profileData.getPetImg());
         newbie.setName(profileData.getPetName());
         newbie.setGender(profileData.getPetGender());
         newbie.setBirthday(profileData.getPetBirthDate());

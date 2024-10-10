@@ -15,5 +15,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * 2024-09-24         최혜령          최초 생성
  */
 public interface HospitalRepository extends JpaRepository<Hospital, Long>, HospitalRepositoryCustom {
-
+//    Hospital findByName(String name);
+//    Hospital findByAddress(String address);
+    Hospital findById(long id);
 }
