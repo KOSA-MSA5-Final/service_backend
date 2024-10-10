@@ -7,11 +7,12 @@ import lombok.Setter;
 
 import java.util.List;
 
-@Setter
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UnfoundDiseaseDTO {
-    String diseaseName;
-    Boolean selected;
+public class SaveReceiptRequestDTO {
+    List<UnfoundDiseaseDTO> extraMedical;
+    ReceiptDTO receiptInfo;
+    List<AnalysedDiseaseDTO> selectedDiseases;
 }
