@@ -1,10 +1,12 @@
 package com.example.demo.domains.profile_medical.entity;
 
+import com.example.demo.domains.disease.entity.MedicalDisease;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * author : 최혜령
@@ -39,4 +41,11 @@ public class Medical {
 
     @Column(name = "total_cost")
     private long totalCost;
+
+    @OneToMany(mappedBy = "medical", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<MedicalHospital> medicalHospitals; // MedicalHospital과의 관계 설정
+
+    // Medical과 MedicalDisease의 연관관계 설정 (One-to-Many)
+    @OneToMany(mappedBy = "medical", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<MedicalDisease> medicalDiseases;
 }
