@@ -1,5 +1,6 @@
 package com.example.demo.domains.member.service.interfaces;
 
+import com.example.demo.domains.member.dto.ShoppingOrderProductDTO;
 import com.example.demo.domains.member.entity.ShoppingOrder;
 import com.example.demo.domains.member.entity.ShoppingOrderProduct;
 import com.example.demo.domains.member.repository.ShoppingOrderProductRepository;
@@ -60,5 +61,17 @@ public class ShoppingOrderProductServiceImpl implements ShoppingOrderProductServ
         }catch(Exception e){
             return false;
         }
+    }
+
+    ShoppingOrderProductDTO convertOrderProductToDTO(ShoppingOrderProduct orderProduct) {
+        ShoppingOrderProductDTO dto = new ShoppingOrderProductDTO();
+        dto.setId(orderProduct.getId());
+        dto.setShoppingOrderId(orderProduct.getShoppingOrder().getId()); // 주문 ID
+        dto.setProductId(orderProduct.getProduct().getId()); // 상품 ID
+        //dto.setProductName(orderProduct.getProduct().getProductName()); // 가정: Product 엔티티에 getProductName() 메서드가 있다.
+        dto.setCreatedAt(orderProduct.getCreatedAt());
+        dto.setQuantity(orderProduct.getQuantity());
+        dto.setShippingStatus(orderProduct.getShippingStatus());
+        return dto;
     }
 }
