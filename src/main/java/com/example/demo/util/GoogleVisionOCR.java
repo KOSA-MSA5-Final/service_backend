@@ -19,6 +19,7 @@ import java.util.List;
 
 @Service
 public class GoogleVisionOCR {
+
     @Value("${GOOGLE_ACCESS_TOKEN}")
     private static String accessToken;
     public static String execute(String url) throws IOException {
