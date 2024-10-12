@@ -366,5 +366,14 @@ public class ReceiptController {
         return Long.parseLong(numericString);
     }
 
+    // profile 사진 저장 로직인데, 다른 컨트롤러에 넣으려니 에러가 나서 여기에 넣음.
+    @PostMapping("/s3/profile")
+    public String uploadProfileImg(
+            @RequestParam("file") MultipartFile file) throws IOException {
+        System.out.println("나 여기!!!!!!!!!!!!!!!!!");
+        List<String> result = awsS3Service.uploadFile(Collections.singletonList(file));
+        String resultURL = result.get(0);
+        return resultURL;
+    }
 }
 
