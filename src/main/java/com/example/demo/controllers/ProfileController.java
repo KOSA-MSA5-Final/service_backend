@@ -1,9 +1,9 @@
 package com.example.demo.controllers;
 
+import com.example.demo.config.JWTUtil;
 import com.example.demo.domains.member.entity.Member;
 import com.example.demo.domains.member.repository.MemberRepository;
 import com.example.demo.domains.profile_medical.dto.ProfileDTO;
-import com.example.demo.domains.profile_medical.entity.Profile;
 import com.example.demo.domains.profile_medical.repository.ProfileRepository;
 import com.example.demo.domains.profile_medical.service.interfaces.ProfileService;
 import lombok.RequiredArgsConstructor;
@@ -20,22 +20,29 @@ import java.util.Optional;
 public class ProfileController {
 
     private final ProfileService profileService;
+    private final JWTUtil jwtUtil;
     private final ProfileRepository profileRepository;
     private final MemberRepository memberRepository;
 
-    // 특정 회원의 프로필 정보를 가져오는 메서드
+    // 현재 로그인한 사용자의 모든 프로필 조회
     @GetMapping("/userinfo-all")
-    public ResponseEntity<List<ProfileDTO>> getAllProfilesByMember(@RequestParam("memberId") Long memberId) {
-        Optional<Member> member = memberRepository.findById(memberId);
+    public ResponseEntity<List<ProfileDTO>> getAllProfilesByMember(@RequestHeader("Authorization") String token) {
+        try {
+            String jwtToken = token.substring(7); // "Bearer " 제거
+            String username = jwtUtil.getUsername(jwtToken);
 
-        if (member.isPresent()) {
-            // Profile 엔티티 리스트를 ProfileDTO 리스트로 변환하여 반환
-            List<ProfileDTO> profileDTOs = profileService.getAllProfilesByMember(member.get());
+            // 사용자 정보 가져오기
+            Member member = memberRepository.findByUsername(username);
+
+            // 사용자 정보로 프로필 조회
+            List<ProfileDTO> profileDTOs = profileService.getAllProfilesByMember(member);
             return ResponseEntity.ok(profileDTOs);
-        } else {
-            return ResponseEntity.notFound().build();
+
+        } catch (Exception e) {
+            return ResponseEntity.status(401).build(); // JWT 파싱 실패 시 401 Unauthorized 반환
         }
     }
+
 
     // 특정 프로필을 가져오는 메서드
     @GetMapping("/profile/{profileId}")
