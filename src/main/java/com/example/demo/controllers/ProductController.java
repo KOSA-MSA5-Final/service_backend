@@ -3,6 +3,7 @@ package com.example.demo.controllers;
 import com.example.demo.config.JWTUtil;
 import com.example.demo.domains.disease.entity.DiseaseSubProfile;
 import com.example.demo.domains.disease.entity.MedicalDisease;
+import com.example.demo.domains.disease.repository.DiseaseSubProfileRepository;
 import com.example.demo.domains.disease.repository.DiseaseSubRepository;
 import com.example.demo.domains.disease.repository.MedicalDiseaseRepository;
 import com.example.demo.domains.member.dto.ShoppingOrderDTO;
@@ -10,7 +11,14 @@ import com.example.demo.domains.member.entity.Member;
 import com.example.demo.domains.member.repository.MemberRepository;
 import com.example.demo.domains.member.service.interfaces.ShoppingOrderServiceImpl;
 import com.example.demo.domains.product.dto.ProductDTO;
+import com.example.demo.domains.product.entity.DiseaseProduct;
 import com.example.demo.domains.product.entity.Product;
+import com.example.demo.domains.product.entity.ProfileAllergy;
+import com.example.demo.domains.product.entity.RawMaterial;
+import com.example.demo.domains.product.repository.DiseaseProductRepository;
+import com.example.demo.domains.product.repository.ProductRepository;
+import com.example.demo.domains.product.repository.ProfileAllergyRepository;
+import com.example.demo.domains.product.repository.RawMaterialRepository;
 import com.example.demo.domains.product.service.impls.ProductServiceImps;
 import com.example.demo.domains.product.service.interfaces.ProductService;
 import com.example.demo.domains.profile_medical.entity.Medical;
@@ -20,10 +28,7 @@ import com.example.demo.domains.profile_medical.service.interfaces.ProfileServic
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @RestController
 @CrossOrigin(origins = "https://localhost:80")
@@ -40,24 +45,76 @@ public class ProductController {
     private final MedicalRepository medicalRepository;
     private final MedicalDiseaseRepository medicalDiseaseRepository;
     private final DiseaseSubRepository diseaseSubRepository;
+    private final DiseaseSubProfileRepository diseaseSubProfileRepository;
+    private final ProfileAllergyRepository profileAllergyRepository;
+    private final ProductRepository productRepository;
+    private final RawMaterialRepository rawMaterialRepository;
+    private final DiseaseProductRepository diseaseProductRepository;
 
     // 맞춤 알고리즘 조회 함수
     private List<ProductDTO> getPersonalizedProducts(Member member) {
-        List<ProductDTO> personalizedProducts = new ArrayList<>();
+
         Profile currentProfile = profileService.getCurrentProfileByMember(member);
+        List<ProductDTO> personalizedProducts = new ArrayList<>();
+        List<ProductDTO> allergyFiltered = new ArrayList<>();
+
         if (currentProfile != null) {
-            List<ProductDTO> allProductsByType = productService.getProductsByType(currentProfile.getAnimalDetail().getAnimal().getName());
-//            for (ProductDTO productDTO : allProductsByType) {
-////                if ()
-//            }
-        } else {
-            List<ProductDTO> allProducts = productService.getAllProductDTOs();
-            return allProducts;
+            List<ProductDTO> allProductsByType = productService.getAllProductDTOs();
+            System.out.println("allProductsByType 갯수: " + allProductsByType.size());
+            Set<String> profileAllergies = getAllergiesByProfile(currentProfile);
+            System.out.println("알러지 갯수: " + profileAllergies.size());
+            for (ProductDTO productDTO : allProductsByType) {
+
+                List<RawMaterial> rawMaterials = rawMaterialRepository.findByProductId(productDTO.getId());
+                System.out.println("rawMaterials 갯수: " + rawMaterials.size());
+                Set<String> materials = new HashSet<>();
+                if(rawMaterials.size() > 0) {
+                    for (RawMaterial rawMaterial : rawMaterials) {
+                        materials.add(rawMaterial.getAllergy().getName());
+                    }
+                }
+                boolean allergyContained = false;
+                if(materials.size() > 0) {
+                    allergyContained = Arrays.stream(materials.toArray()).anyMatch(item -> Arrays.asList(profileAllergies.toArray()).contains(item));
+                }
+
+                if(!allergyContained) {
+                    allergyFiltered.add(productDTO);
+                }
+                System.out.println("allergyFiltered 여부: " + allergyContained);
+            }
+
+            if(allergyFiltered.size() > 0) {
+
+                Set<String> profileDiseases = getDiseaseNamesByProfile(currentProfile);
+                for (ProductDTO productDTO : allergyFiltered) {
+                    List<DiseaseProduct> diseaseProducts = diseaseProductRepository.findByProductId(productDTO.getId());
+                    Set<String> diseaseNames = new HashSet<>();
+                    if (diseaseProducts.size() > 0) {
+                        for(DiseaseProduct dp : diseaseProducts) {
+                            diseaseNames.add(dp.getDiseaseNames().getName());
+                        }
+                    }
+                    boolean diseaseContained = false;
+                    if(diseaseNames.size() > 0) {
+                        diseaseContained = Arrays.stream(diseaseNames.toArray()).anyMatch(item -> Arrays.asList(profileDiseases.toArray()).contains(item));
+                    }
+
+                    if(diseaseContained){
+                        personalizedProducts.add(productDTO);
+                    }
+                }
+            }
+
         }
 
-        return personalizedProducts;
+        if(personalizedProducts.size() > 0) {
+            return personalizedProducts;
+        }
+        return allergyFiltered;
     }
 
+    // 프로필의 질병정보 대분류 이름으로 모두 호출
     private Set<String> getDiseaseNamesByProfile(Profile profile){
         Set<String> result = new HashSet<>();
 
@@ -74,13 +131,45 @@ public class ProductController {
             }
         }
 
-//        List<DiseaseSubProfile> diseaseSubProfiles = diseaseSubRepository.findByProfile
+        List<DiseaseSubProfile> diseaseSubProfiles = diseaseSubProfileRepository.findByProfile(profile);
+        if(diseaseSubProfiles.size() > 0){
+            for (DiseaseSubProfile dsp : diseaseSubProfiles) {
+                result.add(dsp.getDiseaseSub().getDiseaseNames().getName());
+            }
+        }
+
         return result;
+    }
+
+    // 프로필의 모든 알러지정보 호출
+    private Set<String> getAllergiesByProfile(Profile profile){
+        Set<String> result = new HashSet<>();
+        List<ProfileAllergy> profileAllergies = profileAllergyRepository.findByProfile(profile);
+        if(profileAllergies.size() > 0){
+            for (ProfileAllergy profileAllergy : profileAllergies) {
+                result.add(profileAllergy.getAllergy().getName());
+            }
+        }
+        return result;
+    }
+    // 맞춤화된 제품을 조회하는 엔드포인트
+    @GetMapping("/personalized")
+    public List<ProductDTO> getPersonalizedProducts(@RequestHeader("Authorization") String token) {
+        String jwtToken = token.substring(7);
+
+        // 토큰에서 사용자 정보 추출
+        String username = jwtUtil.getUsername(jwtToken);
+        Member member = memberRepository.findByUsername(username);
+        List<ProductDTO> personalizedProducts = getPersonalizedProducts(member);
+        if(personalizedProducts.size() > 0){
+            return personalizedProducts;
+        }
+        System.out.println("맞춤형 제품 갯수: " + personalizedProducts.size());
+        return productService.getAllProductDTOs();
     }
     // 모든 제품을 조회하는 엔드포인트
     @GetMapping
-    public List<ProductDTO> getAllProducts(@RequestHeader("Authorization") String token) {
-        List<ProductDTO> allProducts = productService.getAllProductDTOs();
+    public List<ProductDTO> getallProducts(@RequestHeader("Authorization") String token) {
 
         return productService.getAllProductDTOs();
     }
