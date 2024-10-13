@@ -152,9 +152,9 @@ public class ProductController {
         }
         return result;
     }
-    // 모든 제품을 조회하는 엔드포인트
-    @GetMapping
-    public List<ProductDTO> getAllProducts(@RequestHeader("Authorization") String token) {
+    // 맞춤화된 제품을 조회하는 엔드포인트
+    @GetMapping("/personalized")
+    public List<ProductDTO> getPersonalizedProducts(@RequestHeader("Authorization") String token) {
         String jwtToken = token.substring(7);
 
         // 토큰에서 사용자 정보 추출
@@ -165,6 +165,12 @@ public class ProductController {
             return personalizedProducts;
         }
         System.out.println("맞춤형 제품 갯수: " + personalizedProducts.size());
+        return productService.getAllProductDTOs();
+    }
+    // 모든 제품을 조회하는 엔드포인트
+    @GetMapping
+    public List<ProductDTO> getallProducts(@RequestHeader("Authorization") String token) {
+
         return productService.getAllProductDTOs();
     }
 
