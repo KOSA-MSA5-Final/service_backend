@@ -17,5 +17,6 @@ public class ShoppingOrderDTO {
     private String receipientTelNum; // 수취인 전화번호
     private Date buyingDate; // 구매 날짜
     private String memo; // 메모
+    private String location;
     private List<ShoppingOrderProductDTO> orderProductList; // 주문 상품 목록
 }

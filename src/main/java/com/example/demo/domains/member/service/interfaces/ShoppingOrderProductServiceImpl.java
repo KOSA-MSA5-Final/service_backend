@@ -72,6 +72,12 @@ public class ShoppingOrderProductServiceImpl implements ShoppingOrderProductServ
         dto.setCreatedAt(orderProduct.getCreatedAt());
         dto.setQuantity(orderProduct.getQuantity());
         dto.setShippingStatus(orderProduct.getShippingStatus());
+
+        Product product = orderProduct.getProduct();
+
+        dto.setProductName(product.getName());
+        dto.setBrandName(product.getMaker());
+        dto.setProductMainImageUrl(product.getMain_image_url());
         return dto;
     }
 }
