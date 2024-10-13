@@ -14,4 +14,7 @@ public class ShoppingOrderProductDTO {
     private Date createdAt; // 각 상품별 구매 날짜
     private long quantity; // 수량
     private String shippingStatus; // 배송 상태
+    private String productMainImageUrl;
+    private String brandName;
+    private String productName;
 }

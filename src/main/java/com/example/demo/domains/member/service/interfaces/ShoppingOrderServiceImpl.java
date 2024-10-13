@@ -73,6 +73,7 @@ public class ShoppingOrderServiceImpl implements ShoppingOrderService {
         dto.setReceipientTelNum(order.getReceipient_telNum());
         dto.setBuyingDate(order.getBuyingDate());
         dto.setMemo(order.getMemo());
+        dto.setLocation(order.getMyLocation().getAddress());
         dto.setOrderProductList(order.getOrderProductList().stream()
                 .map(shoppingOrderProduct -> shoppingOrderProductServiceImpl.convertOrderProductToDTO(shoppingOrderProduct))
                 .collect(Collectors.toList()));
