@@ -54,6 +54,7 @@ public class ProductServiceImps implements ProductService {
         dto.setWeight(product.getWeight());
         dto.setAgeGroup(product.getAge_group());
         dto.setFunction(product.getFunction());
+        dto.setMainimageurl(product.getMain_image_url());
 
         // Product의 Animal 엔티티의 이름을 animalType 필드에 설정
         if (product.getAnimal() != null) {

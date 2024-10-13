@@ -22,6 +22,7 @@ public class ProductDTO {
     private String weight;
     private String ageGroup;
     private String function;
+    private String mainimageurl;
 
     // 이미지 URL 리스트 필드 추가
     private List<String> imageUrls; // 상품 이미지 URL 리스트
