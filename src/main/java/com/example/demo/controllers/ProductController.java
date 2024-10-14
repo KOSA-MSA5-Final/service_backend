@@ -153,19 +153,31 @@ public class ProductController {
         return result;
     }
     // 맞춤화된 제품을 조회하는 엔드포인트
-    @GetMapping("/personalized")
-    public List<ProductDTO> getPersonalizedProducts(@RequestHeader("Authorization") String token) {
+    @GetMapping("/personalized/{type}")
+    public List<ProductDTO> getPersonalizedProductsByType(
+            @RequestHeader("Authorization") String token,
+            @PathVariable String type) {
         String jwtToken = token.substring(7);
 
         // 토큰에서 사용자 정보 추출
         String username = jwtUtil.getUsername(jwtToken);
         Member member = memberRepository.findByUsername(username);
         List<ProductDTO> personalizedProducts = getPersonalizedProducts(member);
-        if(personalizedProducts.size() > 0){
-            return personalizedProducts;
+        // 특정 타입으로 필터링
+        List<ProductDTO> filteredByType = personalizedProducts.stream()
+                .filter(product -> product.getType().equalsIgnoreCase(type))
+                .toList();
+
+        if (!filteredByType.isEmpty()) {
+            return filteredByType;
         }
-        System.out.println("맞춤형 제품 갯수: " + personalizedProducts.size());
-        return productService.getAllProductDTOs();
+
+        System.out.println("맞춤형 제품 갯수: " + filteredByType.size());
+
+        // 필터된 맞춤형 제품이 없을 경우 전체 상품 반환
+        return productService.getAllProductDTOs().stream()
+                .filter(product -> product.getType().equalsIgnoreCase(type))
+                .toList();
     }
     // 모든 제품을 조회하는 엔드포인트
     @GetMapping
