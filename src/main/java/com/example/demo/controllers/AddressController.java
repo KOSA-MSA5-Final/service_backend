@@ -76,7 +76,7 @@ public class AddressController {
     @PostMapping("/change_primary")
     public ResponseEntity<?> addAddress(@RequestHeader("Authorization") String token, @RequestBody Map<String, Long> requestBody) {
         Long addressId = requestBody.get("addressId");
-        System.out.println("하이룽");
+//        System.out.println("하이룽");
         // Bearer 앞의 "Bearer " 제거
         String jwtToken = token.substring(7);
 
