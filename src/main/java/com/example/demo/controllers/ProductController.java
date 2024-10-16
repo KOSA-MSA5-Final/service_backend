@@ -31,7 +31,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 @RestController
-@CrossOrigin(origins = "https://mgng.site")
+@CrossOrigin(origins = "https://d3b5vhsqsj0w82.cloudfront.net")
 @RequestMapping("/api/products")
 @RequiredArgsConstructor
 public class ProductController {

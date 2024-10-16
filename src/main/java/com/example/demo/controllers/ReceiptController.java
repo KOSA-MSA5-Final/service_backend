@@ -37,7 +37,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 @RestController
-@CrossOrigin(origins = "https://mgng.site")
+@CrossOrigin(origins = "https://d3b5vhsqsj0w82.cloudfront.net")
 @RequiredArgsConstructor
 @RequestMapping("/api")
 public class ReceiptController {

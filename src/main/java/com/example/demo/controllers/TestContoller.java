@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@CrossOrigin(origins = "https://mgng.site")
+@CrossOrigin(origins = "https://d3b5vhsqsj0w82.cloudfront.net")
 @RequiredArgsConstructor
 @ResponseBody
 public class TestContoller {
