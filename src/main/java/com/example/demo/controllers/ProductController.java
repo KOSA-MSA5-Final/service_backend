@@ -66,7 +66,7 @@ public class ProductController {
             for (ProductDTO productDTO : allProductsByType) {
 
                 List<RawMaterial> rawMaterials = rawMaterialRepository.findByProductId(productDTO.getId());
-                System.out.println("rawMaterials 갯수: " + rawMaterials.size());
+//                System.out.println("rawMaterials 갯수: " + rawMaterials.size());
                 Set<String> materials = new HashSet<>();
                 if(rawMaterials.size() > 0) {
                     for (RawMaterial rawMaterial : rawMaterials) {
