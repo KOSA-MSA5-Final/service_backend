@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Random;
 
 @RestController
-@CrossOrigin(origins = "https://d3b5vhsqsj0w82.cloudfront.net") // 해당 컨트롤러에만 CORS 설정
+@CrossOrigin(origins = {"https://d3b5vhsqsj0w82.cloudfront.net", "https://mgng.site","http://localhost:80", "https://localhost:80", "https://3.34.164.100:80", "http://mgng.site"})
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthController { //로그인 관련 컨트롤러

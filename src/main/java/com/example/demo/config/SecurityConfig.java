@@ -22,6 +22,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.Arrays;
 import java.util.Collections;
 
 import static org.springframework.security.config.Customizer.withDefaults;
@@ -102,7 +103,7 @@ public class SecurityConfig  {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Collections.singletonList("https://d3b5vhsqsj0w82.cloudfront.net")); // 허용할 출처
+        configuration.setAllowedOrigins(Arrays.asList("https://d3b5vhsqsj0w82.cloudfront.net", "http://mgng.site", "https://mgng.site","http://localhost:80", "https://localhost:80", "https://3.34.164.100:80"));
         configuration.setAllowedMethods(Collections.singletonList("*")); // 모든 메소드 허용
         configuration.setAllowCredentials(true); // 쿠키 전달 허용
         configuration.setAllowedHeaders(Collections.singletonList("*")); // 모든 헤더 허용
