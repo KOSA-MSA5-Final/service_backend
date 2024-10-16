@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@CrossOrigin(origins = "https://3.34.164.100:80") // 해당 컨트롤러에만 CORS 설정
+@CrossOrigin(origins = "https://mgng.site:80") // 해당 컨트롤러에만 CORS 설정
 @RequestMapping("/auth/address")
 @RequiredArgsConstructor
 public class AddressController {

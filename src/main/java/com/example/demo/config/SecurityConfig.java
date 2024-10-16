@@ -102,7 +102,7 @@ public class SecurityConfig  {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Collections.singletonList("https://3.34.164.100:80")); // 허용할 출처
+        configuration.setAllowedOrigins(Collections.singletonList("https://mgng.site:80")); // 허용할 출처
         configuration.setAllowedMethods(Collections.singletonList("*")); // 모든 메소드 허용
         configuration.setAllowCredentials(true); // 쿠키 전달 허용
         configuration.setAllowedHeaders(Collections.singletonList("*")); // 모든 헤더 허용
