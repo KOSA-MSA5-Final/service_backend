@@ -31,7 +31,7 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "https://localhost:80")
+@CrossOrigin(origins = "https://3.34.164.100:80")
 @RequestMapping("/api/pay")
 @RequiredArgsConstructor
 public class PayController {

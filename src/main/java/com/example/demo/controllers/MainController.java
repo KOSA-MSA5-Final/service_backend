@@ -54,7 +54,7 @@ import java.util.*;
  */
 
 @RestController
-@CrossOrigin(origins = "https://localhost:80")
+@CrossOrigin(origins = "https://3.34.164.100:80")
 @RequestMapping("/api") // 수정: 전체 경로가 "/api"로 시작하도록 설정
 public class MainController {
     @Autowired

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "https://localhost:80")
+@CrossOrigin(origins = "https://3.34.164.100:80")
 @RequestMapping("/api/medical")
 @RequiredArgsConstructor
 public class MedicalController {

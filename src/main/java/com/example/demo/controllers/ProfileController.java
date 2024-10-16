@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@CrossOrigin(origins = "https://localhost:80")
+@CrossOrigin(origins = "https://3.34.164.100:80")
 @RequestMapping("/auth/profile") // 모든 요청에 /auth로 시작
 @RequiredArgsConstructor
 public class ProfileController {
