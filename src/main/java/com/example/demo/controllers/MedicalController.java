@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "https://mgng.site:80")
+@CrossOrigin(origins = "https://mgng.site")
 @RequestMapping("/api/medical")
 @RequiredArgsConstructor
 public class MedicalController {

@@ -54,7 +54,7 @@ import java.util.*;
  */
 
 @RestController
-@CrossOrigin(origins = "https://mgng.site:80")
+@CrossOrigin(origins = "https://mgng.site")
 @RequestMapping("/api") // 수정: 전체 경로가 "/api"로 시작하도록 설정
 public class MainController {
     @Autowired
