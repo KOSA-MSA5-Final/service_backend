@@ -27,4 +27,7 @@ public class ProductDTO {
     // 이미지 URL 리스트 필드 추가
     private List<String> imageUrls; // 상품 이미지 URL 리스트
     private List<String> detailImageUrls; // 상품 상세 이미지 URL 리스트
+
+    // DiseaseProduct 관련 정보 추가
+    private List<DiseaseProductDTO> diseaseProducts;  // DiseaseProductDTO 리스트
 }

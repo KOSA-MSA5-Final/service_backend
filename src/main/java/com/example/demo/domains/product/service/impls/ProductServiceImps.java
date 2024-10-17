@@ -1,9 +1,12 @@
 package com.example.demo.domains.product.service.impls;
 
+import com.example.demo.domains.product.dto.DiseaseProductDTO;
 import com.example.demo.domains.product.dto.ProductDTO;
+import com.example.demo.domains.product.entity.DiseaseProduct;
 import com.example.demo.domains.product.entity.Product;
 import com.example.demo.domains.product.entity.ProductDetailImg;
 import com.example.demo.domains.product.entity.ProductImg;
+import com.example.demo.domains.product.repository.DiseaseProductRepository;
 import com.example.demo.domains.product.repository.ProductDetailImgRepository;
 import com.example.demo.domains.product.repository.ProductImgRepository;
 import com.example.demo.domains.product.repository.ProductRepository;
@@ -22,6 +25,7 @@ public class ProductServiceImps implements ProductService {
     private final ProductRepository productRepository;
     private final ProductImgRepository productImgRepository;
     private final ProductDetailImgRepository productDetailImgRepository;
+    private final DiseaseProductRepository diseaseProductRepository;
 
     @Override
     public List<Product> getAllProducts() {
@@ -73,6 +77,19 @@ public class ProductServiceImps implements ProductService {
                 .map(ProductDetailImg::getImageUrl)
                 .collect(Collectors.toList());
         dto.setDetailImageUrls(detailImageUrls);
+
+        // DiseaseProduct 정보를 DTO로 변환하여 추가
+        List<DiseaseProductDTO> diseaseProductDTOs = diseaseProductRepository.findByProductId(product.getId())
+                .stream()
+                .map(diseaseProduct -> {
+                    DiseaseProductDTO diseaseProductDTO = new DiseaseProductDTO();
+                    diseaseProductDTO.setId(diseaseProduct.getId());
+                    diseaseProductDTO.setDiseaseName(diseaseProduct.getDiseaseNames().getName());
+                    diseaseProductDTO.setProductId(diseaseProduct.getProduct().getId());
+                    return diseaseProductDTO;
+                })
+                .collect(Collectors.toList());
+        dto.setDiseaseProducts(diseaseProductDTOs);
 
         return dto;
     }

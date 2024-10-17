@@ -61,13 +61,13 @@ public class ProductController {
 
         if (currentProfile != null) {
             List<ProductDTO> allProductsByType = productService.getAllProductDTOs();
-            System.out.println("allProductsByType 갯수: " + allProductsByType.size());
+//            System.out.println("allProductsByType 갯수: " + allProductsByType.size());
             Set<String> profileAllergies = getAllergiesByProfile(currentProfile);
-            System.out.println("알러지 갯수: " + profileAllergies.size());
+//            System.out.println("알러지 갯수: " + profileAllergies.size());
             for (ProductDTO productDTO : allProductsByType) {
 
                 List<RawMaterial> rawMaterials = rawMaterialRepository.findByProductId(productDTO.getId());
-                System.out.println("rawMaterials 갯수: " + rawMaterials.size());
+//                System.out.println("rawMaterials 갯수: " + rawMaterials.size());
                 Set<String> materials = new HashSet<>();
                 if(rawMaterials.size() > 0) {
                     for (RawMaterial rawMaterial : rawMaterials) {
@@ -82,10 +82,19 @@ public class ProductController {
                 if(!allergyContained) {
                     allergyFiltered.add(productDTO);
                 }
-                System.out.println("allergyFiltered 여부: " + allergyContained);
+//                System.out.println("allergyFiltered 여부: " + allergyContained);
             }
 
             if(allergyFiltered.size() > 0) {
+
+                // 알러지 필터링 완료 후, rawMaterials 갯수로 정렬
+                allergyFiltered.sort((product1, product2) -> {
+                    List<RawMaterial> rawMaterials1 = rawMaterialRepository.findByProductId(product1.getId());
+                    List<RawMaterial> rawMaterials2 = rawMaterialRepository.findByProductId(product2.getId());
+
+                    // rawMaterials 리스트의 크기로 내림차순 정렬
+                    return Integer.compare(rawMaterials2.size(), rawMaterials1.size());
+                });
 
                 Set<String> profileDiseases = getDiseaseNamesByProfile(currentProfile);
                 for (ProductDTO productDTO : allergyFiltered) {
@@ -173,7 +182,7 @@ public class ProductController {
             return filteredByType;
         }
 
-        System.out.println("맞춤형 제품 갯수: " + filteredByType.size());
+//        System.out.println("맞춤형 제품 갯수: " + filteredByType.size());
 
         // 필터된 맞춤형 제품이 없을 경우 전체 상품 반환
         return productService.getAllProductDTOs().stream()
