@@ -68,12 +68,12 @@ public class ReceiptController {
         String resultURL = result.get(0);
         String parsed = GoogleVisionOCR.execute(resultURL);
 
-        System.out.println(parsed);
+        //System.out.println(parsed);
 
-        System.out.println("\n>>>>여기부터 gpt의 대답");
+        //System.out.println("\n>>>>여기부터 gpt의 대답");
         String beforeAsk = "아래는 영수증(청구서) 내용을 OCR로 읽어낸거야. 내가 원하는 값들은 진료 내역들 (이름-가격)과 병원명, 대표자이름, 사업자 등록번호와 사업장 소재지, 전화번호, 총 가격 및 방문 날짜시간이야. 각 json 형태로 key 이름을 '진료내역리스트'(각 항목의 키는 진료이름(정형화된 실제 데이터로 작성해줘. 진료내역1 이런식으론 절대로 하지마.), 값은 가격), '병원명', '대표자이름', '사업자등록번호', '사업장주소', '전화번호', '총가격', '방문날짜시간' 이라고 명시하여 아래내용들을 정형화 해줘. key 이름에 빈 문자열 생기지 않도록 주의하고, 만약 각 key의 값을 찾을 수 없다면, 키는 그대로 넣고 빈 문자열을 넣어서 보내줘. 가격은 숫자만 넣어.\n";
         ResponseEntity<?> gptResponse = gptService.getAssistantMsg(beforeAsk + parsed);
-        System.out.println(gptResponse.getBody());
+        //System.out.println(gptResponse.getBody());
         ReceiptDTO receiptDTO = parseReceipt(gptResponse, resultURL);
 
         return receiptDTO;
@@ -136,7 +136,7 @@ public class ReceiptController {
 
     @PostMapping("/disease/analysis")
     public ResponseEntity<?> analyzeDisease(@RequestBody List<MedicalDTO> medicalDTOs) {
-        System.out.println("Received data: " + medicalDTOs);
+        //System.out.println("Received data: " + medicalDTOs);
         String medicalList = "";
         if(medicalDTOs != null && medicalDTOs.size() > 0) {
             for (MedicalDTO medicalDTO : medicalDTOs) {
@@ -151,11 +151,11 @@ public class ReceiptController {
             ResponseEntity<?> gptResponse = gptService.getAssistantMsg(beforeAsk);
 
             String jsonString = gptResponse.getBody().toString();
-            System.out.println("GPT Response: " + jsonString);
+            //System.out.println("GPT Response: " + jsonString);
             List<DiseaseAnalysisDTO> formattedResponse = parseJsonString(jsonString);
 
-            System.out.println(">>>>여기는 disease/analysis");
-            System.out.println(formattedResponse);
+            //System.out.println(">>>>여기는 disease/analysis");
+            //System.out.println(formattedResponse);
 
             return ResponseEntity.ok(formattedResponse);
         } catch (Exception e) {
@@ -235,14 +235,14 @@ public class ReceiptController {
             @RequestParam("qimage") List<MultipartFile> multipartFile) throws IOException {
         List<String> result = awsS3Service.uploadFile(multipartFile);
         String resultURL = result.get(0);
-        System.out.println(resultURL);
+        //System.out.println(resultURL);
         return ResponseEntity.ok(resultURL);
     }
 
     @PostMapping("/save_receipt")
     public ResponseEntity<?> saveReceipt(@RequestBody SaveReceiptRequestDTO requestDTO,
                                          @RequestHeader("Authorization") String token) {
-        System.out.println("I'm here!!!!!!!!! " + requestDTO.toString());
+        //System.out.println("I'm here!!!!!!!!! " + requestDTO.toString());
         try {
             // Bearer 토큰에서 "Bearer " 제거
             String jwtToken = token.replace("Bearer ", "");
@@ -252,7 +252,7 @@ public class ReceiptController {
             Member member = memberRepository.findByUsername(username);
 
             if (member == null) {
-                System.out.println("User not found for username: " + username);
+                //System.out.println("User not found for username: " + username);
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
             }
 
@@ -349,7 +349,7 @@ public class ReceiptController {
 
             return ResponseEntity.ok("success");
         } catch (Exception e) {
-            System.out.println("Error saving receipt" + e);
+            //System.out.println("Error saving receipt" + e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
         }
 
@@ -371,7 +371,7 @@ public class ReceiptController {
     @PostMapping("/s3/profile")
     public String uploadProfileImg(
             @RequestParam("file") MultipartFile file) throws IOException {
-        System.out.println("나 여기!!!!!!!!!!!!!!!!!");
+        //System.out.println("나 여기!!!!!!!!!!!!!!!!!");
         List<String> result = awsS3Service.uploadFile(Collections.singletonList(file));
         String resultURL = result.get(0);
         return resultURL;

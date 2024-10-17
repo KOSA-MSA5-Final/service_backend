@@ -40,8 +40,8 @@ public class AuthController { //로그인 관련 컨트롤러
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody JoinDTO joinDTO) {
-        System.out.println("============================회원가입메소드입니다");
-        System.out.println(joinDTO.getUsername());
+//        System.out.println("============================회원가입메소드입니다");
+//        System.out.println(joinDTO.getUsername());
 
         memberService.joinProcess(joinDTO);
 
@@ -75,7 +75,7 @@ public class AuthController { //로그인 관련 컨트롤러
 
             // JWT 토큰 생성
             String token = jwtUtil.createJwt(loginRequest.getUsername(), "Role_admin", 86400000L); // 사용자 이름을 사용하여 토큰 생성
-            System.out.println("jwt토큰은 "+token);
+//            System.out.println("jwt토큰은 "+token);
 
             if (token == null) {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("토큰 생성 실패");
@@ -157,13 +157,13 @@ public class AuthController { //로그인 관련 컨트롤러
         // 토큰에서 사용자 정보 추출
         String username = jwtUtil.getUsername(jwtToken);
         String role = jwtUtil.getRole(jwtToken);
-        System.out.println("token: "+ jwtToken);
+//        System.out.println("token: "+ jwtToken);
 
         // 사용자 정보를 반환할 DTO 객체 생성
         Member member = memberRepository.findByUsername(username);
         Profile profile = profileService.getCurrentProfileByMember(member);
-        System.out.println("여기까지는 괜찮아!");
-        System.out.println("nsj: profile값은 "+profile);
+//        System.out.println("여기까지는 괜찮아!");
+//        System.out.println("nsj: profile값은 "+profile);
         
         // profile이 null이면 CurrentProfileDTO도 null로 반환 - 나선주 추가
         CurrentProfileDTO currentProfileDTO = (profile != null) ? new CurrentProfileDTO(profile) : null;
@@ -188,7 +188,7 @@ public class AuthController { //로그인 관련 컨트롤러
             Member member = memberRepository.findByUsername(username);
 
             if (member == null) {
-                System.out.println("User not found for username: " + username);
+//                System.out.println("User not found for username: " + username);
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
             }
 
@@ -196,12 +196,12 @@ public class AuthController { //로그인 관련 컨트롤러
             if (!currentProfile.getId().equals(profileId)){
                 profileService.changeProfile(currentProfile, profileId);
 
-                System.out.println("Profile changed successfully for user: " + username);
+//                System.out.println("Profile changed successfully for user: " + username);
             }
 
             return ResponseEntity.ok("success");
         } catch (Exception e) {
-            System.out.println("Error changing profile" + e);
+//            System.out.println("Error changing profile" + e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
         }
     }

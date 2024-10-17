@@ -157,18 +157,18 @@ public class MainController {
 
     @PostMapping("/profile/saveProfile")
     public ResponseEntity<String> saveProfile(@RequestBody ProfileDataDTO profileData){
-        System.out.println("pet img: "+profileData.getPetImg());
-        System.out.println("pet name: "+profileData.getPetName());
-        System.out.println("petType: "+profileData.getPetType());//품종 이름
-        System.out.println("petGender: "+profileData.getPetGender());
-        System.out.println("petBirthDate: "+profileData.getPetBirthDate());
-        System.out.println("petIsNeutered: "+profileData.getPetIsNeutered());
-        System.out.println("petwillneutered: "+profileData.getPetWillNeutered());
-        System.out.println("selectedAllergies: "+profileData.getSelectedAllergies());
-        System.out.println("isDisease: "+profileData.getIsDisease());
-        System.out.println("checkedDiseases: "+ profileData.getCheckedDiseases());
-        System.out.println("Username: "+profileData.getUsername());
-        System.out.println("받아온etcDisease는: "+profileData.getEtcDisease().size());
+        //System.out.println("pet img: "+profileData.getPetImg());
+        //System.out.println("pet name: "+profileData.getPetName());
+        //System.out.println("petType: "+profileData.getPetType());//품종 이름
+        //System.out.println("petGender: "+profileData.getPetGender());
+        //System.out.println("petBirthDate: "+profileData.getPetBirthDate());
+        //System.out.println("petIsNeutered: "+profileData.getPetIsNeutered());
+        //System.out.println("petwillneutered: "+profileData.getPetWillNeutered());
+        //System.out.println("selectedAllergies: "+profileData.getSelectedAllergies());
+        //System.out.println("isDisease: "+profileData.getIsDisease());
+        //System.out.println("checkedDiseases: "+ profileData.getCheckedDiseases());
+        //System.out.println("Username: "+profileData.getUsername());
+        //System.out.println("받아온etcDisease는: "+profileData.getEtcDisease().size());
 
 
         Profile newbie = new Profile();
